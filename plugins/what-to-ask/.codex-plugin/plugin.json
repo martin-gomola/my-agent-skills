@@ -1,0 +1,7 @@
+{
+  "name": "my-agent-skills",
+  "version": "0.1.0",
+  "description": "Portable skills for clear, actionable requests to coding agents.",
+  "license": "MIT",
+  "skills": "./skills/"
+}

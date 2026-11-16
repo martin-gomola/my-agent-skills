@@ -1,0 +1,23 @@
+skill: your-turn-handoff
+description: Check the final handoff artifact, not an invented claim of task execution.
+cases:
+  - name: finished-advice
+    prompt: "I asked only for advice. You have delivered the advice; no action is waiting on me. Finish your answer."
+    rubric:
+      must_mention: ["**Outcome:**", "**Next step:** none"]
+      expectations:
+        - Does not manufacture a review or approval request for delivered advice.
+  - name: reserved-choice
+    prompt: "I reserved the choice of cache backend. You have compared Redis and an in-process cache and need my choice before implementation. Finish with the handoff."
+    rubric:
+      must_mention: ["decide:", "Redis"]
+      expectations:
+        - Names both alternatives in a pending decision rather than recording a chosen backend.
+  - name: failed-check
+    prompt: "The code was edited but the relevant test still fails and you cannot finish repairing it in this environment. Report that honestly; do not claim tests passed."
+    rubric:
+      must_mention: ["**Outcome:**", "**Next step:**"]
+      expectations:
+        - States the remaining verification failure and only requests a human action when actually needed.
+threshold:
+  pass_rate: 1.0

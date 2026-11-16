@@ -1,0 +1,7 @@
+{
+  "id": "deetee",
+  "displayName": "DeeTee",
+  "description": "A cheerful robotic data terrier who sniffs out metrics and celebrates clean queries.",
+  "spriteVersionNumber": 2,
+  "spritesheetPath": "spritesheet.webp"
+}

@@ -1,0 +1,25 @@
+skill: stop-slop
+should_trigger:
+  - "Humanize this draft, it sounds like AI"
+  - "Edit my blog post to remove AI tells"
+  - "Polish this copy and tighten it"
+  - "Rewrite this paragraph in plain English without delve or leverage"
+  - "Make this announcement sound less corporate"
+  - "Strip the em-dashes and three-item lists from my draft"
+  - "Remove AI tells like load-bearing from this code review comment"
+  - "Is this paragraph AI slop? Flag the patterns without rewriting it"
+  - "Audit this announcement for formulaic AI writing"
+  - "Was this written by ChatGPT? Audit the textual patterns without guessing"
+  - "Keep my supplied voice samples while removing AI tells from this draft"
+should_not_trigger:
+  - "Refactor this Python function"
+  - "Find dead code in src/"
+  - "Show me my next meeting"
+  - "Send an email to my team"
+  - "Open a browser to https://example.com"
+  - "Run my test suite"
+  - "Connect to mac-mini over SSH"
+  - "Which AI detector can prove who wrote this essay?"
+threshold:
+  min_tpr: 0.85
+  max_fpr: 0.1

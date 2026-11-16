@@ -1,0 +1,31 @@
+schema_version: 1
+skill: stop-slop
+claims:
+  - id: minimum-effective-edit
+    instruction: 'Make the minimum effective edit.'
+    source_ids: [peter-yang-no-ai-slop]
+    evidence: Editing principles and Two jobs sections.
+  - id: preserve-meaning-and-voice
+    instruction: "preserve the writer's meaning and recognizable voice"
+    source_ids: [peter-yang-no-ai-slop]
+    evidence: Two jobs, Preserve the writer's real voice, and Workflow sections; adapted to the Mythosaur output contract.
+  - id: detect-without-authorship-claim
+    instruction: 'Do not rewrite or rate the draft.'
+    source_ids: [peter-yang-no-ai-slop]
+    evidence: Detect subsection and workflow stop condition.
+  - id: protect-facts
+    instruction: 'Do not invent claims, examples, numbers, sources, quotations, opinions, motives, or conclusions.'
+    source_ids: [peter-yang-no-ai-slop]
+    evidence: Keep the user's meaning and weasel-attribution guidance.
+  - id: require-named-support
+    instruction: 'Remove or flag unnamed attribution such as `studies show`, `experts agree`, or `reports suggest` when the draft supplies no source.'
+    source_ids: [peter-yang-no-ai-slop]
+    evidence: Weasel attribution pattern guidance.
+  - id: portability-test
+    instruction: 'If a sentence could move unchanged to an unrelated person, company, or product, cut it or make it specific.'
+    source_ids: [peter-yang-no-ai-slop]
+    evidence: Use the portability test editing principle; wording narrowed for the core rule.
+  - id: direct-prose-patterns
+    instruction: 'Cut empty qualifiers, throat-clearing, weak verb phrases, and decorative emphasis.'
+    source_ids: [hardik-pandya-stop-slop, peter-yang-no-ai-slop]
+    evidence: Core editing rules and the phrase and pattern inventories in both source skills.

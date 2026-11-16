@@ -1,0 +1,57 @@
+{
+  "name": "my-agent-skills",
+  "interface": {
+    "displayName": "My Agent Skills"
+  },
+  "plugins": [
+    {
+      "name": "my-agent-skills",
+      "source": {
+        "source": "local",
+        "path": "./plugins/what-to-ask"
+      }
+    },
+    {
+      "name": "your-turn-handoff",
+      "source": {
+        "source": "local",
+        "path": "./plugins/your-turn-handoff"
+      }
+    },
+    {
+      "name": "clean-cursor",
+      "source": {
+        "source": "local",
+        "path": "./plugins/clean-cursor"
+      }
+    },
+    {
+      "name": "pii-precommit-check",
+      "source": {
+        "source": "local",
+        "path": "./plugins/pii-precommit-check"
+      }
+    },
+    {
+      "name": "ask",
+      "source": {
+        "source": "local",
+        "path": "./plugins/ask"
+      }
+    },
+    {
+      "name": "codex-image",
+      "source": {
+        "source": "local",
+        "path": "./plugins/codex-image"
+      }
+    },
+    {
+      "name": "stop-slop",
+      "source": {
+        "source": "local",
+        "path": "./plugins/stop-slop"
+      }
+    }
+  ]
+}

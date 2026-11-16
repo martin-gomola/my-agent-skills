@@ -1,0 +1,18 @@
+skill: what-to-ask
+should_trigger:
+  - "Čo sa ťa mám opýtať, aby si správne opravil tento bug?"
+  - "Premeň tieto poznámky a screenshot na prompt, ktorý môžem poslať coding agentovi."
+  - "Help me phrase the request so an AI implements this feature correctly."
+  - "Make a copy-ready prompt from this rough description of the UI problem."
+  - "I want to ask another model to inspect this repository and fix one issue. What should I tell it?"
+  - "Create a precise prompt for an assistant to research this question with citations."
+should_not_trigger:
+  - "Please implement this bug fix in the current repository."
+  - "Why does my existing prompt keep ignoring the JSON format? Rewrite it."
+  - "What should I ask my doctor about these symptoms?"
+  - "What is the current Horde auction price for Turtle Meat?"
+  - "Build me a reusable library of prompt templates."
+  - "I do not know what this Python error means. Explain it."
+threshold:
+  min_tpr: 0.9
+  max_fpr: 0.1

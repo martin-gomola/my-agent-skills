@@ -1,0 +1,22 @@
+skill: clean-cursor
+should_trigger:
+  - "Use $clean-cursor to inspect Cursor's disk usage and find safe cleanup candidates."
+  - "Cursor is using 6 GB; how can I clean the IDE without losing my workspace state?"
+  - "Inspect the size of Cursor's CachedData and downloaded agent CLI versions."
+  - "Safely shrink Cursor's state.vscdb and report reclaimed disk space."
+  - "Cursor is using too much disk; inspect globalStorage and show what could be removed."
+  - "Help me clean the Cursor database and check whether ItemTable has dated old rows."
+  - "Remove this broken Cursor chat by ID; it still appears in the Your Turn inbox."
+  - "Find the local files for one Cursor conversation and show me a safe removal plan."
+should_not_trigger:
+  - "Explain what the Cursor state.vscdb database stores without changing it."
+  - "Clean old SQLite backups for my unrelated application."
+  - "Delete generated build caches from my repository."
+  - "Remove old Git branches from my project."
+  - "Update my Cursor editor settings and extensions."
+  - "Vacuum the production database on our server."
+  - "Create or install the clean-cursor skill, but do not inspect or clean Cursor files."
+  - "Remove a Codex chat from Your Turn while keeping all Cursor files untouched."
+threshold:
+  min_tpr: 0.85
+  max_fpr: 0.1
