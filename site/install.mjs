@@ -5,7 +5,7 @@ export function installation(skills, agents, repository, scope = 'project') {
   if (!skills.length || skills.some(skill => !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(skill.id))) throw Error('Invalid skills');
   if (!agents.length || agents.some(agent => !Object.hasOwn(agentIds, agent))) throw Error('Unknown agent');
   if (!['project', 'global'].includes(scope)) throw Error('Invalid scope');
-  const parts = [`npx skills add ${repository}`, `--skill ${skills.map(skill => skill.id).join(' ')}`, `--agent ${agents.map(agent => agentIds[agent]).join(' ')}`];
+  const parts = [`DISABLE_TELEMETRY=1 npx skills add ${repository}`, `--skill ${skills.map(skill => skill.id).join(' ')}`, `--agent ${agents.map(agent => agentIds[agent]).join(' ')}`];
   if (scope === 'global') parts.push('--global');
   return parts.join(' \\\n  ');
 }

@@ -20,7 +20,8 @@ Open `http://localhost:8983`. Stop the server with `Ctrl+C`; use
 `make dev PORT=8984` if the default port is occupied. The page reads
 `site/catalog.json` and generates one Skills CLI command for the selected skills,
 agents, and project or global scope. The page has no backend, analytics, cookies
-or automatic installation. The external Skills CLI has its own telemetry policy.
+or automatic installation. Generated commands set `DISABLE_TELEMETRY=1` for the
+Skills CLI process; no global shell setting is changed.
 
 The five helpers imported from mythosaur-tools remain independent skills. See
 [migration and NotebookLM review notes](skill-migration-review.md) for provenance,

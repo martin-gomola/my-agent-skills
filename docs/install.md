@@ -10,27 +10,29 @@ requires Node.js 22.20+ and Git.
 Run project commands from the same project folder where you installed the skills:
 
 ```bash
-npx skills list
-npx skills check
-npx skills update --project
-npx skills remove what-to-ask
+DISABLE_TELEMETRY=1 npx skills list
+DISABLE_TELEMETRY=1 npx skills check
+DISABLE_TELEMETRY=1 npx skills update --project
+DISABLE_TELEMETRY=1 npx skills remove what-to-ask
 ```
 
 For skills installed across your projects:
 
 ```bash
-npx skills list --global
-npx skills update --global
-npx skills remove what-to-ask --global
+DISABLE_TELEMETRY=1 npx skills list --global
+DISABLE_TELEMETRY=1 npx skills update --global
+DISABLE_TELEMETRY=1 npx skills remove what-to-ask --global
 ```
 
 Replace `what-to-ask` with the skill you want to remove. Updates are explicit;
 review them and save any changes to an installed copy before updating. Start a
 new agent chat after installation or updates.
 
-The Skills CLI collects telemetry; see its
-[configuration documentation](https://github.com/vercel-labs/skills/blob/main/docs/troubleshooting.md#telemetry)
-for what is sent and how to disable it.
+These commands set `DISABLE_TELEMETRY=1` for that CLI process. The variable is
+not saved to your shell configuration. `DO_NOT_TRACK=1` is also supported.
+In the current Skills CLI, this opt-out also disables fetching its remote skill
+security audit results. Installation still needs network access to fetch skills.
+See the [telemetry implementation](https://github.com/vercel-labs/skills/blob/main/src/telemetry.ts).
 
 ## Troubleshooting
 
@@ -41,7 +43,7 @@ GitHub login should not be required.
 
 ### The skill does not appear
 
-Run `npx skills list` from the project folder, or `npx skills list --global` for
+Run `DISABLE_TELEMETRY=1 npx skills list` from the project folder, or `DISABLE_TELEMETRY=1 npx skills list --global` for
 a global installation. Confirm the command targeted your coding agent, then
 start a new session. Your client may ask you to trust the project or approve
 activation; review that request in the client.

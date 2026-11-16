@@ -31,6 +31,7 @@ choose skills, coding agents, and whether to install for this project or all you
 projects. Copy one command and run it in your terminal. Installation uses the
 [Skills CLI](https://github.com/vercel-labs/skills) and requires Node.js 22.20+
 and Git. Codex, Claude Code, Cursor, Antigravity, and Gemini CLI are supported.
+Generated commands disable Skills CLI telemetry for that run.
 
 Install only the behavior you need. The standalone
 [your-turn-handoff](docs/handoff.md) skill works with or without the separate
