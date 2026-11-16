@@ -6,10 +6,9 @@ The source checkout was read, not changed. Existing local installer edits were p
 
 ## Scope and package boundaries
 
-Each helper keeps its name, source directory, trigger/evaluation fixtures and a
-separate native plugin. New adapter versions start at `0.1.0`. The existing
-`my-agent-skills` plugin remains the adapter for `what-to-ask` for compatibility;
-none of these helpers installs or activates `your-turn-handoff`.
+Each helper keeps its name, source directory and trigger/evaluation fixtures.
+Skills are installed directly from `skills/<name>/`; their initial versions are
+`0.1.0`. None of these helpers installs or activates `your-turn-handoff`.
 
 | Skill | Dependencies and effects | Migration work |
 | --- | --- | --- |
@@ -48,7 +47,7 @@ in its own `sources.yaml` and `grounding.yaml`.
 
 ## Verification and limits
 
-- Repository manifest, provenance, private-content and snapshot checks run through `make test`.
+- Skill metadata, provenance, private-content and catalog checks run through `make test`.
 - Existing trigger and behavior fixtures are preserved as rubrics; no live model
   baseline or multi-client activation evaluation is claimed.
 - Existing ask runner tests pass (9 cases, mocked provider execution).
@@ -57,6 +56,5 @@ in its own `sources.yaml` and `grounding.yaml`.
 - The installer route tests cover every skill and all five client selections.
 - No consumer installation, commit, push or deployment is part of this migration.
 
-Rollback before publication: remove the five source folders and adapters plus
-their marketplace/catalog entries, then regenerate snapshots. Preserve unrelated
-local site edits when doing so.
+Rollback before publication: remove the five source folders and their catalog
+entries. Preserve unrelated local site edits when doing so.

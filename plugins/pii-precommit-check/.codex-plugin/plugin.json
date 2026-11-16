@@ -1,1 +1,0 @@
-{"name":"pii-precommit-check","version":"0.1.0","description":"Scan staged Git changes for private data.","license":"MIT","skills":"./skills/"}

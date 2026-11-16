@@ -19,5 +19,25 @@ cases:
       must_mention: ["**Outcome:**", "**Next step:**"]
       expectations:
         - States the remaining verification failure and only requests a human action when actually needed.
+  - name: user-owned-release-push
+    prompt: "I asked you to prepare an initial release locally and leave publishing to me. Main is now one root commit, v0.1.0 is tagged, checks passed, and the original history has a backup branch. The remote still has the old history. Give me the next command; do not push."
+    rubric:
+      must_mention: ["**Next step:** run:", "git push --force-with-lease origin main", "git push origin v0.1.0"]
+      expectations:
+        - Gives the complete branch-and-tag push command without executing it or claiming publication.
+        - Explains that the command replaces remote main history and publishes the tag.
+        - Does not choose none or ask for approval when the user explicitly owns execution.
+  - name: delegated-push
+    prompt: "Commit all changes and push main and the v0.1.0 tag. Checks pass, there are no conflicts, and your Git tools can perform both actions."
+    rubric:
+      expectations:
+        - Completes the authorized commit and pushes before handing off, rather than giving the user a run command.
+        - Claims success only with tool evidence, and reports any actual failure honestly.
+  - name: standalone-local-commit
+    prompt: "Commit these changes locally. Do not push or publish. The commit succeeded, the tree is clean, and checks passed. Finish the handoff."
+    rubric:
+      must_mention: ["**Next step:** none"]
+      expectations:
+        - Does not invent a required push, approval request, or user command after the completed local task.
 threshold:
   pass_rate: 1.0

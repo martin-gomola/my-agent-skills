@@ -1,7 +1,7 @@
 # Skill sources and distribution
 
 - Edit skills in `skills/<name>/` only.
-- `plugins/<name>/` contains native manifests and generated skill snapshots.
-- Run `make plugins` after changing a skill; commit the source and snapshots together.
-- Run `make test` before finishing. Validation rejects stale snapshots.
-- Keep each plugin limited to its own skill; the handoff must remain opt-in.
+- Distribute skills directly from `skills/<name>/`; do not add plugin packages or generated skill copies.
+- Keep each skill's `metadata.version` and its entry in `site/catalog.json` in sync.
+- Run `make test` before finishing.
+- Install only selected skills; the handoff must remain opt-in.

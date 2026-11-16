@@ -1,5 +1,7 @@
 ---
 name: clean-cursor
+metadata:
+  version: "0.1.0"
 description: Safely inspects and cleans Cursor IDE storage, including caches, agent CLI downloads, workspace state, SQLite data, and a specific chat by ID. Use for Cursor disk cleanup or when a broken Cursor chat still appears in Cursor or the Your Turn inbox; avoid unrelated application or project cleanup.
 ---
 

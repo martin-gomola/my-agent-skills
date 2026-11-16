@@ -1,8 +1,6 @@
 PORT ?= 8983
 
-.PHONY: plugins site dev check test
-plugins:
-	python3 scripts/sync_plugins.py
+.PHONY: site dev check test
 site:
 	cp -R pets site/
 dev: site

@@ -1,5 +1,7 @@
 ---
 name: pii-precommit-check
+metadata:
+  version: "0.1.0"
 description: Runs the PII pre-commit scan on staged changes or diffs for hardcoded credentials, emails, home paths, and auth files. Use before commits, when about to push, or checking leaked creds.
 ---
 

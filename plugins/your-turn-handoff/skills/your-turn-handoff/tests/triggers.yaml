@@ -1,9 +1,0 @@
-skill: your-turn-handoff
-should_trigger:
-  - "Use the Your Turn handoff at the end of my coding-agent answers."
-  - "Keep results and required next steps clear across this chat."
-should_not_trigger:
-  - "Install an auction addon."
-threshold:
-  min_tpr: 0.9
-  max_fpr: 0.1

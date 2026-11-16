@@ -1,5 +1,7 @@
 ---
 name: codex-image
+metadata:
+  version: "0.1.0"
 description: Create project images from Cursor or Claude by delegating to a local Codex CLI that can generate images. Use when those agents need a bitmap asset and the Codex runtime is available; avoid for prompt-only work or when a native image tool already fits.
 ---
 

@@ -2,6 +2,7 @@
 name: stop-slop
 description: Edits, leaves unchanged, or audits prose to remove AI tells while preserving supplied voice evidence and meaning. Use to humanize, rewrite, polish, tighten, remove corporate tone, decorative em dashes, or formulaic lists, detect formulaic AI-writing patterns, or assess whether prose reads like AI without asserting authorship. Avoid for code cleanup, selecting detection software, confidence scores, or identifying an author.
 metadata:
+  version: "0.1.0"
   trigger: Writing prose, editing drafts, or auditing content for AI patterns
 ---
 

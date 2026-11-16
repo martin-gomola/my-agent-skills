@@ -1,5 +1,7 @@
 ---
 name: what-to-ask
+metadata:
+  version: "0.1.0"
 description: Builds a concise, ready-to-paste prompt from a rough task, bug report, or screenshot. Use when someone asks what to ask an AI or wants help wording a request. Avoid for direct implementation, general questions, or debugging an existing prompt.
 ---
 

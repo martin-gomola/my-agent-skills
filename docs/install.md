@@ -1,166 +1,59 @@
 # Manage your installation
 
-Need to install first? [Choose your agent in the README](../README.md#get-started).
+Install directly from [the skill installer](https://martin-gomola.github.io/my-agent-skills/).
+Choose skills, agents, and project or global scope, then run its command.
+Installation uses the [Skills CLI](https://github.com/vercel-labs/skills) and
+requires Node.js 22.20+ and Git.
 
-Updates are explicit. After updating, start a new chat or session to use the new
-instructions. If you edited an installed copy, save those changes before replacing it.
+## List, update or remove
 
-## Skills installed from the website
-
-The website installs selected skills directly with the
-[Skills CLI](https://github.com/vercel-labs/skills). Run project commands from the
-same project folder where you installed them. Node.js 22.20+ and Git are required.
+Run project commands from the same project folder where you installed the skills:
 
 ```bash
 npx skills list
 npx skills check
-npx skills update what-to-ask
+npx skills update --project
 npx skills remove what-to-ask
 ```
 
-Replace `what-to-ask` with the skill you want to manage. For skills installed for
-all your projects, use `npx skills list --global` and
-`npx skills remove what-to-ask --global`. Use `npx skills update --global` to update
-global skills, or `npx skills update --project` for the current project.
-Updates are explicit; review them before starting a new agent chat.
+For skills installed across your projects:
+
+```bash
+npx skills list --global
+npx skills update --global
+npx skills remove what-to-ask --global
+```
+
+Replace `what-to-ask` with the skill you want to remove. Updates are explicit;
+review them and save any changes to an installed copy before updating. Start a
+new agent chat after installation or updates.
 
 The Skills CLI collects telemetry; see its
 [configuration documentation](https://github.com/vercel-labs/skills/blob/main/docs/troubleshooting.md#telemetry)
 for what is sent and how to disable it.
 
-## Existing native plugin installations
-
-If you installed a plugin before using the skill selector, keep using the native
-instructions below, or remove that plugin before installing the same skills
-directly. This avoids duplicate skills.
-
-### Codex
-
-Update:
-
-```bash
-codex plugin marketplace upgrade my-agent-skills
-codex plugin add my-agent-skills@my-agent-skills
-```
-
-Remove:
-
-```bash
-codex plugin remove my-agent-skills@my-agent-skills
-```
-
-To remove the marketplace entry too, run
-`codex plugin marketplace remove my-agent-skills`.
-
-### Claude Code
-
-Update from Claude Code:
-
-```text
-/plugin marketplace update my-agent-skills
-/plugin update my-agent-skills@my-agent-skills
-```
-
-Remove:
-
-```text
-/plugin uninstall my-agent-skills@my-agent-skills
-```
-
-### Cursor
-
-Refresh the imported marketplace in **Customize > Plugins** and use its update
-control when offered. Otherwise remove the plugin and
-[repeat installation](../README.md#get-started).
-
-To uninstall, remove **my-agent-skills** in Customize.
-
-### Antigravity CLI
-
-Update by removing and reinstalling the plugin:
-
-```bash
-agy plugin uninstall my-agent-skills
-git -C my-agent-skills pull --ff-only
-agy plugin install ./my-agent-skills/plugins/what-to-ask
-```
-
-To remove it without reinstalling:
-
-```bash
-agy plugin uninstall my-agent-skills
-```
-
-### Gemini CLI
-
-Update by repeating installation with the same scope:
-
-```bash
-gemini skills install https://github.com/martin-gomola/my-agent-skills.git --path skills/what-to-ask --scope user
-```
-
-Remove:
-
-```bash
-gemini skills uninstall what-to-ask --scope user
-```
-
-If you chose a workspace installation, use `--scope workspace` for both commands.
-
 ## Troubleshooting
 
 ### The repository cannot be found
 
-This repository is public. Check the repository name and client-specific install
-steps; a GitHub login should not be required.
+Check the repository name: `martin-gomola/my-agent-skills`. It is public, so a
+GitHub login should not be required.
 
 ### The skill does not appear
 
-Start a new session and check the installation in your client:
-
-For website installations, first run `npx skills list` (add `--global` for an
-installation across projects). Direct skills do not appear in plugin lists.
-The table below checks existing native installations.
-
-| Client | Check |
-| --- | --- |
-| Codex | `codex plugin list --marketplace my-agent-skills` |
-| Claude Code | Open the `/plugin` menu |
-| Cursor | Open Customize > Plugins |
-| Antigravity CLI | `agy plugin list` |
-| Gemini CLI | `gemini skills list --all` |
-
-For workspace skills, the client may ask you to trust the project or approve
-activation. Review that request in the client.
+Run `npx skills list` from the project folder, or `npx skills list --global` for
+a global installation. Confirm the command targeted your coding agent, then
+start a new session. Your client may ask you to trust the project or approve
+activation; review that request in the client.
 
 ### The skill appears twice
 
-Keep one installation per client. If another setup already manages this skill,
-use that setup to update it.
+Keep one installation per agent. Check both project and global installations.
+If another setup already manages the skill, use that setup to update it.
+Remove only the duplicate skill you own, never an entire shared skill directory.
 
-Cursor also reads Claude and Codex skill directories, so a direct copy can appear
-alongside a plugin installation. Remove only the duplicate copy you own.
-Never delete an entire shared skill registry.
+## Verification limits
 
-### I use the Antigravity App rather than its CLI
-
-For a direct folder installation, copy the complete `skills/what-to-ask/` folder
-from this repository to `~/.gemini/config/skills/what-to-ask/`. This includes its
-license and resources. Start a new session.
-
-Update by replacing only that skill folder after reviewing local changes.
-Uninstall by removing that folder. Use this route instead of a second plugin
-installation for the same skill.
-
-## Sources and verification
-
-Website installation uses the [Skills CLI](https://github.com/vercel-labs/skills).
-Existing native installations follow these client mechanisms:
-[Codex](https://developers.openai.com/plugins/build/plugins),
-[Claude Code](https://code.claude.com/docs/en/discover-plugins),
-[Cursor](https://cursor.com/docs/skills),
-[Antigravity](https://antigravity.google/docs/skills) and
-[Gemini CLI](https://geminicli.com/docs/cli/skills/).
-
-[Verification coverage](development.md#verification-coverage) lists what was
-checked locally and what still needs testing in the clients.
+Local checks validate skill sources, the catalog and generated command text.
+They do not prove installation or activation in every supported client. See
+[Development and validation](development.md#validate) for the checks available here.

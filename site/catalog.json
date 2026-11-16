@@ -4,10 +4,8 @@
     {
       "id": "what-to-ask",
       "label": "what-to-ask",
-      "plugin": "my-agent-skills",
       "version": "0.1.0",
       "sourcePath": "skills/what-to-ask",
-      "pluginPath": "plugins/what-to-ask",
       "description": "Turn rough notes into prompts for another agent.",
       "usage": "$what-to-ask Write a prompt for adding CSV export to the filtered table.",
       "example": "Use what-to-ask to write a prompt for adding CSV export to the filtered table in Atlas."
@@ -15,10 +13,8 @@
     {
       "id": "your-turn-handoff",
       "label": "your-turn-handoff",
-      "plugin": "your-turn-handoff",
       "version": "0.7.0",
       "sourcePath": "skills/your-turn-handoff",
-      "pluginPath": "plugins/your-turn-handoff",
       "description": "Add a clear result and next step to agent replies.",
       "usage": "$your-turn-handoff Use the handoff format for replies in this chat.",
       "example": "Use your-turn-handoff for the final answers in this chat."
@@ -26,10 +22,8 @@
     {
       "id": "clean-cursor",
       "label": "clean-cursor",
-      "plugin": "clean-cursor",
       "version": "0.1.0",
       "sourcePath": "skills/clean-cursor",
-      "pluginPath": "plugins/clean-cursor",
       "description": "Inspect Cursor storage and plan safe cleanup.",
       "usage": "$clean-cursor Inspect Cursor storage without deleting anything.",
       "example": "Use clean-cursor to inspect Cursor storage without deleting anything."
@@ -37,10 +31,8 @@
     {
       "id": "pii-precommit-check",
       "label": "pii-precommit-check",
-      "plugin": "pii-precommit-check",
       "version": "0.1.0",
       "sourcePath": "skills/pii-precommit-check",
-      "pluginPath": "plugins/pii-precommit-check",
       "description": "Scan staged Git changes for private data.",
       "usage": "$pii-precommit-check Scan my staged changes without committing.",
       "example": "Use pii-precommit-check to scan my staged changes without committing."
@@ -48,10 +40,8 @@
     {
       "id": "ask",
       "label": "ask",
-      "plugin": "ask",
       "version": "0.1.0",
       "sourcePath": "skills/ask",
-      "pluginPath": "plugins/ask",
       "description": "Get an external model opinion through local CLIs.",
       "usage": "$ask claude Review my uncommitted changes without editing files.",
       "example": "Use ask to get a read-only Claude review of my uncommitted changes."
@@ -59,10 +49,8 @@
     {
       "id": "codex-image",
       "label": "codex-image",
-      "plugin": "codex-image",
       "version": "0.1.0",
       "sourcePath": "skills/codex-image",
-      "pluginPath": "plugins/codex-image",
       "description": "Delegate image generation to a local Codex CLI.",
       "usage": "$codex-image Generate a 1200 × 630 project illustration using Codex.",
       "example": "Use codex-image to generate a project illustration using Codex."
@@ -70,10 +58,8 @@
     {
       "id": "stop-slop",
       "label": "stop-slop",
-      "plugin": "stop-slop",
       "version": "0.1.0",
       "sourcePath": "skills/stop-slop",
-      "pluginPath": "plugins/stop-slop",
       "description": "Edit or audit prose while preserving voice.",
       "usage": "$stop-slop Tighten the draft below while preserving my voice.",
       "example": "Use stop-slop to tighten this draft while preserving my voice."

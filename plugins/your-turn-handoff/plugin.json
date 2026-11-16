@@ -1,7 +1,0 @@
-{
-  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
-  "name": "your-turn-handoff",
-  "version": "0.7.0",
-  "description": "End agent answers with a clear result and next step.",
-  "license": "MIT"
-}

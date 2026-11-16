@@ -20,40 +20,53 @@ class DistributionTests(unittest.TestCase):
         self.root = Path(self.workspace.name) / "repository"
         shutil.copytree(ROOT, self.root, ignore=shutil.ignore_patterns(".git", "tmp", "dist", "__pycache__", ".venv"))
 
-    def test_native_packages_keep_handoff_separate(self):
+    def test_skills_are_distributed_directly(self):
         validator.validate(self.root)
         self.assertEqual({p.name for p in (self.root / 'skills').iterdir()}, {'what-to-ask', 'your-turn-handoff', 'clean-cursor', 'pii-precommit-check', 'ask', 'codex-image', 'stop-slop'})
-        for name in (p.name for p in (self.root / 'skills').iterdir() if p.is_dir()):
-            self.assertEqual([p.parent.name for p in (self.root / 'plugins' / name / 'skills').glob('*/SKILL.md')], [name])
+        self.assertFalse(any((self.root / 'plugins').rglob('*SKILL.md')))
+        catalog = json.loads((self.root / 'site/catalog.json').read_text())
+        for skill in catalog['skills']:
+            self.assertNotIn('plugin', skill)
+            self.assertNotIn('pluginPath', skill)
 
-    def test_changed_snapshot_is_rejected_and_regenerated(self):
-        snapshot = self.root / 'plugins/what-to-ask/skills/what-to-ask/SKILL.md'
-        snapshot.write_text('stale')
-        with self.assertRaisesRegex(ValueError, 'stale plugin snapshot'):
-            validator.validate(self.root)
-        validator.sync(self.root)
-        validator.validate(self.root)
-
-    def test_handoff_cannot_leak_into_other_plugin(self):
-        extra = self.root / 'plugins/what-to-ask/skills/your-turn-handoff'
-        shutil.copytree(self.root / 'skills/your-turn-handoff', extra)
-        with self.assertRaisesRegex(ValueError, 'only its own skill'):
-            validator.validate(self.root)
-
-    def test_version_drift_is_rejected(self):
-        manifest = self.root / "plugins/what-to-ask/.claude-plugin/plugin.json"
-        data = json.loads(manifest.read_text())
-        data["version"] = "99.0.0"
-        manifest.write_text(json.dumps(data))
-        with self.assertRaisesRegex(ValueError, "versions differ"):
-            validator.validate(self.root)
-
-    def test_installer_cannot_silently_select_the_other_plugin(self):
+    def test_installer_cannot_silently_select_another_skill(self):
         path = self.root / 'site/catalog.json'
         catalog = json.loads(path.read_text())
-        catalog['skills'][0]['plugin'] = 'your-turn-handoff'
+        for source in ('skills/your-turn-handoff', '../outside', 'skills/../README.md'):
+            with self.subTest(source=source):
+                catalog['skills'][0]['sourcePath'] = source
+                path.write_text(json.dumps(catalog))
+                with self.assertRaisesRegex(ValueError, 'invalid skill'):
+                    validator.validate(self.root)
+
+    def test_catalog_rejects_missing_duplicate_or_unknown_skills(self):
+        path = self.root / 'site/catalog.json'
+        original = path.read_text()
+        for mutation in ('missing', 'duplicate', 'unknown'):
+            with self.subTest(mutation=mutation):
+                catalog = json.loads(original)
+                if mutation == 'missing':
+                    catalog['skills'].pop()
+                elif mutation == 'duplicate':
+                    catalog['skills'].append(catalog['skills'][0])
+                else:
+                    catalog['skills'][0]['id'] = 'unknown'
+                path.write_text(json.dumps(catalog))
+                with self.assertRaisesRegex(ValueError, 'every skill exactly once'):
+                    validator.validate(self.root)
+
+    def test_catalog_version_matches_skill_metadata(self):
+        path = self.root / 'site/catalog.json'
+        catalog = json.loads(path.read_text())
+        catalog['skills'][0]['version'] = '99.0.0'
         path.write_text(json.dumps(catalog))
-        with self.assertRaisesRegex(ValueError, 'skill and plugin do not match'):
+        with self.assertRaisesRegex(ValueError, 'versions differ'):
+            validator.validate(self.root)
+
+    def test_missing_skill_version_is_rejected(self):
+        path = self.root / 'skills/what-to-ask/SKILL.md'
+        path.write_text(path.read_text().replace('  version: "0.1.0"', ''))
+        with self.assertRaisesRegex(ValueError, 'invalid skill version'):
             validator.validate(self.root)
 
     def test_changed_provenance_requires_checksum_update(self):
