@@ -48,8 +48,12 @@ if (typeof document !== 'undefined') {
     byId('your-turn-link').hidden = !ids.includes('your-turn-handoff');
     byId('status').textContent = '';
     byId('commands').textContent = ready ? installation(skills, agents, catalog.repository, scope) : '';
+    byId('summary').hidden = !ready;
+    byId('summary').textContent = ready
+      ? `${skills.length} ${skills.length === 1 ? 'skill' : 'skills'} · ${agents.length} ${agents.length === 1 ? 'agent' : 'agents'} · ${scope === 'project' ? 'one project' : 'all projects'}`
+      : '';
     byId('where').textContent = ready
-      ? `Run in ${scope === 'project' ? 'your project folder' : 'your terminal'} to install ${skills.length} ${skills.length === 1 ? 'skill' : 'skills'} for ${agents.length} ${agents.length === 1 ? 'agent' : 'agents'}.`
+      ? `Run in ${scope === 'project' ? 'your project folder' : 'your terminal'}.`
       : !skills.length ? 'Choose one or more skills to get started.' : 'Choose the agents you use to get your install command.';
     byId('examples').replaceChildren();
     for (const skill of skills) {
@@ -88,9 +92,7 @@ if (typeof document !== 'undefined') {
       input.type = 'checkbox'; input.name = 'skill'; input.value = skill.id;
       const text = document.createElement('span');
       const name = document.createElement('strong'); name.textContent = skill.label;
-      const version = document.createElement('span');
-      version.className = 'skill-version'; version.textContent = `v${skill.version}`;
-      name.append(' ', version);
+      label.title = `${skill.label} v${skill.version}`;
       const description = document.createElement('small'); description.textContent = skill.description;
       text.append(name, description); label.append(input, text); byId('skills').append(label);
     }
@@ -99,6 +101,6 @@ if (typeof document !== 'undefined') {
     catalog = undefined; byId('skills').textContent = 'Skill list unavailable.';
     byId('install-panel').dataset.state = 'error';
     byId('where').textContent = 'Could not load the skill list. Reload this page to try again.';
-    byId('copy').disabled = true; byId('install-content').hidden = true;
+    byId('copy').disabled = true; byId('install-content').hidden = true; byId('summary').hidden = true;
   });
 }
