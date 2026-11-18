@@ -7,7 +7,7 @@ cases:
   - name: claude_named_provider
     prompt: |
       Describe the exact ask workflow for getting Claude's second opinion on
-      splitting the mythosaur-tools MCP server and saving the result.
+      splitting our MCP server and saving the result.
     rubric:
       expectations:
         - "Uses `claude -p` with plan permission mode and JSON output rather than OMX, MCP, or web substitution."
@@ -16,7 +16,7 @@ cases:
   - name: gemini_uses_antigravity
     prompt: |
       Describe the exact ask workflow for getting Gemini's alternate
-      positioning ideas for mythosaur-tools and preserving the output.
+      positioning ideas for our MCP server and preserving the output.
     rubric:
       expectations:
         - "Uses `agy -p` with plan, sandbox, and an explicit print timeout rather than the deprecated `gemini` binary or OMX."

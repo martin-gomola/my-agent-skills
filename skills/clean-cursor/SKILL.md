@@ -7,7 +7,7 @@ description: Safely inspects and cleans Cursor IDE storage, including caches, ag
 
 # Clean Cursor storage
 
-Ported from the author's mythosaur-tools shared skill. Requires local filesystem and SQLite access; OS application control is needed only for approved cleanup. No MCP is required.
+Requires local filesystem and SQLite access; OS application control is needed only for approved cleanup. No MCP is required.
 
 Run this workflow when the user asks how to free Cursor disk space, inspect Cursor storage, or clean Cursor files. The user may invoke it as `$clean-cursor`.
 

@@ -79,7 +79,7 @@ sources:
     locator: tests/baseline.md
     checked_at: '2026-09-15'
     version: user-reported settings navigation failure and rendered repair evidence
-    sha256: 82f36df1b0a2f21dadc0f8be7cfb53dbf9d382fddb0a7f3f444ea51005440414
+    sha256: 49a61c875c69323ab8691b7bc29379cbbd5ea6eafbcf220c375402567fb737e9
     trust: User-directed product evidence used to retain a bounded pictogram scanability heuristic; Beskar colors, icon artwork, dimensions, and composition are not portable guidance.
   - id: app-workbench-field-case
     title: Task-first creation workspace field case
