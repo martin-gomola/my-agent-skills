@@ -23,10 +23,6 @@ agents, and project or global scope. The page has no backend, analytics, cookies
 or automatic installation. Generated commands set `DISABLE_TELEMETRY=1` for the
 Skills CLI process; no global shell setting is changed.
 
-The five helpers imported from mythosaur-tools remain independent skills. See
-[migration and NotebookLM review notes](skill-migration-review.md) for provenance,
-dependencies and verification limits.
-
 GitHub Pages uses GitHub Actions as its source. The workflow deploys changes to
 `site/`, `pets/`, `Makefile`, or the workflow itself after pushes to `main`, and
 supports manual runs. `make site` copies canonical pet assets from `pets/` into
