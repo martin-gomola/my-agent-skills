@@ -7,9 +7,9 @@
 <title>Choose your skills · Your Turn Loop</title>
 <script>try{document.documentElement.dataset.theme=localStorage.getItem('theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch{document.documentElement.dataset.theme='light'}</script>
 <link rel="icon" href="icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="style.css?v=one-product-2">
+<link rel="stylesheet" href="style.css?v=one-product-3">
 <script type="module" src="theme.mjs?v=1"></script>
-<script type="module" src="install.mjs?v=skill-picker-5"></script>
+<script type="module" src="install.mjs?v=skill-picker-6"></script>
 <body>
 <!-- GitHub mark from Primer Octicons; license in third-party/primer-octicons-MIT.txt. -->
 <header>
@@ -23,7 +23,7 @@
 <main>
   <h1>Choose your skills</h1>
   <section id="flow" class="flow hud-panel" aria-labelledby="flow-title" hidden>
-    <img class="flow-art" src="flow/agent-loop.webp" alt="" width="1600" height="600">
+    <img class="flow-art" src="flow/agent-loop.webp?v=3" alt="The loop: you hand a brief to your agent, it delegates the work to another agent in its own workspace, the result lands as a card in the Your Turn inbox, and you start the next brief from the card that needs you." width="1600" height="600">
     <div class="flow-heading">
       <div>
         <p class="flow-kicker">Bundle</p>
@@ -33,7 +33,7 @@
       <button id="flow-select" class="button-secondary" type="button" aria-pressed="false">Select bundle</button>
     </div>
     <ol id="flow-steps" class="flow-steps"></ol>
-    <p class="flow-loop"><span aria-hidden="true">↺</span> Paste the result back into what-to-ask for the next brief.</p>
+    <p class="flow-loop"><span aria-hidden="true">↺</span> Results that need you show up in the <a href="https://martin-gomola.github.io/your-turn/">Your Turn inbox</a>. You carry one back: paste its Outcome and Next step into what-to-ask for the next brief. No skill moves it for you.</p>
     <a class="flow-spec" href="spec.html">Read the handoff protocol spec <span aria-hidden="true">→</span></a>
   </section>
   <div class="workspace">

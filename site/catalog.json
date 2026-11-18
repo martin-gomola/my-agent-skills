@@ -26,8 +26,39 @@
         "skills": [
           "your-turn-handoff"
         ]
+      },
+      {
+        "title": "Your turn",
+        "text": "See which results need you in the Your Turn inbox, then carry one back as the next brief.",
+        "skills": []
       }
-    ]
+    ],
+    "example": {
+      "prompt": "Add an empty state to the task list: when there are no tasks, show an illustration and an 'Add your first task' button. Use what-to-ask to brief Codex, codex-image to have Codex draw the illustration, review it, then relay the feature to Codex in a worktree and review its diff. Use ask for a Gemini second opinion if the diff is risky. End with the your-turn-handoff block.",
+      "steps": [
+        {
+          "skill": "what-to-ask",
+          "text": "Claude writes the brief for Codex."
+        },
+        {
+          "skill": "codex-image",
+          "text": "Codex draws the illustration; Claude checks its size, style and file."
+        },
+        {
+          "skill": "relay",
+          "text": "Codex builds the empty state in a git worktree; Claude reviews the diff and sends fixes or accepts it."
+        },
+        {
+          "skill": "ask",
+          "text": "Optional: another model gives a read-only second opinion."
+        },
+        {
+          "skill": "your-turn-handoff",
+          "text": "You get one Outcome and one Next step, such as approve: merge."
+        }
+      ],
+      "value": "The agents hand the task to each other, every step is reviewed, and you decide once, at the end."
+    }
   },
   "skills": [
     {
