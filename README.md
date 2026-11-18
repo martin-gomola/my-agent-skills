@@ -24,6 +24,8 @@ same two lines in every agent:
 
 That [your-turn-handoff](docs/handoff.md) format is the protocol. Paste it into
 any agent and the next brief starts from a settled result, not a retold chat.
+The [protocol spec](https://martin-gomola.github.io/your-turn-loop/spec.html)
+defines each field for agents and for tools that read the block.
 
 ## Cross-agent loop
 

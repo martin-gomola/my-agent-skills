@@ -10,6 +10,8 @@ Add a consistent result and next step to agent replies.
 
 The skill ends final answers with **Outcome** and **Next step**, adding **Recap**
 in longer chats and **Decision** for settled trade-offs. It works without the inbox.
+The [handoff protocol spec](https://martin-gomola.github.io/your-turn-loop/spec.html)
+defines the format for agents and for tools that read it.
 
 ## Install
 
