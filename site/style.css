@@ -95,6 +95,9 @@ fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
 :root[data-theme="dark"] .agent-logo { filter: invert(1); }
 .related { display: block; margin: 22px 0 0; padding-top: 14px; border-top: 1px solid var(--line); font-size: 14px; line-height: 1.5; }
 .example-block { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--line); }
+.example-steps { margin: 16px 0 14px; padding-left: 22px; font-size: 15px; line-height: 1.5; }
+.example-steps li + li { margin-top: 6px; }
+.example-steps code { font-weight: 600; overflow-wrap: anywhere; }
 .example-block summary { cursor: pointer; color: var(--ink); font: 700 13px/1.4 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
 
 /* The action is a solid block with the HUD chamfer (no border, so nothing for the clip to cut). */
@@ -153,6 +156,9 @@ pre { max-width: 100%; margin: 12px 0 0; padding: 14px; overflow-wrap: anywhere;
 .spec-list { margin: 0; padding-left: 20px; }
 .spec-list li + li { margin-top: 8px; }
 .spec-footer { justify-content: space-between; }
+.spec-adopt .result-heading { margin-bottom: 10px; }
+.spec-adopt .result-heading .field-label { float: none; width: auto; margin: 0; }
+#copy-status:empty { margin: 0; }
 
 /* DeeTee */
 .pet-section { display: flex; align-items: center; gap: 32px; margin-top: 24px; }
@@ -166,8 +172,7 @@ pre { max-width: 100%; margin: 12px 0 0; padding: 14px; overflow-wrap: anywhere;
 
 @media (min-width: 721px) {
   .skill-options { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .flow-steps { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .flow-steps li + li::before { content: "→"; position: absolute; top: 50%; left: -12px; transform: translate(-50%, -50%); color: var(--accent); font-weight: 700; }
+  .flow-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .spec-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 720px) {
@@ -182,6 +187,8 @@ pre { max-width: 100%; margin: 12px 0 0; padding: 14px; overflow-wrap: anywhere;
   .workspace { grid-template-columns: minmax(0, 1.3fr) minmax(340px, 1fr); }
   .result { position: sticky; top: 16px; }
   .agent-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .flow-steps { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .flow-steps li + li::before { content: "→"; position: absolute; top: 50%; left: -12px; transform: translate(-50%, -50%); color: var(--accent); font-weight: 700; }
 }
 @media (prefers-reduced-motion: reduce) {
   .pet-preview { display: none; }

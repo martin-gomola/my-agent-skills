@@ -14,6 +14,13 @@ export function usageExample(skill, agent) {
   return agent === 'codex' ? skill.usage : skill.example;
 }
 
+// The end-to-end tutorial casts Claude as orchestrator, so it needs the whole bundle and Claude.
+export function bundleExample(bundle, ids, agents) {
+  const bundleIds = bundle?.steps.flatMap(step => step.skills) ?? [];
+  const complete = bundleIds.length > 0 && bundleIds.every(id => ids.includes(id));
+  return complete && agents.includes('claude') ? bundle.example ?? null : null;
+}
+
 if (typeof document !== 'undefined') {
   const byId = id => document.getElementById(id);
   let catalog;
@@ -46,7 +53,17 @@ if (typeof document !== 'undefined') {
       ? `Run in ${scope === 'project' ? 'your project folder' : 'your terminal'}.`
       : !skills.length ? 'Choose one or more skills to get started.' : 'Choose the agents you use to get your install command.';
     byId('examples').replaceChildren();
-    for (const skill of skills) {
+    const tutorial = bundleExample(catalog.bundle, ids, agents);
+    if (tutorial) {
+      const prompt = document.createElement('pre'); prompt.tabIndex = 0; prompt.textContent = tutorial.prompt;
+      const steps = document.createElement('ol'); steps.className = 'example-steps';
+      for (const step of tutorial.steps) {
+        const item = document.createElement('li'); const name = document.createElement('code'); name.textContent = step.skill;
+        item.append(name, ` ${step.text}`); steps.append(item);
+      }
+      const value = document.createElement('p'); value.className = 'field-help'; value.textContent = tutorial.value;
+      byId('examples').append(prompt, steps, value);
+    } else for (const skill of skills) {
       const example = document.createElement('pre'); example.tabIndex = 0;
       example.textContent = usageExample(skill, agents.length === 1 ? agents[0] : '');
       byId('examples').append(example);

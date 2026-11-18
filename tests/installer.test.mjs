@@ -1,7 +1,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {installation, usageExample} from '../site/install.mjs';
+import {bundleExample, installation, usageExample} from '../site/install.mjs';
 const catalog = JSON.parse(readFileSync(new URL('../site/catalog.json', import.meta.url)));
 
 test('one command contains exactly the selected skills and target agents', () => {
@@ -46,4 +46,15 @@ test('direct skill examples do not use plugin namespaces', () => {
     }
   }
   assert.match(usageExample(catalog.skills.find(skill => skill.id === 'ask'), 'codex'), /^\$ask claude /);
+});
+
+test('the full bundle with Claude shows one end-to-end tutorial', () => {
+  const ids = catalog.bundle.steps.flatMap(step => step.skills);
+  const tutorial = bundleExample(catalog.bundle, ids, ['codex', 'claude']);
+  assert.equal(tutorial, catalog.bundle.example);
+  assert.deepEqual(new Set(tutorial.steps.map(step => step.skill)), new Set(ids));
+  assert.ok(tutorial.prompt && tutorial.value);
+  assert.equal(bundleExample(catalog.bundle, ids.slice(1), ['claude']), null);
+  assert.equal(bundleExample(catalog.bundle, ids, ['codex']), null);
+  assert.equal(bundleExample(undefined, ids, ['claude']), null);
 });
