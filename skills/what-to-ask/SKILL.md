@@ -1,7 +1,7 @@
 ---
 name: what-to-ask
 metadata:
-  version: "0.2.0"
+  version: "0.3.0"
 description: Builds a concise, ready-to-paste prompt from a rough task, bug report, screenshot, or another agent's result. Use when someone asks what to ask an AI, wants help wording a request, or wants to continue work in another agent. Avoid for direct implementation, general questions, or debugging an existing prompt.
 ---
 
@@ -28,7 +28,7 @@ For general questions, skill authoring, or diagnosis of an existing failing prom
 - Keep necessary implementation and verification details within the requested scope. Include new features or product decisions only when supported by the user's request.
 - Ask one focused question only when a missing or conflicting requirement materially changes the result. Otherwise state a reasonable assumption and proceed. Identify missing data or access that the task actually needs instead of implying the prompt supplies them.
 - Start with a direct action and outcome. Use the user's language unless another language is requested or required by the recipient; preserve exact paths, commands, API names, and other identifiers.
-- Include an observable way to check the result. For machine-consumed output, preserve the required structure, keys, types, and missing-value rules; label any added policy as an assumption. Add a short example only when it clarifies the expected pattern. Order genuinely dependent steps when their sequence matters.
+- Include an observable way to check the result. When you can read the project, take the check command from it (a test file, a `package.json` script, a Makefile target, CI config) instead of guessing; if none fits, say that the recipient must find or add one. For machine-consumed output, preserve the required structure, keys, types, and missing-value rules; label any added policy as an assumption. Add a short example only when it clarifies the expected pattern. Order genuinely dependent steps when their sequence matters.
 - For implementation prompts, ask the next assistant to inspect project conventions, make the smallest complete change, run relevant checks, and report results. For bugs, include observed versus expected behavior and reproduction evidence. For UI work, include the user's task, relevant viewport/input needs, and rendered acceptance checks. When stale screenshots or a different running build could change the work, ask the next assistant to verify the current runtime before editing.
 - For destructive or externally consequential work, include the authorization boundary, explicit approval for the consequential step, an appropriate backup or rollback path, and verification. Keep credentials and private material out of the reusable prompt.
 

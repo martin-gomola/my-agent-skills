@@ -1,7 +1,7 @@
 ---
 name: relay
 metadata:
-  version: "0.3.0"
+  version: "0.4.0"
 description: Delegates a scoped implementation task to a local Codex, Claude Code or Antigravity CLI in its own git worktree, then reviews the diff and the returned Outcome and Next step. Use when the user asks to hand coding work to Codex, Claude or Antigravity from another agent. Avoid for read-only opinions, image generation, or work the current agent should do itself.
 ---
 
@@ -48,6 +48,13 @@ images.
      ```
 
    Leave out credentials, private data, and chat history the task does not need.
+
+   Then reread the brief as the worker. For each item above, find what the
+   worker would have to guess and fill it from the repository or this chat.
+   If a guess would change the result, ask the user one question before you
+   go on. If the brief still needs a step the worker must not take, such as a
+   migration, a deletion, or a production or network side effect, take that
+   step out or get the user's approval for it first.
 3. **Preflight.**
    - Run `which -a <worker>`, `<worker> --version` and the command's `--help`
      (`codex exec --help`, `claude --help` or `agy --help`). Use only flags
@@ -65,13 +72,23 @@ images.
    git worktree add -b relay/<slug> .relay/<slug> HEAD
    ```
 
+   Run the brief's check command once in the new worktree before the worker
+   starts:
+   - If it cannot run, for example because of a missing dependency, a wrong
+     path, or a missing script, fix the command in the brief or tell the user.
+     Do not send a worker a check it cannot run.
+   - If it already passes, it cannot prove the change. Add a test or an
+     expected output that fails now, or say in the brief what the check must
+     newly show.
+   - Note the result as the baseline for step 8.
+
 5. **Choose the access mode.**
    - **Restricted** (default): the worker can edit files in the worktree and
      run only what it needs.
    - **Full access**: no approvals and no worker sandbox. Use it only when the
      user asks for it for this run, or has stated it as a standing preference
      in their agent instructions. The worktree is then the only boundary, so
-     the brief's "do not edit outside this directory" rule and step 7's scope
+     the brief's "do not edit outside this directory" rule and step 8's scope
      check matter more.
 6. **Run the worker** from inside the worktree (`cd .relay/<slug>`). Runs can
    be long, so start them in the background when the host supports that.
@@ -142,7 +159,8 @@ images.
    - check scope with `git -C .relay/<slug> status --short` and
      `git -C .relay/<slug> diff`, and confirm `git status --short` in the main
      checkout shows no new changes;
-   - run the brief's check command in the worktree;
+   - run the brief's check command in the worktree and compare it with the
+     baseline from step 4;
    - review the diff against the brief, since this review is what the caller is for.
 
    If something misses the brief, send one short correction to the same
