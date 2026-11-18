@@ -7,9 +7,9 @@
 <title>Choose your skills · Your Turn Loop</title>
 <script>try{document.documentElement.dataset.theme=localStorage.getItem('theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch{document.documentElement.dataset.theme='light'}</script>
 <link rel="icon" href="icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="style.css?v=one-product-4">
+<link rel="stylesheet" href="style.css?v=telemetry-2">
 <script type="module" src="theme.mjs?v=1"></script>
-<script type="module" src="install.mjs?v=skill-picker-6"></script>
+<script type="module" src="install.mjs?v=telemetry-1"></script>
 <body>
 <!-- GitHub mark from Primer Octicons; license in third-party/primer-octicons-MIT.txt. -->
 <header>
@@ -22,6 +22,10 @@
 </header>
 <main>
   <h1>Choose your skills</h1>
+  <p class="companion">Companion skills for <a href="https://martin-gomola.github.io/your-turn/">Your Turn <span aria-hidden="true">↗</span></a>, the inbox that shows which agent chats need you. The skills also work on their own.</p>
+  <ul class="trust" aria-label="What the loop runs on">
+    <li>Local-first CLI</li><li>Zero API keys</li><li>Git worktree isolation</li><li>Human-in-the-loop</li>
+  </ul>
   <section id="flow" class="flow hud-panel" aria-labelledby="flow-title" hidden>
     <img class="flow-art flow-art-light" src="flow/agent-loop.webp?v=6" alt="Four panels: you hand your notes to Claude, the orchestrator; Claude plans and delegates; Codex builds in its own worktree while Gemini reviews it; the result lands in your Your Turn inbox, and you start the next brief from the card that needs you." width="1600" height="600">
     <img class="flow-art flow-art-dark" src="flow/agent-loop-dark.webp?v=3" alt="Four panels: you hand your notes to Claude, the orchestrator; Claude plans and delegates; Codex builds in its own worktree while Gemini reviews it; the result lands in your Your Turn inbox, and you start the next brief from the card that needs you." width="1600" height="600" loading="lazy">
@@ -31,9 +35,15 @@
         <h2 id="flow-title"></h2>
         <p id="flow-description"></p>
       </div>
-      <button id="flow-select" class="button-secondary" type="button" aria-pressed="false">Select bundle</button>
+      <div class="flow-cta">
+        <span id="flow-armed" class="armed-meter"></span>
+        <button id="flow-select" type="button" aria-pressed="false">Select bundle</button>
+      </div>
     </div>
-    <ol id="flow-steps" class="flow-steps"></ol>
+    <div class="flow-pipeline">
+      <ol id="flow-steps" class="flow-steps"></ol>
+      <div class="flow-return" aria-hidden="true"><span>↺ Next brief</span></div>
+    </div>
     <p class="flow-loop"><span aria-hidden="true">↺</span> Results that need you show up in the <a href="https://martin-gomola.github.io/your-turn/">Your Turn inbox</a>. You carry one back: paste its Outcome and Next step into what-to-ask for the next brief. No skill moves it for you.</p>
     <a class="flow-spec" href="spec.html">Read the handoff protocol spec <span aria-hidden="true">→</span></a>
   </section>
@@ -62,35 +72,40 @@
       </fieldset>
       <a id="your-turn-link" class="related" href="https://github.com/martin-gomola/your-turn#quick-start" hidden>Set up the Your Turn inbox <span aria-hidden="true">↗</span></a>
     </section>
-    <section id="install-panel" class="result hud-panel" data-state="empty" aria-labelledby="result-title">
-      <div class="result-heading">
-        <div class="result-title">
-          <span class="result-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4.5V3h6v1.5M9 10h6M9 14h6M9 18h3"/></svg>
-          </span>
-          <h2 id="result-title">Install</h2>
+    <section id="install-panel" class="result terminal hud-panel" data-state="empty" aria-labelledby="result-title">
+      <div class="term-bar">
+        <span class="term-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <h2 id="result-title">Install</h2>
+        <span id="term-path" class="term-path" aria-hidden="true">~/your-project</span>
+      </div>
+      <div class="term-body">
+        <p id="summary" class="term-badges"></p>
+        <pre id="preview" aria-hidden="true"><span class="tok-cmd">npx skills add</span> <span class="tok-ph">&lt;skills&gt;</span><span class="cursor"></span></pre>
+        <p id="where" role="status">Choose skills and agents to get your install command.</p>
+        <button id="preview-load" class="term-pill" type="button" hidden>Load the full loop</button>
+        <div id="install-content" hidden>
+          <pre id="commands" tabindex="0" aria-label="Install command"></pre>
         </div>
-        <button id="copy" type="button" disabled>Copy command</button>
+        <div class="term-actions">
+          <button id="copy" type="button" disabled>Copy command</button>
+          <p id="status" role="status" aria-live="polite"></p>
+        </div>
+        <div id="install-help" hidden>
+          <p class="field-help">Requires <a href="https://nodejs.org/en/download">Node.js 22.20+</a> and Git. Review the installer prompts, then start a new agent chat.</p>
+          <details class="example-block"><summary>Try your skills in chat</summary><div id="examples"></div></details>
+        </div>
       </div>
-      <p id="summary" class="result-summary" hidden></p>
-      <p id="where" role="status">Choose skills and agents to get your install command.</p>
-      <div id="install-content" hidden>
-        <pre id="commands" tabindex="0" aria-label="Install command"></pre>
-        <p class="field-help">Requires <a href="https://nodejs.org/en/download">Node.js 22.20+</a> and Git. Review the installer prompts, then start a new agent chat.</p>
-        <details class="example-block"><summary>Try your skills in chat</summary><div id="examples"></div></details>
-      </div>
-      <p id="status" role="status" aria-live="polite"></p>
     </section>
   </div>
   <section class="pet-section hud-panel" aria-labelledby="pet-title">
-    <img class="pet-preview" src="pets/deetee/preview.gif?v1" alt="DeeTee, a cheerful robotic data terrier" width="192" height="208" loading="lazy">
+    <div class="pet-frame"><img class="pet-preview" src="pets/deetee/preview.gif?v1" alt="DeeTee, a cheerful robotic data terrier" width="192" height="208" loading="lazy"></div>
     <div>
-      <p class="panel-title">Codex pet</p>
+      <div class="pet-head"><p class="panel-title">Codex pet</p><span class="pet-tag">Easter egg · Companion 01</span></div>
       <h2 id="pet-title">Meet DeeTee</h2>
       <p>A cheerful robotic data terrier who sniffs out metrics and celebrates clean queries.</p>
       <div class="pet-actions">
         <a class="button-install" href="codex://pets/install?name=DeeTee&amp;imageUrl=https%3A%2F%2Fmartin-gomola.github.io%2Fyour-turn-loop%2Fpets%2Fdeetee%2Fspritesheet.webp&amp;description=A%20cheerful%20robotic%20data%20terrier%20who%20sniffs%20out%20metrics%20and%20celebrates%20clean%20queries.&amp;spriteVersionNumber=2">Install in Codex</a>
-        <a href="pets/deetee/spritesheet.webp" download="deetee-spritesheet.webp">Download spritesheet</a>
+        <a href="pets/deetee/spritesheet.webp" download="deetee-spritesheet.webp">Download spritesheet <span aria-hidden="true">↓</span></a>
       </div>
       <p class="pet-help">Open this page on a computer with Codex installed. The button opens the pet install flow when available in your app.</p>
       <a href="https://learn.chatgpt.com/docs/app/commands#pets">Pet installation documentation <span aria-hidden="true">↗</span></a>
