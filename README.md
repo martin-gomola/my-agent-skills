@@ -20,7 +20,7 @@ a clear next step. Install only the behavior you need in each agent.
 | Turn notes, a screenshot, or another agent's result into a prompt | [what-to-ask](skills/what-to-ask/SKILL.md) |
 | Ask an external model for a second opinion | [ask](skills/ask/SKILL.md) |
 | Generate images through a local Codex CLI | [codex-image](skills/codex-image/SKILL.md) |
-| Hand a coding task to Codex and review its diff | [relay](skills/relay/SKILL.md) |
+| Hand a coding task to Codex or Claude and review its diff | [relay](skills/relay/SKILL.md) |
 | Get a clear result and next step after an answer | [your-turn-handoff](docs/handoff.md) |
 | Inspect or clean Cursor storage safely | [clean-cursor](skills/clean-cursor/SKILL.md) |
 | Check staged changes for private data | [pii-precommit-check](skills/pii-precommit-check/SKILL.md) |
@@ -50,7 +50,7 @@ Install only the behavior you need. The standalone
 | [what-to-ask](skills/what-to-ask/SKILL.md) | You need a clear prompt for another agent, or want to continue from another agent's result. |
 | [ask](skills/ask/SKILL.md) | Request an opinion through an installed Claude or Antigravity CLI. |
 | [codex-image](skills/codex-image/SKILL.md) | Hand off image creation to a Codex CLI with image generation available. |
-| [relay](skills/relay/SKILL.md) | Have Codex implement a scoped task in its own worktree while your agent reviews the diff. |
+| [relay](skills/relay/SKILL.md) | Have Codex or Claude implement a scoped task in its own worktree while your agent reviews the diff. |
 | [your-turn-handoff](docs/handoff.md) | You want agent answers to end with a clear result and the next step. |
 | [clean-cursor](skills/clean-cursor/SKILL.md) | Inspect Cursor storage and approve exact cleanup targets. |
 | [pii-precommit-check](skills/pii-precommit-check/SKILL.md) | Scan staged Git changes using a bundled Python scanner. |

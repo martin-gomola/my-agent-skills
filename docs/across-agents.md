@@ -8,8 +8,8 @@ back as the next step. Install each one only in the agents where you need it.
 | Brief | [what-to-ask](../skills/what-to-ask/SKILL.md) | Rough notes or another agent's result become a self-contained prompt. | The agent drafts it. |
 | Delegate a read-only opinion | [ask](../skills/ask/SKILL.md) | The prompt goes to the local `claude` or `agy` CLI. | The agent runs the CLI. |
 | Delegate an image | [codex-image](../skills/codex-image/SKILL.md) | An image brief goes to the local `codex exec`. | The agent runs the CLI. |
-| Delegate implementation to Codex | [relay](../skills/relay/SKILL.md) | The prompt goes to `codex exec` in a new git worktree; the caller reviews the diff. | The agent runs the CLI. |
-| Delegate implementation elsewhere | none | The prompt goes into another agent's chat. | You paste it. |
+| Delegate implementation | [relay](../skills/relay/SKILL.md) | The prompt goes to `codex exec` or `claude -p` in a new git worktree; the caller reviews the diff. | The agent runs the CLI. |
+| Delegate implementation to Cursor | none | The prompt goes into a Cursor chat. | You paste it. |
 | Result | [your-turn-handoff](handoff.md) | The recipient ends with `Outcome` and `Next step`. | The recipient writes it. |
 | Next step | what-to-ask | The pasted result becomes the next prompt. | You paste it back. |
 
@@ -27,7 +27,7 @@ back as the next step. Install each one only in the agents where you need it.
 
 ## What still needs you
 
-- Only `relay` sends a write task, and only to Codex, in a separate worktree
+- Only `relay` sends a write task, to Codex or Claude, in a separate worktree
   that you merge yourself. No skill types into another chat. `ask` runs its
   advisor read-only, and `codex-image` only produces images.
 - Each `ask` call starts a new CLI process. For Claude, a follow-up can continue
