@@ -74,51 +74,6 @@
       "description": "Add a clear result and next step to agent replies.",
       "usage": "$your-turn-handoff Use the handoff format for replies in this chat.",
       "example": "Use your-turn-handoff for the final answers in this chat."
-    },
-    {
-      "id": "clean-cursor",
-      "label": "clean-cursor",
-      "version": "0.1.0",
-      "sourcePath": "skills/clean-cursor",
-      "description": "Inspect Cursor storage and plan safe cleanup.",
-      "usage": "$clean-cursor Inspect Cursor storage without deleting anything.",
-      "example": "Use clean-cursor to inspect Cursor storage without deleting anything."
-    },
-    {
-      "id": "pii-precommit-check",
-      "label": "pii-precommit-check",
-      "version": "0.1.0",
-      "sourcePath": "skills/pii-precommit-check",
-      "description": "Scan staged Git changes for private data.",
-      "usage": "$pii-precommit-check Scan my staged changes without committing.",
-      "example": "Use pii-precommit-check to scan my staged changes without committing."
-    },
-    {
-      "id": "stop-slop",
-      "label": "stop-slop",
-      "version": "0.1.0",
-      "sourcePath": "skills/stop-slop",
-      "description": "Edit or audit prose while preserving voice.",
-      "usage": "$stop-slop Tighten the draft below while preserving my voice.",
-      "example": "Use stop-slop to tighten this draft while preserving my voice."
-    },
-    {
-      "id": "github-repo-site",
-      "label": "github-repo-site",
-      "version": "0.1.0",
-      "sourcePath": "skills/github-repo-site",
-      "description": "Build a GitHub Pages site for any repository.",
-      "usage": "$github-repo-site Build a GitHub Pages site that explains this repository and how to start.",
-      "example": "Use github-repo-site to build a GitHub Pages site that explains this repository and how to start."
-    },
-    {
-      "id": "ux-design",
-      "label": "ux-design",
-      "version": "0.1.0",
-      "sourcePath": "skills/ux-design",
-      "description": "Design and implement usable app screens.",
-      "usage": "$ux-design Redesign this screen around the user's task and verify it rendered.",
-      "example": "Use ux-design to redesign this screen around the user's task and verify it rendered."
     }
   ]
 }

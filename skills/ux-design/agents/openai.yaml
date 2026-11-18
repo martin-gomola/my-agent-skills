@@ -1,4 +1,0 @@
-interface:
-  display_name: "App UX Design"
-  short_description: "Useful application flows with less thinking"
-  default_prompt: "Use $ux-design to design and implement this app around the user's task, useful defaults, visual feedback, and verified working interactions."

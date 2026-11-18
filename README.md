@@ -7,7 +7,7 @@
 ![Portable skills · SKILL.md](https://img.shields.io/badge/Portable%20skills-SKILL.md-56645f)
 ![No MCP required](https://img.shields.io/badge/No%20MCP-required-2f7a6b)
 
-[Get started](#get-started) · [Cross-agent loop](#cross-agent-loop) · [Other skills](#other-skills) · [Help](#help)
+[Get started](#get-started) · [Cross-agent loop](#cross-agent-loop) · [Help](#help)
 
 </div>
 
@@ -35,7 +35,7 @@ any agent and the next brief starts from a settled result, not a retold chat.
 | Result | [your-turn-handoff](docs/handoff.md) | End every answer with a clear Outcome and Next step, plus Recap and Decision in longer chats. |
 
 [Work across agents](docs/across-agents.md) walks through the loop and lists the
-handoffs that still need you to paste text. The installer can select all five at once.
+handoffs that still need you to paste text.
 
 ## Get started
 
@@ -49,18 +49,6 @@ Generated commands disable Skills CLI telemetry for that run.
 Install only the behavior you need. The standalone
 [your-turn-handoff](docs/handoff.md) skill works with or without the separate
 [Your Turn inbox](https://github.com/martin-gomola/your-turn).
-
-## Other skills
-
-Standalone skills I use alongside the loop. None of them depends on it.
-
-| Skill | Use it when |
-| --- | --- |
-| [clean-cursor](skills/clean-cursor/SKILL.md) | Inspect Cursor storage and approve exact cleanup targets. |
-| [pii-precommit-check](skills/pii-precommit-check/SKILL.md) | Scan staged Git changes using a bundled Python scanner. |
-| [stop-slop](skills/stop-slop/SKILL.md) | Tighten a draft or audit prose without inventing authorship claims. |
-| [github-repo-site](skills/github-repo-site/SKILL.md) | Build a GitHub Pages project page from repository facts, or a skill installer like this one. |
-| [ux-design](skills/ux-design/SKILL.md) | Redesign and implement an app screen, form, or dashboard, then verify it rendered. |
 
 ## Help
 
