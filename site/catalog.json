@@ -1,5 +1,34 @@
 {
   "repository": "martin-gomola/my-agent-skills",
+  "bundle": {
+    "label": "Cross-agent loop",
+    "description": "Write a brief, delegate it to another agent, and get back a result with the next step.",
+    "steps": [
+      {
+        "title": "Brief",
+        "text": "Turn notes or a result into a prompt.",
+        "skills": [
+          "what-to-ask"
+        ]
+      },
+      {
+        "title": "Delegate",
+        "text": "Send it to another model, worktree or image runner.",
+        "skills": [
+          "ask",
+          "relay",
+          "codex-image"
+        ]
+      },
+      {
+        "title": "Result",
+        "text": "Get an outcome and the next step back.",
+        "skills": [
+          "your-turn-handoff"
+        ]
+      }
+    ]
+  },
   "skills": [
     {
       "id": "what-to-ask",

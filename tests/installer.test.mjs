@@ -18,6 +18,12 @@ test('one command contains exactly the selected skills and target agents', () =>
   }
 });
 
+test('bundle lists catalog skills once each', () => {
+  const ids = catalog.bundle.steps.flatMap(step => step.skills);
+  assert.equal(new Set(ids).size, ids.length);
+  for (const id of ids) assert.ok(catalog.skills.some(skill => skill.id === id), id);
+});
+
 test('empty selections and unsafe command arguments are rejected', () => {
   const skills = [catalog.skills[0]];
   assert.throws(() => installation(skills, ['codex'], 'bad;command/repo'));

@@ -47,6 +47,12 @@ if (typeof document !== 'undefined') {
     byId('install-content').hidden = !ready;
     byId('your-turn-link').hidden = !ids.includes('your-turn-handoff');
     byId('status').textContent = '';
+    if (catalog.bundle) {
+      const bundle = catalog.bundle.steps.flatMap(step => step.skills);
+      const selected = bundle.length === ids.length && bundle.every(id => ids.includes(id));
+      byId('flow-select').setAttribute('aria-pressed', selected);
+      byId('flow-select').textContent = selected ? 'Bundle selected' : `Select ${bundle.length} skills`;
+    }
     byId('commands').textContent = ready ? installation(skills, agents, catalog.repository, scope) : '';
     byId('summary').hidden = !ready;
     byId('summary').textContent = ready
@@ -95,6 +101,26 @@ if (typeof document !== 'undefined') {
       label.title = `${skill.label} v${skill.version}`;
       const description = document.createElement('small'); description.textContent = skill.description;
       text.append(name, description); label.append(input, text); byId('skills').append(label);
+    }
+    if (data.bundle) {
+      byId('flow-title').textContent = data.bundle.label;
+      byId('flow-description').textContent = data.bundle.description;
+      data.bundle.steps.forEach((step, index) => {
+        const item = document.createElement('li');
+        const number = document.createElement('span'); number.className = 'field-step'; number.textContent = String(index + 1).padStart(2, '0');
+        const title = document.createElement('strong'); title.textContent = step.title;
+        const text = document.createElement('small'); text.textContent = step.text;
+        const chips = document.createElement('span'); chips.className = 'flow-chips';
+        for (const id of step.skills) { const chip = document.createElement('code'); chip.textContent = id; chips.append(chip); }
+        item.append(number, title, text, chips); byId('flow-steps').append(item);
+      });
+      byId('flow-select').addEventListener('click', () => {
+        const bundle = data.bundle.steps.flatMap(step => step.skills);
+        for (const input of document.querySelectorAll('input[name="skill"]')) input.checked = bundle.includes(input.value);
+        render();
+        byId('skills').scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'nearest'});
+      });
+      byId('flow').hidden = false;
     }
     render();
   }).catch(() => {
