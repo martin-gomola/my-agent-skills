@@ -122,9 +122,9 @@ if (typeof document !== 'undefined') {
       await navigator.clipboard.writeText(command);
       if (byId('commands').textContent !== command) return;
       clearTimeout(resetCopy);
-      byId('copy').textContent = 'Copied!';
+      byId('copy').textContent = '✓ Copied to clipboard';
       byId('copy').dataset.copied = '';
-      resetCopy = setTimeout(() => { byId('copy').textContent = 'Copy command'; byId('copy').removeAttribute('data-copied'); }, 2500);
+      resetCopy = setTimeout(() => { byId('copy').textContent = 'Copy command'; byId('copy').removeAttribute('data-copied'); }, 1800);
       byId('status').textContent = 'Command copied. Paste it in your terminal.';
     } catch {
       if (byId('commands').textContent !== command) return;
@@ -144,6 +144,8 @@ if (typeof document !== 'undefined') {
     for (const skill of data.skills) {
       const label = document.createElement('label'); const input = document.createElement('input');
       input.type = 'checkbox'; input.name = 'skill'; input.value = skill.id;
+      // First visit arms the whole loop, so Copy works in one click.
+      input.checked = data.bundle?.steps.some(step => step.skills.includes(skill.id)) ?? false;
       const text = document.createElement('span');
       const name = document.createElement('strong'); name.textContent = skill.label;
       label.title = `${skill.label} v${skill.version}`;
