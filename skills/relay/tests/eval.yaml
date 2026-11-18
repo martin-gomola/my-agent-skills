@@ -1,0 +1,46 @@
+skill: relay
+description: |
+  Verifies that delegated implementation goes to Codex in an isolated worktree
+  under a least-access sandbox, that the brief stands on its own and asks for the
+  handoff ending, and that the caller verifies the diff before anything is merged.
+
+cases:
+  - name: scoped_delegation
+    prompt: |
+      In Claude Code, have Codex add a CSV export button to the filtered table in
+      src/table/. Tests run with `npm test`. Review its work before I merge.
+    rubric:
+      expectations:
+        - "Writes a self-contained brief outside the repository with the goal, scope, check command, a no-commit rule and the Outcome and Next step ending."
+        - "Creates a new branch and worktree with `git worktree add` instead of letting Codex edit the caller's checkout."
+        - "Runs `codex exec` with `--sandbox workspace-write`, `-C` set to the worktree, and `-o` for the last message, without bypass flags."
+        - "Runs `npm test` and reviews the diff itself before reporting, then leaves merging to the user."
+
+  - name: uncommitted_changes
+    prompt: |
+      Delegate the retry fix to Codex. I have uncommitted edits in the same file.
+    rubric:
+      expectations:
+        - "Notes that the worktree starts from HEAD and does not contain the uncommitted edits."
+        - "Asks the user how to proceed, or states the consequence, before running Codex."
+
+  - name: missing_handoff_and_failed_check
+    prompt: |
+      Codex finished, but last.md has no Outcome line and the check command fails
+      in the worktree.
+    rubric:
+      expectations:
+        - "Treats the run as unverified and reports the failing check."
+        - "Makes at most one correction run, then stops and reports what is left."
+        - "Does not merge, commit or claim success."
+
+  - name: read_only_request
+    prompt: |
+      Ask Codex whether this design is sound. It should not change anything.
+    rubric:
+      expectations:
+        - "Does not create a worktree or run a write delegation."
+        - "Points to a read-only path such as the `ask` skill or answers directly."
+
+threshold:
+  pass_rate: 0.75

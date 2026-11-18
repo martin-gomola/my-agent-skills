@@ -149,5 +149,33 @@ cases:
         - Keeps the prompt focused on the requested button, filtered rows, existing columns, and verification.
         - Permits relevant CSV correctness checks such as delimiters, quotes, and newlines without treating those checks as new product features.
         - Does not introduce format selectors, configurable columns, export scheduling, or other unrequested product decisions.
+  - name: continue-from-another-agent-handoff
+    prompt: |
+      Claude Code skončil v projekte Atlas takto:
+      **Outcome:** CSV export obsahuje iba filtrované riadky; testy exportu prešli, ručne v prehliadači neoverené.
+      **Next step:** none
+      **Recap:** Cieľ: CSV export. Hotový je backend endpoint, tlačidlo v UI chýba.
+      **Decision:** Export na serveri alebo v prehliadači? -> na serveri (over v prehliadači). Veľké tabuľky sa nenačítajú celé.
+      Priprav prompt pre Codex, ktorý doplní tlačidlo a výsledok mi vráti tak, aby som ho mohol vložiť späť.
+    rubric:
+      must_mention:
+        - "Atlas"
+        - "CSV"
+      expectations:
+        - Carries forward the server-side export decision with its reason and names the missing UI button as the task.
+        - Marks the browser behavior as unverified instead of presenting the whole feature as finished.
+        - Asks Codex to end with a short report of the change, checks and their result, and the remaining user action.
+        - Does not implement the button or invent repository paths.
+  - name: read-only-opinion-can-use-ask
+    prompt: |
+      I want Claude to critique PLAN.md for missing rollback steps without editing anything. Write the prompt only.
+    rubric:
+      must_mention:
+        - "PLAN.md"
+        - "rollback"
+      expectations:
+        - Returns a copy-ready read-only review prompt in a fenced text block.
+        - Mentions that the ask skill can send this prompt through the local Claude CLI without pasting, if it is available.
+        - Does not run the Claude CLI or claim that a review was obtained.
 threshold:
   pass_rate: 0.8

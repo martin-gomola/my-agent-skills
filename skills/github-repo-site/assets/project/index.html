@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="{{ONE_LINE_SUMMARY}}">
+<title>{{PROJECT_NAME}}: {{SHORT_VALUE}}</title>
+<link rel="stylesheet" href="style.css">
+<script src="copy.js" defer></script>
+<body>
+<header>
+  <strong>{{PROJECT_NAME}}</strong>
+  <a href="https://github.com/{{OWNER_REPO}}">GitHub</a>
+</header>
+<main>
+  <section class="hero">
+    <h1>{{SHORT_VALUE}}</h1>
+    <p class="lead">{{ONE_LINE_SUMMARY}}</p>
+    <div class="actions">
+      <a class="button" href="#quick-start">Get started</a>
+      <a class="button secondary" href="https://github.com/{{OWNER_REPO}}">View on GitHub</a>
+    </div>
+  </section>
+
+  <section id="quick-start" aria-labelledby="quick-start-title">
+    <h2 id="quick-start-title">Quick start</h2>
+    <p class="muted">Requires {{REQUIREMENTS}}.</p>
+    <pre data-copy>{{INSTALL_COMMAND}}</pre>
+    <pre data-copy>{{FIRST_RUN_COMMAND}}</pre>
+  </section>
+
+  <section aria-labelledby="features-title">
+    <h2 id="features-title">What it does</h2>
+    <ul class="features">
+      <li><strong>{{FEATURE}}</strong>{{FEATURE_DETAIL}}</li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="example-title">
+    <h2 id="example-title">Example</h2>
+    <pre>{{EXAMPLE}}</pre>
+  </section>
+
+  <section aria-labelledby="links-title">
+    <h2 id="links-title">Learn more</h2>
+    <ul>
+      <li><a href="https://github.com/{{OWNER_REPO}}#readme">Documentation</a></li>
+      <li><a href="https://github.com/{{OWNER_REPO}}/issues">Report an issue</a></li>
+    </ul>
+  </section>
+</main>
+<footer>{{LICENSE}} · <a href="https://github.com/{{OWNER_REPO}}">{{OWNER_REPO}}</a></footer>
+</body></html>

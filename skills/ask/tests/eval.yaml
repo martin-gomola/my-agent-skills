@@ -10,8 +10,8 @@ cases:
       splitting the mythosaur-tools MCP server and saving the result.
     rubric:
       expectations:
-        - "Uses `claude -p` with plan permission mode and `--no-session-persistence` rather than OMX, MCP, or web substitution."
-        - "Requires the advisor to remain read-only and its result to be preserved under `.mythosaur/artifacts/ask/`."
+        - "Uses `claude -p` with plan permission mode and JSON output rather than OMX, MCP, or web substitution."
+        - "Requires the advisor to remain read-only and its result to be preserved under `.ask/`."
 
   - name: gemini_uses_antigravity
     prompt: |
@@ -93,6 +93,26 @@ cases:
       expectations:
         - "Treats the failed `git check-ignore` validation as a blocking `failed` status before invoking the provider."
         - "Stops without invoking the provider or modifying `.gitignore` when the artifact path is not ignored."
+        - "Asks the user before adding `.ask/` to `.gitignore` or `.git/info/exclude`."
+
+  - name: prepared_prompt_is_kept
+    prompt: |
+      Send this prompt, drafted with what-to-ask, to Claude: "Review PLAN.md for
+      missing rollback steps. Do not edit files. List each gap with the section it
+      affects."
+    rubric:
+      expectations:
+        - "Keeps the supplied task, scope, and constraints instead of rewriting them."
+        - "Adds only missing contract items, such as the completion-authority prefix and the evidence, inference, and uncertainty split."
+
+  - name: follow_up_resumes_the_session
+    prompt: |
+      Claude's review returned session_id 3f2a9c1e-0b7d-4e5a-9c11-2d4e6f8a0b1c.
+      Ask it the follow-up: does the same gap affect the rollback script?
+    rubric:
+      expectations:
+        - "Reruns the runner with `--resume 3f2a9c1e-0b7d-4e5a-9c11-2d4e6f8a0b1c` and a prompt holding only the follow-up."
+        - "Keeps the read-only completion-authority prefix and reports the new artifact and session_id."
 
 threshold:
   pass_rate: 0.8

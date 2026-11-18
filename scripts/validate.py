@@ -59,7 +59,7 @@ def validate(root: Path = ROOT) -> None:
         if skill.get('version') != skills[skill['id']]['metadata']['version']:
             raise ValueError('installer and skill versions differ')
     for path in root.rglob("*"):
-        if not path.is_file() or any(part in {".git", "__pycache__", "tmp", "dist", ".venv"} for part in path.relative_to(root).parts):
+        if not path.is_file() or any(part in {".git", "__pycache__", "tmp", "dist", ".venv", ".pytest_cache", ".code-review-graph"} for part in path.relative_to(root).parts):
             continue
         text = path.read_text(errors="replace")
         if re.search(r"/(?:Users|home)/[A-Za-z0-9_.-]+/|\bgh[pousr]_[A-Za-z0-9]{20,}|\bsk-[A-Za-z0-9]{20,}", text):

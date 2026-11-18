@@ -4,11 +4,38 @@
     {
       "id": "what-to-ask",
       "label": "what-to-ask",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "sourcePath": "skills/what-to-ask",
-      "description": "Turn rough notes into prompts for another agent.",
+      "description": "Turn rough notes or another agent's result into a prompt.",
       "usage": "$what-to-ask Write a prompt for adding CSV export to the filtered table.",
       "example": "Use what-to-ask to write a prompt for adding CSV export to the filtered table in Atlas."
+    },
+    {
+      "id": "ask",
+      "label": "ask",
+      "version": "0.2.0",
+      "sourcePath": "skills/ask",
+      "description": "Get an external model opinion through local CLIs.",
+      "usage": "$ask claude Review my uncommitted changes without editing files.",
+      "example": "Use ask to get a read-only Claude review of my uncommitted changes."
+    },
+    {
+      "id": "codex-image",
+      "label": "codex-image",
+      "version": "0.1.0",
+      "sourcePath": "skills/codex-image",
+      "description": "Delegate image generation to a local Codex CLI.",
+      "usage": "$codex-image Generate a 1200 × 630 project illustration using Codex.",
+      "example": "Use codex-image to generate a project illustration using Codex."
+    },
+    {
+      "id": "relay",
+      "label": "relay",
+      "version": "0.1.0",
+      "sourcePath": "skills/relay",
+      "description": "Hand a coding task to Codex in a worktree and review the diff.",
+      "usage": "$relay Have Codex add CSV export to the filtered table, then review its diff.",
+      "example": "Use relay to have Codex add CSV export to the filtered table and review its diff."
     },
     {
       "id": "your-turn-handoff",
@@ -38,24 +65,6 @@
       "example": "Use pii-precommit-check to scan my staged changes without committing."
     },
     {
-      "id": "ask",
-      "label": "ask",
-      "version": "0.1.0",
-      "sourcePath": "skills/ask",
-      "description": "Get an external model opinion through local CLIs.",
-      "usage": "$ask claude Review my uncommitted changes without editing files.",
-      "example": "Use ask to get a read-only Claude review of my uncommitted changes."
-    },
-    {
-      "id": "codex-image",
-      "label": "codex-image",
-      "version": "0.1.0",
-      "sourcePath": "skills/codex-image",
-      "description": "Delegate image generation to a local Codex CLI.",
-      "usage": "$codex-image Generate a 1200 × 630 project illustration using Codex.",
-      "example": "Use codex-image to generate a project illustration using Codex."
-    },
-    {
       "id": "stop-slop",
       "label": "stop-slop",
       "version": "0.1.0",
@@ -63,6 +72,15 @@
       "description": "Edit or audit prose while preserving voice.",
       "usage": "$stop-slop Tighten the draft below while preserving my voice.",
       "example": "Use stop-slop to tighten this draft while preserving my voice."
+    },
+    {
+      "id": "github-repo-site",
+      "label": "github-repo-site",
+      "version": "0.1.0",
+      "sourcePath": "skills/github-repo-site",
+      "description": "Build a GitHub Pages site for any repository.",
+      "usage": "$github-repo-site Build a GitHub Pages site that explains this repository and how to start.",
+      "example": "Use github-repo-site to build a GitHub Pages site that explains this repository and how to start."
     }
   ]
 }

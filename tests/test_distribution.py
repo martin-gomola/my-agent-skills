@@ -1,5 +1,6 @@
 import importlib.util
 import json
+import re
 import shutil
 import tempfile
 import sys
@@ -22,7 +23,7 @@ class DistributionTests(unittest.TestCase):
 
     def test_skills_are_distributed_directly(self):
         validator.validate(self.root)
-        self.assertEqual({p.name for p in (self.root / 'skills').iterdir()}, {'what-to-ask', 'your-turn-handoff', 'clean-cursor', 'pii-precommit-check', 'ask', 'codex-image', 'stop-slop'})
+        self.assertEqual({p.name for p in (self.root / 'skills').iterdir()}, {'what-to-ask', 'your-turn-handoff', 'clean-cursor', 'pii-precommit-check', 'ask', 'codex-image', 'relay', 'stop-slop', 'github-repo-site'})
         self.assertFalse(any((self.root / 'plugins').rglob('*SKILL.md')))
         catalog = json.loads((self.root / 'site/catalog.json').read_text())
         for skill in catalog['skills']:
@@ -65,7 +66,7 @@ class DistributionTests(unittest.TestCase):
 
     def test_missing_skill_version_is_rejected(self):
         path = self.root / 'skills/what-to-ask/SKILL.md'
-        path.write_text(path.read_text().replace('  version: "0.1.0"', ''))
+        path.write_text(re.sub(r'(?m)^  version: .*\n', '', path.read_text()))
         with self.assertRaisesRegex(ValueError, 'invalid skill version'):
             validator.validate(self.root)
 
