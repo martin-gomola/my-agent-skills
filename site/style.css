@@ -118,6 +118,8 @@ pre { max-width: 100%; margin: 12px 0 0; padding: 14px; overflow-wrap: anywhere;
 /* Cross-agent loop bundle */
 .flow { margin-bottom: 24px; }
 .flow-art { display: block; width: calc(100% + 48px); height: auto; margin: -24px -24px 20px; border-bottom: 1px solid var(--line); }
+.flow-art-dark, :root[data-theme="dark"] .flow-art-light { display: none; }
+:root[data-theme="dark"] .flow-art-dark { display: block; }
 .flow-heading { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 24px; }
 .flow h2 { margin: 6px 0; font-size: 24px; line-height: 1.15; letter-spacing: -.01em; }
 #flow-description { max-width: 60ch; margin: 0; color: var(--muted); font-size: 15px; line-height: 1.5; }
