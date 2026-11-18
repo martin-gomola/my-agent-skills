@@ -64,7 +64,7 @@
     {
       "id": "what-to-ask",
       "label": "what-to-ask",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "sourcePath": "skills/what-to-ask",
       "description": "Turn rough notes or another agent's result into a prompt.",
       "usage": "$what-to-ask Write a prompt for adding CSV export to the filtered table.",
@@ -91,7 +91,7 @@
     {
       "id": "relay",
       "label": "relay",
-      "version": "0.3.0",
+      "version": "0.4.0",
       "sourcePath": "skills/relay",
       "description": "Hand a coding task to Codex, Claude or Antigravity in a worktree and review the diff.",
       "usage": "$relay Have Codex add CSV export to the filtered table, then review its diff.",

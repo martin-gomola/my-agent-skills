@@ -37,6 +37,16 @@ cases:
         - "Allows only the needed program through `--settings` with `command(pytest)`, without `--dangerously-skip-permissions`."
         - "Reads the final message from `response` and the session id from `conversation_id`, and checks `denied_actions` when the Outcome is missing."
 
+  - name: preflight_check_cannot_run
+    prompt: |
+      Have Codex add input validation to src/form.ts. The check is `npm run test:form`,
+      but package.json has no such script; tests run with `npm test`.
+    rubric:
+      expectations:
+        - "Runs the check command once in the new worktree before starting the worker."
+        - "Does not start Codex with a check that cannot run; fixes the brief to `npm test` or asks the user."
+        - "Uses the baseline when verifying the worker's result."
+
   - name: full_access_requested
     prompt: |
       Relay the migration cleanup to Codex in yolo mode, I want no approvals.
