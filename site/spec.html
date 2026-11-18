@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="The handoff protocol: an Outcome, Next step, Recap and Decision block that ends an AI coding agent's answer, for people and for tools.">
+<title>Handoff protocol · Your Turn Loop</title>
+<script>try{document.documentElement.dataset.theme=localStorage.getItem('theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch{document.documentElement.dataset.theme='light'}</script>
+<link rel="stylesheet" href="style.css?v=skill-picker-5">
+<script type="module" src="theme.mjs?v=1"></script>
+<body>
+<header><a href="https://github.com/martin-gomola/your-turn-loop"><svg class="github-mark" viewBox="0 0 16 16" aria-hidden="true"><path d="M6.766 11.328c-2.063-.25-3.516-1.734-3.516-3.656 0-.781.281-1.625.75-2.188-.203-.515-.172-1.609.063-2.062.625-.078 1.468.25 1.968.703.594-.187 1.219-.281 1.985-.281.765 0 1.39.094 1.953.265.484-.437 1.344-.765 1.969-.687.218.422.25 1.515.046 2.047.5.593.766 1.39.766 2.203 0 1.922-1.453 3.375-3.547 3.64.531.344.89 1.094.89 1.954v1.625c0 .468.391.734.86.547C13.781 14.359 16 11.53 16 8.03 16 3.61 12.406 0 7.984 0 3.563 0 0 3.61 0 8.031a7.88 7.88 0 0 0 5.172 7.422c.422.156.828-.125.828-.547v-1.25c-.219.094-.5.156-.75.156-1.031 0-1.64-.562-2.078-1.609-.172-.422-.36-.672-.719-.719-.187-.015-.25-.093-.25-.187 0-.188.313-.328.625-.328.453 0 .844.281 1.25.86.313.452.64.655 1.031.655s.641-.14 1-.5c.266-.265.47-.5.657-.656"/></svg><span>martin-gomola/your-turn-loop</span><span aria-hidden="true">↗</span></a><button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch to dark theme" title="Switch to dark theme"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20.5 15.5A8.5 8.5 0 0 1 8.5 3.5a8.5 8.5 0 1 0 12 12ZM12 2v2m0 16v2m10-10h-2M4 12H2m17.1-7.1-1.4 1.4M6.3 17.7l-1.4 1.4m14.2 0-1.4-1.4M6.3 6.3 4.9 4.9"/></svg></button></header>
+<main class="spec">
+  <p class="flow-kicker">Specification · version 1.0</p>
+  <h1>Handoff protocol</h1>
+  <p class="spec-lead">A four-line block at the end of an agent's answer that says what came out of the turn and whether anything waits on you. People read it at a glance. Tools such as the <a href="https://github.com/martin-gomola/your-turn">Your Turn inbox</a> parse it without a model call.</p>
+
+  <pre class="spec-sample" aria-label="Example handoff block">**Outcome:** The importer skips malformed rows instead of aborting the file.
+
+**Next step:** review: confirm the skipped-row log format in importer.py
+
+**Recap:** Goal: tolerate bad rows. Settled: skip and log to keep valid rows. Open: your log-format review.
+
+**Decision:** Skip or abort on a malformed row? -> skip and log (over abort, silent skip). One bad row should not lose a whole import.</pre>
+
+  <nav class="spec-toc" aria-label="On this page">
+    <a href="#fields">Fields</a> · <a href="#next-step">Next step</a> · <a href="#layout">Layout</a> · <a href="#reading">Reading the block</a> · <a href="#examples">Examples</a> · <a href="#implementations">Implementations</a>
+  </nav>
+
+  <p class="spec-note">The key words <strong>must</strong>, <strong>should</strong> and <strong>may</strong> describe what a conforming writer (the agent) or reader (a tool) does.</p>
+
+  <section id="fields" aria-labelledby="fields-title">
+    <h2 id="fields-title">Fields</h2>
+    <div class="spec-fields">
+      <article>
+        <h3><code>Outcome</code> <span class="spec-badge">required</span></h3>
+        <p>One sentence under 160 characters: the concrete result, recommendation, finding or blocker. A limit that changes the meaning of the result belongs here, for example “phone layout is unverified”. A reader may cut it at 200 characters.</p>
+      </article>
+      <article>
+        <h3><code>Next step</code> <span class="spec-badge">required</span></h3>
+        <p>Exactly one action under 120 characters, or <code>none</code>. It starts with one of the prefixes below and names what the user must do and where. A reader may cut it at 200 characters.</p>
+      </article>
+      <article>
+        <h3><code>Recap</code> <span class="spec-badge">from the second turn</span></h3>
+        <p>One or two sentences under 400 characters covering the whole chat, not just this turn: the goal, what is settled and why, and what is still open.</p>
+      </article>
+      <article>
+        <h3><code>Decision</code> <span class="spec-badge">zero or more</span></h3>
+        <p>A consequential choice actually made this turn, one per line:</p>
+        <pre>**Decision:** &lt;question&gt; -&gt; &lt;chosen&gt; (over &lt;alternatives&gt;). &lt;reason&gt;</pre>
+        <p>Separate alternatives with commas. <code>(over …)</code> is optional. A choice still waiting on the user belongs in <code>Next step</code> as <code>decide:</code>, never here.</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="next-step" aria-labelledby="next-title">
+    <h2 id="next-title">Next step</h2>
+    <p>Any value other than <code>none</code> means the chat needs the user. A writer <strong>must</strong> finish the authorized work it can do first, then pick the value by the real human dependency:</p>
+    <table class="spec-table">
+      <thead><tr><th scope="col">Value</th><th scope="col">Use when</th></tr></thead>
+      <tbody>
+        <tr><td><code>none</code></td><td>Nothing required waits on the user. Delivered advice and findings with a stated limit fit here too. Optional suggestions go in the body.</td></tr>
+        <tr><td><code>answer: …</code></td><td>Required information is missing and only the user can supply it.</td></tr>
+        <tr><td><code>decide: …</code></td><td>A choice belongs to the user. Name at least two options; put the recommendation in the body.</td></tr>
+        <tr><td><code>review: …</code></td><td>A prepared artifact waits for the user's judgment. A finished result or uncertainty alone is not a review.</td></tr>
+        <tr><td><code>approve: …</code></td><td>A necessary action needs permission the user has not already given.</td></tr>
+        <tr><td><code>run: …</code></td><td>The next command belongs to the user. Give the exact command, not just “deploy”.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="layout" aria-labelledby="layout-title">
+    <h2 id="layout-title">Layout</h2>
+    <ul class="spec-list">
+      <li>A writer <strong>must</strong> include <code>Outcome</code> and <code>Next step</code> in every final answer, including questions and pauses for review. Progress updates need no block.</li>
+      <li>The fields form one group at the very top or, preferably, the very bottom, with no prose between them. With the block at the bottom, the answer ends there.</li>
+      <li>Each field is one line of plain Markdown outside code blocks, with a blank line between fields, because chat apps join adjacent lines into one paragraph.</li>
+      <li>Labels, value prefixes, <code>none</code>, <code>-&gt;</code> and <code>(over …)</code> stay in English. The prose is in the language of the reply.</li>
+      <li>A writer <strong>should not</strong> use the field labels anywhere else in the answer, so that no other line is mistaken for a field.</li>
+    </ul>
+  </section>
+
+  <section id="reading" aria-labelledby="reading-title">
+    <h2 id="reading-title">Reading the block</h2>
+    <p>Writers emit the canonical form above. Readers <strong>should</strong> also accept the variants agents produce in practice:</p>
+    <ul class="spec-list">
+      <li>Labels in any case, bold or plain, after a heading mark, quote marker or list bullet.</li>
+      <li>Label aliases: <code>Result</code> for <code>Outcome</code>; <code>Next</code>, <code>Your next step</code> and <code>Ďalší krok</code> for <code>Next step</code>.</li>
+      <li><code>nothing</code>, <code>no action</code>, <code>n/a</code> or a dash as <code>none</code>. A next step with no known prefix is still an action for the user.</li>
+      <li><code>→</code> as well as <code>-&gt;</code> in a decision, and <code>or</code> as well as commas between alternatives.</li>
+    </ul>
+    <p>Readers <strong>must</strong> ignore lines inside fenced code blocks, so an example in the body never overrides the real handoff. An answer without an <code>Outcome</code> line is unformatted; a reader may fall back to its own summary, but should mark it as inferred.</p>
+  </section>
+
+  <section id="examples" aria-labelledby="examples-title">
+    <h2 id="examples-title">Examples</h2>
+    <h3>Done, nothing waits</h3>
+    <pre>Fixed the off-by-one in the pager.
+
+**Outcome:** The last page now shows its final row.
+
+**Next step:** none</pre>
+    <h3>The user reserved a command</h3>
+    <pre>**Outcome:** Initial release 0.1.0 is committed and tagged locally; checks passed.
+
+**Next step:** run: git push --force-with-lease origin main &amp;&amp; git push origin v0.1.0
+
+**Recap:** Release prepared. Original history is backed up locally; publishing remains yours.</pre>
+    <h3>A choice is still open</h3>
+    <pre>**Outcome:** Both caches cut dashboard latency below 200 ms; they differ in how stale data can get.
+
+**Next step:** decide: Redis with a 60 s TTL, or an in-process LRU per worker?
+
+**Recap:** Goal: faster dashboard. Settled: queries are the bottleneck. Open: which cache.</pre>
+  </section>
+
+  <section id="implementations" aria-labelledby="impl-title">
+    <h2 id="impl-title">Implementations</h2>
+    <ul class="spec-list">
+      <li><strong>Writer:</strong> the <a href="https://github.com/martin-gomola/your-turn-loop/blob/main/skills/your-turn-handoff/SKILL.md">your-turn-handoff</a> skill teaches Codex, Claude Code, Cursor, Antigravity and Gemini CLI to end answers with the block. <a href="./">Install it</a> alone or with the cross-agent loop.</li>
+      <li><strong>Reader:</strong> the <a href="https://github.com/martin-gomola/your-turn">Your Turn inbox</a> turns the block into one card per chat and lists every chat whose next step is not <code>none</code> under <strong>Needs you</strong>.</li>
+    </ul>
+    <p class="spec-note">Version 1.0 describes the format used by your-turn-handoff 0.7.0. A change that breaks existing readers or writers raises the major version.</p>
+  </section>
+  <footer class="app-footer spec-footer"><a href="./">Install the skills</a><a href="https://github.com/martin-gomola/your-turn-loop/blob/main/site/spec.html">Edit this page <span aria-hidden="true">↗</span></a></footer>
+</main>
+</body></html>
