@@ -1,39 +1,46 @@
 <div align="center">
 
-# My Agent Skills
+# Your Turn Loop
 
-<p align="center"><strong>Reusable skills for the coding agents I use.</strong></p>
+<p align="center"><strong>A handoff protocol for working across AI coding agents.</strong></p>
 
 ![Portable skills · SKILL.md](https://img.shields.io/badge/Portable%20skills-SKILL.md-56645f)
 ![No MCP required](https://img.shields.io/badge/No%20MCP-required-2f7a6b)
 
-[Get started](#get-started) · [Skills](#skills) · [Help](#help)
+[Get started](#get-started) · [Cross-agent loop](#cross-agent-loop) · [Help](#help)
 
 </div>
 
-Skills for developers who work with more than one AI coding agent. They help you
-write a brief another agent can act on, delegate it, and get back a result with
-a clear next step. Install only the behavior you need in each agent.
+The companion skills for [Your Turn](https://github.com/martin-gomola/your-turn),
+for developers who work with more than one AI coding agent. Write a brief
+another agent can act on, delegate it, and get back a result that ends with the
+same two lines in every agent:
 
-| I want to… | Choose |
-| --- | --- |
-| Turn notes, a screenshot, or another agent's result into a prompt | [what-to-ask](skills/what-to-ask/SKILL.md) |
-| Ask an external model for a second opinion | [ask](skills/ask/SKILL.md) |
-| Generate images through a local Codex CLI | [codex-image](skills/codex-image/SKILL.md) |
-| Hand a coding task to Codex or Claude and review its diff | [relay](skills/relay/SKILL.md) |
-| Get a clear result and next step after an answer | [your-turn-handoff](docs/handoff.md) |
-| Inspect or clean Cursor storage safely | [clean-cursor](skills/clean-cursor/SKILL.md) |
-| Check staged changes for private data | [pii-precommit-check](skills/pii-precommit-check/SKILL.md) |
-| Edit or audit prose while preserving voice | [stop-slop](skills/stop-slop/SKILL.md) |
-| Give a repository a GitHub Pages site people can understand | [github-repo-site](skills/github-repo-site/SKILL.md) |
-| Design and ship an app screen people can use without thinking | [ux-design](skills/ux-design/SKILL.md) |
+```text
+**Outcome:** The CSV export includes only the filtered rows; relevant tests passed.
 
-[Work across agents](docs/across-agents.md) shows how the first four skills fit
-together and which handoffs still need you to paste text.
+**Next step:** none
+```
+
+That [your-turn-handoff](docs/handoff.md) format is the protocol. Paste it into
+any agent and the next brief starts from a settled result, not a retold chat.
+
+## Cross-agent loop
+
+| Step | Skill | Use it when |
+| --- | --- | --- |
+| Brief | [what-to-ask](skills/what-to-ask/SKILL.md) | Turn notes, a screenshot, or another agent's result into a self-contained prompt. |
+| Delegate | [ask](skills/ask/SKILL.md) | Get a read-only second opinion through an installed Claude or Antigravity CLI. |
+| Delegate | [relay](skills/relay/SKILL.md) | Have Codex or Claude implement a scoped task in its own worktree while your agent reviews the diff. |
+| Delegate | [codex-image](skills/codex-image/SKILL.md) | Hand off image creation to a Codex CLI with image generation available. |
+| Result | [your-turn-handoff](docs/handoff.md) | End every answer with a clear Outcome and Next step, plus Recap and Decision in longer chats. |
+
+[Work across agents](docs/across-agents.md) walks through the loop and lists the
+handoffs that still need you to paste text.
 
 ## Get started
 
-[Open the skill installer](https://martin-gomola.github.io/my-agent-skills/) to
+[Open the skill installer](https://martin-gomola.github.io/your-turn-loop/) to
 choose skills, coding agents, and whether to install for this project or all your
 projects. Copy one command and run it in your terminal. Installation uses the
 [Skills CLI](https://github.com/vercel-labs/skills) and requires Node.js 22.20+
@@ -43,21 +50,6 @@ Generated commands disable Skills CLI telemetry for that run.
 Install only the behavior you need. The standalone
 [your-turn-handoff](docs/handoff.md) skill works with or without the separate
 [Your Turn inbox](https://github.com/martin-gomola/your-turn).
-
-## Skills
-
-| Skill | Use it when |
-| --- | --- |
-| [what-to-ask](skills/what-to-ask/SKILL.md) | You need a clear prompt for another agent, or want to continue from another agent's result. |
-| [ask](skills/ask/SKILL.md) | Request an opinion through an installed Claude or Antigravity CLI. |
-| [codex-image](skills/codex-image/SKILL.md) | Hand off image creation to a Codex CLI with image generation available. |
-| [relay](skills/relay/SKILL.md) | Have Codex or Claude implement a scoped task in its own worktree while your agent reviews the diff. |
-| [your-turn-handoff](docs/handoff.md) | You want agent answers to end with a clear result and the next step. |
-| [clean-cursor](skills/clean-cursor/SKILL.md) | Inspect Cursor storage and approve exact cleanup targets. |
-| [pii-precommit-check](skills/pii-precommit-check/SKILL.md) | Scan staged Git changes using a bundled Python scanner. |
-| [stop-slop](skills/stop-slop/SKILL.md) | Tighten a draft or audit prose without inventing authorship claims. |
-| [github-repo-site](skills/github-repo-site/SKILL.md) | Build a GitHub Pages project page from repository facts, or a skill installer like this one. |
-| [ux-design](skills/ux-design/SKILL.md) | Redesign and implement an app screen, form, or dashboard, then verify it rendered. |
 
 ## Help
 

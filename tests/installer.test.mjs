@@ -5,10 +5,10 @@ import {installation, usageExample} from '../site/install.mjs';
 const catalog = JSON.parse(readFileSync(new URL('../site/catalog.json', import.meta.url)));
 
 test('one command contains exactly the selected skills and target agents', () => {
-  const skills = catalog.skills.filter(skill => ['what-to-ask', 'stop-slop'].includes(skill.id));
+  const skills = catalog.skills.filter(skill => ['what-to-ask', 'relay'].includes(skill.id));
   const command = installation(skills, ['codex', 'claude', 'cursor', 'antigravity', 'gemini'], catalog.repository);
   assert.equal(command.split('\\\n').map(part => part.trim()).join(' '),
-    'DISABLE_TELEMETRY=1 npx skills add martin-gomola/my-agent-skills --skill what-to-ask stop-slop --agent codex claude-code cursor antigravity gemini-cli');
+    'DISABLE_TELEMETRY=1 npx skills add martin-gomola/your-turn-loop --skill what-to-ask relay --agent codex claude-code cursor antigravity gemini-cli');
   assert.ok(!command.includes('your-turn-handoff'));
   assert.ok(!command.includes('--global'));
   assert.ok(installation(skills, ['cursor'], catalog.repository, 'global').endsWith('--global'));
@@ -16,6 +16,12 @@ test('one command contains exactly the selected skills and target agents', () =>
   for (const skill of catalog.skills) {
     assert.ok(installation([skill], ['codex'], catalog.repository).includes(`--skill ${skill.id}`));
   }
+});
+
+test('bundle lists catalog skills once each', () => {
+  const ids = catalog.bundle.steps.flatMap(step => step.skills);
+  assert.equal(new Set(ids).size, ids.length);
+  for (const id of ids) assert.ok(catalog.skills.some(skill => skill.id === id), id);
 });
 
 test('empty selections and unsafe command arguments are rejected', () => {

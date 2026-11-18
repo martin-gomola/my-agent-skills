@@ -13,7 +13,7 @@ in longer chats and **Decision** for settled trade-offs. It works without the in
 
 ## Install
 
-[Open the skill installer](https://martin-gomola.github.io/my-agent-skills/),
+[Open the skill installer](https://martin-gomola.github.io/your-turn-loop/),
 select **your-turn-handoff** and your coding agents, then copy and run the command.
 You can install it alone; no other skill is required. Installation requires
 Node.js 22.20+ and Git.

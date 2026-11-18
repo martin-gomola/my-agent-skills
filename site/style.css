@@ -346,6 +346,30 @@ pre {
 }
 [hidden] { display: none !important; }
 
+.flow { margin-bottom: 24px; overflow: hidden; }
+.flow-art { display: block; width: calc(100% + 48px); height: auto; margin: -24px -24px 20px; border-bottom: 1px solid var(--line); }
+.flow-heading { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 24px; }
+.flow-kicker { margin: 0; color: var(--accent); font: 600 13px/1.2 "Barlow Condensed", "Arial Narrow", sans-serif; letter-spacing: .1em; text-transform: uppercase; }
+.flow h2 { margin: 4px 0 6px; font: 600 28px/1.1 "Barlow Condensed", "Arial Narrow", sans-serif; }
+#flow-description { max-width: 60ch; margin: 0; color: var(--muted); font-size: 14px; line-height: 1.5; }
+#flow-select[aria-pressed="true"] { border-color: var(--accent); background: var(--icon-fill); }
+.flow-steps { display: grid; gap: 12px; margin: 20px 0 0; padding: 0; list-style: none; counter-reset: none; }
+.flow-steps li { position: relative; display: grid; align-content: start; gap: 4px; padding: 14px; border: 1px solid var(--line); border-radius: 2px; }
+.flow-steps small { color: var(--muted); font-size: 14px; line-height: 1.5; }
+.flow-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.flow-chips code { padding: 2px 8px; border: 1px solid var(--accent); border-radius: 999px; background: var(--icon-fill); color: var(--ink); font: 13px/1.5 ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+.flow-loop { margin: 12px 0 0; color: var(--muted); font-size: 14px; line-height: 1.5; }
+.flow-loop span { color: var(--accent); font-weight: 700; }
+@media (min-width: 721px) {
+  .flow-steps { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .flow-steps li + li::before { content: "→"; position: absolute; top: 50%; left: -12px; transform: translate(-50%, -50%); color: var(--accent); font-weight: 700; }
+}
+@media (max-width: 720px) {
+  .flow-art { width: calc(100% + 40px); margin: -20px -20px 16px; }
+}
+@media (max-width: 360px) {
+  .flow-art { width: calc(100% + 32px); margin: -16px -16px 16px; }
+}
 .pet-section { display: flex; align-items: center; gap: 32px; margin-top: 24px; }
 .pet-preview { flex: none; width: 144px; height: 156px; object-fit: contain; }
 .pet-section .panel-title { border: 0; padding: 0; }

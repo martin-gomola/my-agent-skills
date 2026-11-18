@@ -3,16 +3,29 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light dark">
-<meta name="description" content="Install skills for your coding agent and meet DeeTee, a custom Codex pet.">
-<title>Choose your skills · My Agent Skills</title>
+<meta name="description" content="Install a handoff protocol for working across AI coding agents and meet DeeTee, a custom Codex pet.">
+<title>Choose your skills · Your Turn Loop</title>
 <script>try{document.documentElement.dataset.theme=localStorage.getItem('theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch{document.documentElement.dataset.theme='light'}</script>
-<link rel="stylesheet" href="style.css?v=skill-picker-3">
-<script type="module" src="install.mjs?v=skill-picker-3"></script>
+<link rel="stylesheet" href="style.css?v=skill-picker-4">
+<script type="module" src="install.mjs?v=skill-picker-4"></script>
 <body>
 <!-- GitHub mark from Primer Octicons; license in third-party/primer-octicons-MIT.txt. -->
-<header><a href="https://github.com/martin-gomola/my-agent-skills"><svg class="github-mark" viewBox="0 0 16 16" aria-hidden="true"><path d="M6.766 11.328c-2.063-.25-3.516-1.734-3.516-3.656 0-.781.281-1.625.75-2.188-.203-.515-.172-1.609.063-2.062.625-.078 1.468.25 1.968.703.594-.187 1.219-.281 1.985-.281.765 0 1.39.094 1.953.265.484-.437 1.344-.765 1.969-.687.218.422.25 1.515.046 2.047.5.593.766 1.39.766 2.203 0 1.922-1.453 3.375-3.547 3.64.531.344.89 1.094.89 1.954v1.625c0 .468.391.734.86.547C13.781 14.359 16 11.53 16 8.03 16 3.61 12.406 0 7.984 0 3.563 0 0 3.61 0 8.031a7.88 7.88 0 0 0 5.172 7.422c.422.156.828-.125.828-.547v-1.25c-.219.094-.5.156-.75.156-1.031 0-1.64-.562-2.078-1.609-.172-.422-.36-.672-.719-.719-.187-.015-.25-.093-.25-.187 0-.188.313-.328.625-.328.453 0 .844.281 1.25.86.313.452.64.655 1.031.655s.641-.14 1-.5c.266-.265.47-.5.657-.656"/></svg><span>martin-gomola/my-agent-skills</span><span aria-hidden="true">↗</span></a><button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch to dark theme" title="Switch to dark theme"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20.5 15.5A8.5 8.5 0 0 1 8.5 3.5a8.5 8.5 0 1 0 12 12ZM12 2v2m0 16v2m10-10h-2M4 12H2m17.1-7.1-1.4 1.4M6.3 17.7l-1.4 1.4m14.2 0-1.4-1.4M6.3 6.3 4.9 4.9"/></svg></button></header>
+<header><a href="https://github.com/martin-gomola/your-turn-loop"><svg class="github-mark" viewBox="0 0 16 16" aria-hidden="true"><path d="M6.766 11.328c-2.063-.25-3.516-1.734-3.516-3.656 0-.781.281-1.625.75-2.188-.203-.515-.172-1.609.063-2.062.625-.078 1.468.25 1.968.703.594-.187 1.219-.281 1.985-.281.765 0 1.39.094 1.953.265.484-.437 1.344-.765 1.969-.687.218.422.25 1.515.046 2.047.5.593.766 1.39.766 2.203 0 1.922-1.453 3.375-3.547 3.64.531.344.89 1.094.89 1.954v1.625c0 .468.391.734.86.547C13.781 14.359 16 11.53 16 8.03 16 3.61 12.406 0 7.984 0 3.563 0 0 3.61 0 8.031a7.88 7.88 0 0 0 5.172 7.422c.422.156.828-.125.828-.547v-1.25c-.219.094-.5.156-.75.156-1.031 0-1.64-.562-2.078-1.609-.172-.422-.36-.672-.719-.719-.187-.015-.25-.093-.25-.187 0-.188.313-.328.625-.328.453 0 .844.281 1.25.86.313.452.64.655 1.031.655s.641-.14 1-.5c.266-.265.47-.5.657-.656"/></svg><span>martin-gomola/your-turn-loop</span><span aria-hidden="true">↗</span></a><button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch to dark theme" title="Switch to dark theme"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20.5 15.5A8.5 8.5 0 0 1 8.5 3.5a8.5 8.5 0 1 0 12 12ZM12 2v2m0 16v2m10-10h-2M4 12H2m17.1-7.1-1.4 1.4M6.3 17.7l-1.4 1.4m14.2 0-1.4-1.4M6.3 6.3 4.9 4.9"/></svg></button></header>
 <main>
   <h1>Choose your skills</h1>
+  <section id="flow" class="flow hud-panel" aria-labelledby="flow-title" hidden>
+    <img class="flow-art" src="flow/agent-loop.webp" alt="" width="1600" height="600">
+    <div class="flow-heading">
+      <div>
+        <p class="flow-kicker">Bundle</p>
+        <h2 id="flow-title"></h2>
+        <p id="flow-description"></p>
+      </div>
+      <button id="flow-select" class="button-secondary" type="button" aria-pressed="false">Select bundle</button>
+    </div>
+    <ol id="flow-steps" class="flow-steps"></ol>
+    <p class="flow-loop"><span aria-hidden="true">↺</span> Paste the result back into what-to-ask for the next brief.</p>
+  </section>
   <div class="workspace">
     <section class="choices hud-panel" aria-label="Setup">
       <fieldset class="field-group agent-fieldset">
@@ -65,13 +78,13 @@
       <h2 id="pet-title">Meet DeeTee</h2>
       <p>A cheerful robotic data terrier who sniffs out metrics and celebrates clean queries.</p>
       <div class="pet-actions">
-        <a class="button-install" href="codex://pets/install?name=DeeTee&amp;imageUrl=https%3A%2F%2Fmartin-gomola.github.io%2Fmy-agent-skills%2Fpets%2Fdeetee%2Fspritesheet.webp&amp;description=A%20cheerful%20robotic%20data%20terrier%20who%20sniffs%20out%20metrics%20and%20celebrates%20clean%20queries.&amp;spriteVersionNumber=2">Install in Codex</a>
+        <a class="button-install" href="codex://pets/install?name=DeeTee&amp;imageUrl=https%3A%2F%2Fmartin-gomola.github.io%2Fyour-turn-loop%2Fpets%2Fdeetee%2Fspritesheet.webp&amp;description=A%20cheerful%20robotic%20data%20terrier%20who%20sniffs%20out%20metrics%20and%20celebrates%20clean%20queries.&amp;spriteVersionNumber=2">Install in Codex</a>
         <a href="pets/deetee/spritesheet.webp" download="deetee-spritesheet.webp">Download spritesheet</a>
       </div>
       <p class="pet-help">Open this page on a computer with Codex installed. The button opens the pet install flow when available in your app.</p>
       <a href="https://learn.chatgpt.com/docs/app/commands#pets">Pet installation documentation <span aria-hidden="true">↗</span></a>
     </div>
   </section>
-  <footer class="app-footer"><a href="https://github.com/martin-gomola/my-agent-skills/blob/main/docs/install.md">Update or remove a skill <span aria-hidden="true">↗</span></a></footer>
+  <footer class="app-footer"><a href="https://github.com/martin-gomola/your-turn-loop/blob/main/docs/install.md">Update or remove a skill <span aria-hidden="true">↗</span></a></footer>
 </main>
 </body></html>
