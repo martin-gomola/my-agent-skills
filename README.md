@@ -27,15 +27,27 @@ any agent and the next brief starts from a settled result, not a retold chat.
 The [protocol spec](https://martin-gomola.github.io/your-turn-loop/spec.html)
 defines each field for agents and for tools that read the block.
 
+## Why
+
+- **The agents you already pay for.** The skills drive the agent CLIs you have
+  signed in (`claude`, `codex`, `agy`), so work runs on those logins, such as a
+  Claude or ChatGPT plan. No API keys to set up or per-call billing to plan.
+- **One orchestrator, many agents.** The agent you talk to is the brain: it
+  picks the skills a task needs and hands work to the others, spreading it
+  across the quotas you have.
+- **Your own tools stay in.** Your other skills and MCP servers remain available
+  to every agent. These skills only move work and results between them.
+
 ## Cross-agent loop
 
-| Step | Skill | Use it when |
-| --- | --- | --- |
-| Brief | [what-to-ask](skills/what-to-ask/SKILL.md) | Turn notes, a screenshot, or another agent's result into a self-contained prompt. |
-| Delegate | [ask](skills/ask/SKILL.md) | Get a read-only second opinion through an installed Claude or Antigravity CLI. |
-| Delegate | [relay](skills/relay/SKILL.md) | Have Codex or Claude implement a scoped task in its own worktree while your agent reviews the diff. |
-| Delegate | [codex-image](skills/codex-image/SKILL.md) | Hand off image creation to a Codex CLI with image generation available. |
-| Result | [your-turn-handoff](docs/handoff.md) | End every answer with a clear Outcome and Next step, plus Recap and Decision in longer chats. |
+| Step | Who acts | Skill | Use it when |
+| --- | --- | --- | --- |
+| Brief | You → orchestrator | [what-to-ask](skills/what-to-ask/SKILL.md) | Turn notes, a screenshot, or another agent's result into a self-contained prompt. |
+| Delegate | Orchestrator → reviewer | [ask](skills/ask/SKILL.md) | Get a read-only second opinion through an installed Claude or Antigravity CLI. |
+| Delegate | Orchestrator → builder | [relay](skills/relay/SKILL.md) | Have Codex or Claude implement a scoped task in its own worktree while your agent reviews the diff. |
+| Delegate | Orchestrator → builder | [codex-image](skills/codex-image/SKILL.md) | Hand off image creation to a Codex CLI with image generation available. |
+| Result | Every agent | [your-turn-handoff](docs/handoff.md) | End every answer with a clear Outcome and Next step, plus Recap and Decision in longer chats. |
+| Your turn | You | [Your Turn inbox](https://github.com/martin-gomola/your-turn) (optional) | See which chats need you, then carry a result back as the next brief. |
 
 [Work across agents](docs/across-agents.md) walks through the loop and lists the
 handoffs that still need you to paste text.

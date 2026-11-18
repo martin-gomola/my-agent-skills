@@ -2,18 +2,18 @@
   "repository": "martin-gomola/your-turn-loop",
   "bundle": {
     "label": "Cross-agent loop",
-    "description": "Write a brief, delegate it to another agent, and get back a result with the next step.",
+    "description": "Your orchestrator agent is the brain: it picks the skills a task needs and hands work to the other agents you already have signed in, on the plans you already pay for. No API keys to set up.",
     "steps": [
       {
         "title": "Brief",
-        "text": "Turn notes or a result into a prompt.",
+        "text": "You give rough notes; the orchestrator turns them into a brief another agent can act on.",
         "skills": [
           "what-to-ask"
         ]
       },
       {
         "title": "Delegate",
-        "text": "Send it to another model, worktree or image runner.",
+        "text": "The orchestrator picks who does what: a read-only second opinion, a build in its own worktree, or an image.",
         "skills": [
           "ask",
           "relay",
@@ -22,14 +22,14 @@
       },
       {
         "title": "Result",
-        "text": "Get an outcome and the next step back.",
+        "text": "Every agent ends with the same Outcome and Next step, so the orchestrator can check the work.",
         "skills": [
           "your-turn-handoff"
         ]
       },
       {
         "title": "Your turn",
-        "text": "See which results need you in the Your Turn inbox, then carry one back as the next brief.",
+        "text": "The Your Turn inbox shows which results need you. You carry one back as the next brief.",
         "skills": []
       }
     ],
