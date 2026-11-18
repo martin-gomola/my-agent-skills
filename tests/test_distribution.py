@@ -23,7 +23,7 @@ class DistributionTests(unittest.TestCase):
 
     def test_skills_are_distributed_directly(self):
         validator.validate(self.root)
-        self.assertEqual({p.name for p in (self.root / 'skills').iterdir()}, {'what-to-ask', 'your-turn-handoff', 'clean-cursor', 'pii-precommit-check', 'ask', 'codex-image', 'relay', 'stop-slop', 'github-repo-site'})
+        self.assertEqual({p.name for p in (self.root / 'skills').iterdir()}, {'what-to-ask', 'your-turn-handoff', 'clean-cursor', 'pii-precommit-check', 'ask', 'codex-image', 'relay', 'stop-slop', 'github-repo-site', 'ux-design'})
         self.assertFalse(any((self.root / 'plugins').rglob('*SKILL.md')))
         catalog = json.loads((self.root / 'site/catalog.json').read_text())
         for skill in catalog['skills']:

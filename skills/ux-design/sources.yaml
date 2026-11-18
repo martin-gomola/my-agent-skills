@@ -1,0 +1,187 @@
+schema_version: 1
+skill: ux-design
+sources:
+  - id: ux-ui-notebook
+    title: UX and UI design NotebookLM notebook
+    kind: other
+    locator: https://notebook.google.com/notebook/deb0b77c-31a4-471e-9619-a0bf62e3fc20
+    checked_at: '2026-08-30'
+    version: live notebook with five healthy sources
+    sha256: null
+    trust: User-selected research notebook; NotebookLM is used only to retrieve and cross-reference the underlying books, never as publication authority.
+  - id: refactoring-ui
+    title: Refactoring UI
+    kind: pdf
+    locator: https://notebook.google.com/notebook/deb0b77c-31a4-471e-9619-a0bf62e3fc20#source=84d4aca4-25a5-4811-a2f0-c40dd5f6da61
+    checked_at: '2026-08-30'
+    version: NotebookLM source 84d4aca4-25a5-4811-a2f0-c40dd5f6da61
+    sha256: null
+    trust: User-provided design reference used for hierarchy, proximity, content-first layout, and disposable prototyping principles; exact style prescriptions remain non-normative.
+  - id: ux-ui-process-principles
+    title: UX-UI Design Process and Principles
+    kind: pdf
+    locator: https://notebook.google.com/notebook/deb0b77c-31a4-471e-9619-a0bf62e3fc20#source=13ec3631-c00c-462d-8c48-07cac1d035b4
+    checked_at: '2026-08-30'
+    version: NotebookLM source 13ec3631-c00c-462d-8c48-07cac1d035b4
+    sha256: null
+    trust: User-provided process reference used for framing, information architecture, flows, component states, form labels, and accessible contrast; absolute heuristics are independently filtered.
+  - id: ui-design-systems-mastery
+    title: UI Design Systems Mastery
+    kind: pdf
+    locator: https://notebook.google.com/notebook/deb0b77c-31a4-471e-9619-a0bf62e3fc20#source=737d40a5-10df-42b2-8cee-f7197127eb21
+    checked_at: '2026-08-30'
+    version: NotebookLM source 737d40a5-10df-42b2-8cee-f7197127eb21
+    sha256: null
+    trust: User-provided design-system reference used for token ownership, reusable components, documentation, and drift prevention.
+  - id: ui-professional-design-manual
+    title: The UI Professional's Design Manual
+    kind: pdf
+    locator: https://notebook.google.com/notebook/deb0b77c-31a4-471e-9619-a0bf62e3fc20#source=f5c7b279-0744-4979-84ff-cd95bc20466b
+    checked_at: '2026-08-30'
+    version: NotebookLM source f5c7b279-0744-4979-84ff-cd95bc20466b
+    sha256: null
+    trust: User-provided interface manual used for loading, search, constrained-flow, platform, and mobile interaction patterns after a second query separated durable principles from numeric, stylistic, security-policy, and iOS-specific prescriptions.
+  - id: wcag-2-2
+    title: Web Content Accessibility Guidelines 2.2
+    kind: documentation
+    locator: https://www.w3.org/TR/WCAG22/
+    checked_at: '2026-08-26'
+    version: W3C Recommendation
+    sha256: null
+    trust: W3C normative accessibility standard for text contrast, non-text contrast, resize text, focus, target size, and motion-related user needs.
+  - id: mdn-appearance
+    title: CSS appearance property
+    kind: documentation
+    locator: https://developer.mozilla.org/en-US/docs/Web/CSS/appearance
+    checked_at: '2026-08-26'
+    version: live
+    sha256: null
+    trust: MDN browser-platform documentation for native control appearance and the effects of appearance none on select controls.
+  - id: webdev-form-design
+    title: Web form design basics and cross-platform testing
+    kind: documentation
+    locator: https://web.dev/learn/forms/design-basics
+    checked_at: '2026-08-26'
+    version: live
+    sha256: null
+    trust: Official web.dev guidance for mobile form sizing, spacing, text size, and cross-platform testing.
+  - id: spotify-accessibility
+    title: Spotify Accessibility Guidelines
+    kind: documentation
+    locator: https://developer.spotify.com/documentation/accessibility
+    checked_at: '2026-08-26'
+    version: live
+    sha256: null
+    trust: Official Spotify developer accessibility guidance for semantic grouping, active state, labels, target sizing, and reduced motion; brand expression is excluded.
+  - id: beskar-settings-pictogram-field-case
+    title: Beskar Shelf settings pictogram and alignment field case
+    kind: other
+    locator: tests/baseline.md
+    checked_at: '2026-09-15'
+    version: user-reported settings navigation failure and rendered repair evidence
+    sha256: 82f36df1b0a2f21dadc0f8be7cfb53dbf9d382fddb0a7f3f444ea51005440414
+    trust: User-directed product evidence used to retain a bounded pictogram scanability heuristic; Beskar colors, icon artwork, dimensions, and composition are not portable guidance.
+  - id: app-workbench-field-case
+    title: Task-first creation workspace field case
+    kind: other
+    locator: tests/app-workbench-baseline.md
+    checked_at: '2026-10-25'
+    version: user-directed application redesign with rendered state regressions
+    sha256: 5e3489f1ba9309100972388f8c3ae56bf82d588f286c42422ed338fc2dee88fc
+    trust: Product observations and user goals from an implemented beginner creation workspace. Retained as conditional design and verification heuristics, not controlled research or a universal layout system.
+  - id: virpo-gacha-design-iteration
+    title: 'Gacha prompting: ask for ten, keep one'
+    kind: article
+    locator: https://virpo.io/blog/how-this-room-was-made/
+    checked_at: '2026-10-30'
+    version: Article dated October 23, 2026, updated October 25, 2026
+    sha256: null
+    trust: First-person design case used for conditional visual exploration, human selection, rendered inspection, and convergence; not evidence that a fixed number of variants or a specific image-generation workflow is universally effective.
+  - id: google-expressive-design-research
+    title: "Expressive Design: Google's UX Research"
+    kind: article
+    locator: https://design.google/library/expressive-material-design-google-research?pubDate=20250521
+    checked_at: '2026-10-30'
+    version: Published 2025-05-21
+    sha256: null
+    trust: Google Design research summary used for purposeful expressive hierarchy and the limits of generalizing preferences or usability findings beyond the tested designs.
+  - id: apple-spatial-layout
+    title: 'Apple Human Interface Guidelines: Spatial layout'
+    kind: documentation
+    locator: https://developer.apple.com/design/human-interface-guidelines/spatial-layout/
+    checked_at: '2026-10-30'
+    version: Live visionOS guidance
+    sha256: null
+    trust: Apple platform guidance used only for spatial interfaces; platform-specific mechanisms are not portable defaults.
+  - id: apple-hig-foundations
+    title: Apple Human Interface Guidelines — Foundations collection
+    kind: documentation
+    locator: https://developer.apple.com/design/human-interface-guidelines/foundations
+    checked_at: '2026-10-30'
+    version: 18 topic pages reviewed; individual links in references/apple-hig.md
+    sha256: null
+    trust: Official Apple design guidance. Topic and platform considerations are authoritative for the corresponding Apple target; cross-platform adaptations require local evidence.
+  - id: apple-hig-patterns
+    title: Apple Human Interface Guidelines — Patterns collection
+    kind: documentation
+    locator: https://developer.apple.com/design/human-interface-guidelines/patterns
+    checked_at: '2026-10-30'
+    version: 25 topic pages reviewed; individual links in references/apple-hig.md
+    sha256: null
+    trust: Official Apple interaction guidance. Retain conditional task mechanisms and platform boundaries; do not add capabilities or change authorization merely because a pattern is documented.
+  - id: few-dashboard-pitfalls
+    title: Common Pitfalls in Dashboard Design (Stephen Few)
+    kind: article
+    locator: https://www.perceptualedge.com/articles/Whitepapers/Common_Pitfalls.pdf
+    checked_at: '2026-10-31'
+    version: Perceptual Edge white paper, February 2006 (ProClarity special addendum), 31 pages
+    sha256: 7ab65cceaa142d82a8c3aa95f288edf66f6ea485f11fc1b5959c3981c1fb5946
+    trust: Primary text by the author of Information Dashboard Design; used for at-a-glance monitoring hierarchy (definition, monitoring sequence, pitfalls 1-3 and 9-12). Vendor-sponsored and focused on business dashboards, so its gauge, chart-type, and color-blindness specifics are not normative here.
+  - id: pair-explainability-trust
+    title: 'People + AI Guidebook: Explainability + Trust'
+    kind: documentation
+    locator: https://pair.withgoogle.com/chapter/explainability-trust/
+    checked_at: '2026-10-31'
+    version: Live Google PAIR guidebook chapter
+    sha256: null
+    trust: Google PAIR guidance for presenting AI output; used for trust calibration, data-source disclosure, and decision-relevant confidence. Applies to probabilistic or generated output only.
+  - id: pair-errors-graceful-failure
+    title: 'People + AI Guidebook: Errors + Graceful Failure'
+    kind: documentation
+    locator: https://pair.withgoogle.com/chapter/errors-failing/
+    checked_at: '2026-10-31'
+    version: Live Google PAIR guidebook chapter
+    sha256: null
+    trust: Google PAIR guidance for AI errors; used for treating low-confidence results as possible errors and providing paths forward from failure.
+  - id: alignment-inset-field-case
+    title: Alignment and inset field case (agent inbox review)
+    kind: other
+    locator: tests/alignment-inset-baseline.md
+    checked_at: '2026-10-31'
+    version: user-reported alignment and padding failures with before/after rendered measurements
+    sha256: 7398b89c16db3103c6214c05d5268cbc400ec1952447e8d92c84b2057feb183c
+    trust: User-directed product evidence from one web app review; retained as default alignment and inset mechanisms with their measurement methods. Dimensions, colors, and composition are not portable.
+  - id: product-ui-dimension-tokens
+    title: Product UI dimension tokens (as recorded in the dimension defaults field case)
+    kind: other
+    locator: tests/dimension-defaults-baseline.md
+    checked_at: '2026-11-18'
+    version: verified spacing, elevation, breakpoint, button, and alert dimensions
+    sha256: 1225df88904b3af6af9eeab84b192abb73658c5f085c814acfa1a56cb092c438
+    trust: User-designated product token reference; only dimensions are adopted. Brand colors, typography, logo, and voice are excluded.
+  - id: dimension-defaults-field-case
+    title: Dimension defaults field case (generated UI review)
+    kind: other
+    locator: tests/dimension-defaults-baseline.md
+    checked_at: '2026-11-18'
+    version: user-reported spacing and select-indicator failures with skill-level causes
+    sha256: 1225df88904b3af6af9eeab84b192abb73658c5f085c814acfa1a56cb092c438
+    trust: User-directed review evidence used to make dimension defaults and one select pattern explicit.
+  - id: anthropic-frontend-design
+    title: Anthropic frontend-design skill (claude-plugins-official, v1.1.1)
+    kind: other
+    locator: https://github.com/anthropics/claude-plugins-official/tree/main/plugins/frontend-design
+    checked_at: '2026-11-18'
+    version: frontend-design 1.1.1 SKILL.md
+    sha256: d91970639e9f5c37682ac7ab60094d35f1c7c1f38d731bd56396563aee10c1d3
+    trust: Official Anthropic design guidance; used for generated-default tells, selector specificity on spacing, and interface copy rules. Its marketing hero and aesthetic-risk guidance stay out of scope.

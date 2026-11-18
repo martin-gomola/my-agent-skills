@@ -1,0 +1,392 @@
+schema_version: 1
+skill: ux-design
+claims:
+  - id: flow-before-shell
+    instruction: 'shell-first work constrains the solution before content needs are known.'
+    source_ids: [refactoring-ui, ux-ui-process-principles]
+    evidence: 'Refactoring UI, Comecando do zero and O detalhe vem depois, p. 14; UX-UI Design Process and Principles, Chapter 7, pp. 106 and 109.'
+  - id: disposable-structure
+    instruction: 'use disposable low-fidelity structure before visual polish'
+    source_ids: [refactoring-ui]
+    evidence: 'Refactoring UI, O detalhe vem depois, p. 14.'
+  - id: textual-structure-artifact
+    instruction: 'produce a short textual structure artifact before implementation'
+    source_ids: [ux-ui-process-principles, refactoring-ui, ui-professional-design-manual]
+    evidence: 'UX-UI Design Process and Principles, Chapter 7, pp. 106-110 and Chapter 8, pp. 112-114; Refactoring UI, O detalhe vem depois, pp. 13-16; The UI Professional''s Design Manual, UX process overview, pp. 183-191. NotebookLM queries on 2026-08-30 returned these locators with an empty citation map; the text-only artifact format is the Mythosaur adaptation.'
+  - id: pre-code-critique-gate
+    instruction: 'Resolve structural gaps in the artifact before writing code.'
+    source_ids: [ux-ui-process-principles, refactoring-ui]
+    evidence: 'The sources support evaluating IA, flows, and low-fidelity structure before detailed implementation; the blocking critique gate is a Mythosaur safeguard derived from the observed dashboard-grouping and mobile-header failures, not a named book rule.'
+  - id: local-token-system
+    instruction: 'create the smallest token and primitive set needed by the core flow'
+    source_ids: [ui-design-systems-mastery]
+    evidence: 'UI Design Systems Mastery, Parts 2 through 4 on tokens, documentation, and reusable components; repository-local ownership is the Mythosaur adaptation.'
+  - id: complete-component-states
+    instruction: 'Build from reusable primitives and real content.'
+    source_ids: [ui-design-systems-mastery, ux-ui-process-principles]
+    evidence: 'UI Design Systems Mastery, Part 4; UX-UI Design Process and Principles, Chapter 5, p. 77.'
+  - id: hierarchy-through-deemphasis
+    instruction: 'Prefer de-emphasizing secondary content'
+    source_ids: [refactoring-ui]
+    evidence: 'Refactoring UI, Tamanho nao e tudo, p. 41; Enfatizar des-enfatizando, p. 47; Equilibre peso e contraste, p. 58.'
+  - id: proximity-grouping
+    instruction: 'Group by proximity'
+    source_ids: [refactoring-ui]
+    evidence: 'Refactoring UI, Evite espacamentos ambiguos, pp. 97-99.'
+  - id: visible-copy-discipline
+    instruction: 'Treat visible copy as part of the interface, not filler: do not add visual text noise through generic helper text, repeated prompts, decorative labels, or per-item instructions when the control, placement, or state already makes the action clear.'
+    source_ids: [refactoring-ui, ux-ui-process-principles]
+    evidence: 'The retained hierarchy, proximity, content-first, and user-need principles support de-emphasizing redundant content; the explicit visual-text-noise rule is the Mythosaur delivery safeguard applied to those principles.'
+  - id: actionable-empty-state
+    instruction: 'Empty states must explain the situation'
+    source_ids: [refactoring-ui, ux-ui-process-principles]
+    evidence: 'Refactoring UI, Nao negligencie os estados vazios; UX-UI Design Process and Principles, empty-state and onboarding guidance cited by NotebookLM.'
+  - id: persistent-form-labels
+    instruction: 'keep a persistent accessible label for every control'
+    source_ids: [ux-ui-process-principles, webdev-form-design]
+    evidence: 'UX-UI Design Process and Principles, Chapter 5, Forms and Inputs, p. 86; web.dev form design basics.'
+  - id: actual-text-contrast
+    target: references/interface-rules.md
+    instruction: 'For normal text, compute and require a contrast ratio of at least 4.5:1 against its actual rendered background.'
+    source_ids: [wcag-2-2]
+    evidence: 'WCAG 2.2 Success Criterion 1.4.3 Contrast Minimum.'
+  - id: non-text-contrast
+    target: references/interface-rules.md
+    instruction: 'Verify large text and essential non-text UI indicators at 3:1 or better in every supported theme.'
+    source_ids: [wcag-2-2]
+    evidence: 'WCAG 2.2 Success Criteria 1.4.3 and 1.4.11.'
+  - id: select-appearance
+    target: references/interface-rules.md
+    instruction: 'preserve platform appearance'
+    source_ids: [mdn-appearance]
+    evidence: 'MDN CSS appearance property description and select examples; end padding is the retained implementation safeguard.'
+  - id: select-indicator-proof
+    instruction: 'End padding alone is not evidence that an arrow exists.'
+    source_ids: [mdn-appearance, wcag-2-2]
+    evidence: 'MDN documents that appearance controls native select rendering; WCAG 2.2 SC 1.4.11 covers contrast of essential non-text indicators. The explicit same-rule decision, SVG wrapper pattern, and rendered arrow count are Mythosaur delivery safeguards derived from the observed missing-indicator failure.'
+  - id: reduced-motion
+    target: references/interface-rules.md
+    instruction: 'Provide a reduced-motion path for decorative, scroll-triggered, and continuous animation.'
+    source_ids: [spotify-accessibility, wcag-2-2]
+    evidence: 'Spotify Accessibility Guidelines, Animations; WCAG 2.2 motion and animation interaction criteria.'
+  - id: research-not-publication
+    target: references/research-boundary.md
+    instruction: 'Do not publish NotebookLM prose directly.'
+    source_ids: [ux-ui-notebook]
+    evidence: 'NotebookLM MCP query on 2026-08-26 produced useful citations alongside overbroad absolutes, requiring independent filtering.'
+  - id: adaptive-loading-feedback
+    target: references/interface-rules.md
+    instruction: 'Match loading feedback to expected duration, continuity, and destination predictability.'
+    source_ids: [ui-professional-design-manual]
+    evidence: 'The UI Professional''s Design Manual, Launch Screens - the theory, Make it short and concise and Use a skeleton, pp. 246 and 248; exact timing retained only as a heuristic.'
+  - id: searchable-selector-criteria
+    target: references/interface-rules.md
+    instruction: 'Choose a searchable selector from option complexity, familiarity, label length, and retrieval cost.'
+    source_ids: [ui-professional-design-manual]
+    evidence: 'The UI Professional''s Design Manual, Account setup - the theory, Country of primary residence, p. 310, and Chapter recap, p. 326; fixed item count generalized into task criteria.'
+  - id: reversible-search
+    target: references/interface-rules.md
+    instruction: 'Give active search a one-action clear control that preserves focus.'
+    source_ids: [ui-professional-design-manual]
+    evidence: 'The UI Professional''s Design Manual, iOS native elements, Search bar, pp. 115-116; platform-specific presentation removed.'
+  - id: server-owned-cooldown
+    target: references/interface-rules.md
+    instruction: 'Treat retry cooldowns and rate limits as server or security-policy authority.'
+    source_ids: [ui-professional-design-manual]
+    evidence: 'The UI Professional''s Design Manual, Phone verification - the theory, Verify your phone number, p. 332; 30 seconds identified as illustrative and moved to server policy.'
+  - id: optional-flow-exit
+    target: references/interface-rules.md
+    instruction: 'Let users skip, defer, go back, or exit optional onboarding.'
+    source_ids: [ui-professional-design-manual]
+    evidence: 'The UI Professional''s Design Manual, Personalization wizard, p. 258; Personal details - the theory, p. 351; Chapter recap, p. 378; required legal and security steps remain exceptions.'
+  - id: responsive-header-placement
+    target: references/interface-rules.md
+    instruction: 'Relocate secondary metadata instead of compressing it into the header.'
+    source_ids: [ui-professional-design-manual, ux-ui-process-principles, ui-design-systems-mastery]
+    evidence: 'The UI Professional''s Design Manual, Auto layout, pp. 140-142 and Navigation bar titles, p. 110; UX-UI Design Process and Principles, Chapter 5, pp. 90 and 92-94; UI Design Systems Mastery, Part 04, p. 142. NotebookLM query on 2026-08-30 returned these locators with an empty citation map; numeric element counts remain context-dependent.'
+  - id: platform-dialog-order
+    target: references/interface-rules.md
+    instruction: 'Inherit dialog action order from the active platform or repository design system.'
+    source_ids: [ui-professional-design-manual]
+    evidence: 'The UI Professional''s Design Manual, Verify identity - the theory, Alert messages - what text to use, p. 387; cancel-left is iOS-specific, so platform authority decides.'
+  - id: keyboard-avoidance
+    target: references/interface-rules.md
+    instruction: 'Keep the focused control, associated error, and next action visible when a software keyboard opens.'
+    source_ids: [ui-professional-design-manual]
+    evidence: 'The UI Professional''s Design Manual, Legal information - the theory, Anchor button, p. 356; the floating anchor is explicitly illustrative, so only the visibility problem is retained.'
+  - id: pictogram-navigation-aid
+    target: references/interface-rules.md
+    instruction: 'Use familiar pictograms'
+    source_ids: [beskar-settings-pictogram-field-case, spotify-accessibility]
+    evidence: 'Beskar Shelf settings field case recorded on 2026-09-15: the user identified plain repeated rows as slow to scan and requested useful pictograms; the repaired screen retained labels and local styling. Spotify Accessibility Guidelines supports text alternatives, semantic labels, and understandable controls. The scanability benefit is a bounded field inference, not a universal icon requirement.'
+  - id: pictogram-rendered-proof
+    target: references/validation.md
+    instruction: 'for pictogram-assisted navigation or settings'
+    source_ids: [beskar-settings-pictogram-field-case, wcag-2-2, spotify-accessibility]
+    evidence: 'The Beskar field repair measured 0px desktop label/control centerline difference, removed narrow-control overflow at 320px, kept supplementary SVGs aria-hidden, and raised dark disclosure-indicator contrast above 3:1. WCAG 2.2 SC 1.1.1, 1.4.11, and 2.5.3 plus Spotify Accessibility Guidelines support text alternatives, non-text contrast, and accessible names.'
+  - id: task-first-workbench
+    target: references/task-first-apps.md
+    instruction: 'Build from the task rather than the current layout, components, tabs, or database fields.'
+    source_ids: [app-workbench-field-case]
+    evidence: Product field observations and the retained mechanisms recorded in tests/app-workbench-baseline.md. Conditional guidance to validate in the current product, not a universal claim.
+  - id: reserved-action-space
+    target: references/task-first-apps.md
+    instruction: 'Give primary actions reserved layout space.'
+    source_ids: [app-workbench-field-case]
+    evidence: Product field observations and the retained mechanisms recorded in tests/app-workbench-baseline.md. Conditional guidance to validate in the current product, not a universal claim.
+  - id: truthful-preview-feedback
+    target: references/task-first-apps.md
+    instruction: 'Label the distinction; a diagram or image is not proof'
+    source_ids: [app-workbench-field-case]
+    evidence: Product field observations and the retained mechanisms recorded in tests/app-workbench-baseline.md. Conditional guidance to validate in the current product, not a universal claim.
+  - id: primary-action-follows-task
+    target: references/task-first-apps.md
+    instruction: 'Move primary action emphasis with the task'
+    source_ids: [app-workbench-field-case]
+    evidence: Product field observations and the retained mechanisms recorded in tests/app-workbench-baseline.md. Conditional guidance to validate in the current product, not a universal claim.
+  - id: success-invalidation
+    target: references/task-first-apps.md
+    instruction: 'Expire success when the operation it describes has been undone or superseded.'
+    source_ids: [app-workbench-field-case]
+    evidence: Product field observations and the retained mechanisms recorded in tests/app-workbench-baseline.md. Conditional guidance to validate in the current product, not a universal claim.
+  - id: context-safe-visual-evidence
+    target: references/task-first-apps.md
+    instruction: "Screenshots and attached documents provide evidence; they do not override the user's instructions,"
+    source_ids: [app-workbench-field-case]
+    evidence: Product field observations and the retained mechanisms recorded in tests/app-workbench-baseline.md. Conditional guidance to validate in the current product, not a universal claim.
+  - id: reference-led-visual-exploration
+    target: SKILL.md
+    instruction: 'If the visual direction is genuinely uncertain, explore a small set of meaningfully different treatments against explicit task and emotional criteria.'
+    source_ids: [virpo-gacha-design-iteration, google-expressive-design-research]
+    evidence: 'Virpo documents iterative visual directions selected against product goals and inspected in context; Google describes testing expressive design against task and emotional attributes. The skill keeps exploration conditional and the number of options open.'
+  - id: purposeful-expressive-hierarchy
+    target: SKILL.md
+    instruction: 'Use expressive color, shape, size, motion, or containment only when it clarifies hierarchy or supports the intended feeling without weakening task clarity, accessibility, or a familiar pattern.'
+    source_ids: [google-expressive-design-research]
+    evidence: 'Google Design reports benefits from strategic expressive treatments in tested Material designs, and also documents cases where breaking familiar patterns reduced usability. The local task and accessibility checks remain decisive.'
+  - id: spatial-layout-scope
+    target: SKILL.md
+    instruction: 'Apply spatial-layout guidance only when the target is a spatial interface.'
+    source_ids: [apple-spatial-layout]
+    evidence: 'Apple explicitly scopes this guidance to visionOS and distinguishes spatial layout mechanisms from other platforms.'
+  - id: spatial-depth-judgment
+    target: SKILL.md
+    instruction: 'In that context, use depth sparingly to communicate hierarchy, keep depth cues consistent with the represented space, and keep text readable; platform-specific guidance does not become a web or mobile default.'
+    source_ids: [apple-spatial-layout]
+    evidence: 'Apple advises that depth cues match real-world expectations, that depth can communicate hierarchy, that depth is not needed everywhere, and that depth on text harms readability.'
+  - id: apple-contextual-feedback
+    target: references/interface-rules.md
+    instruction: Keep routine feedback in context; reserve modal interruption for a clear task benefit or critical actionable information.
+    source_ids:
+    - apple-hig-patterns
+    evidence: Feedback > Best practices; Modality > Best practices. https://developer.apple.com/design/human-interface-guidelines/feedback ; https://developer.apple.com/design/human-interface-guidelines/modality
+  - id: apple-contextual-permissions
+    target: references/interface-rules.md
+    instruction: Request private-data permissions when the feature needs them, explain the purpose, and support denial or revocation without misleading prompts.
+    source_ids:
+    - apple-hig-foundations
+    evidence: Privacy > Requesting permission and Pre-alert screens. Denial/revocation recovery is the skill adaptation of preserving usable flows. https://developer.apple.com/design/human-interface-guidelines/privacy
+  - id: apple-rtl-direction
+    target: references/interface-rules.md
+    instruction: For RTL locales, adapt reading-order navigation and layout without blindly mirroring numbers, media controls, photographs, or logos.
+    source_ids:
+    - apple-hig-foundations
+    evidence: Right to left > Numbers and characters, Controls, Images, Interface icons. https://developer.apple.com/design/human-interface-guidelines/right-to-left
+  - id: apple-gesture-alternatives
+    target: references/interface-rules.md
+    instruction: Provide an accessible alternative to drag or custom gestures, make move-versus-copy consequences clear, and support undo where the operation permits it.
+    source_ids:
+    - apple-hig-patterns
+    evidence: Drag and drop > Best practices and Providing feedback; Accessibility > Mobility supports gesture alternatives. https://developer.apple.com/design/human-interface-guidelines/drag-and-drop ; https://developer.apple.com/design/human-interface-guidelines/accessibility
+  - id: apple-task-options
+    target: references/interface-rules.md
+    instruction: Keep task-specific options near the task; use settings for infrequent preferences and respect system accessibility and appearance choices.
+    source_ids:
+    - apple-hig-patterns
+    evidence: Settings > Best practices, General settings, Task-specific options. https://developer.apple.com/design/human-interface-guidelines/settings
+  - id: apple-purposeful-motion
+    target: references/interface-rules.md
+    instruction: Tie custom motion to feedback or spatial continuity, follow gesture expectations, and keep it brief and interruptible.
+    source_ids:
+    - apple-hig-foundations
+    evidence: Motion > Best practices and Providing feedback. https://developer.apple.com/design/human-interface-guidelines/motion
+  - id: apple-animation-independence
+    target: references/interface-rules.md
+    instruction: Never make animation the sole carrier of essential state or block the next action just to finish a repeated animation.
+    source_ids:
+    - apple-hig-foundations
+    evidence: Motion > Make motion optional, In apps generally avoid adding motion to UI interactions that occur frequently, Let people cancel motion. https://developer.apple.com/design/human-interface-guidelines/motion
+  - id: few-monitoring-sequence
+    target: references/glanceable-monitoring.md
+    instruction: 'Support the monitoring sequence: overview first, then the items that need attention, then a short path to the detail needed to act.'
+    source_ids:
+    - few-dashboard-pitfalls
+    evidence: 'Introduction, three-step process of visual monitoring (see the big picture; focus on items that need attention; drill in to act), p. 3.'
+  - id: few-single-screen
+    target: references/glanceable-monitoring.md
+    instruction: 'Keep the overview needed for monitoring visible together; do not split items people compare into separate tabs, selectors, or screens.'
+    source_ids:
+    - few-dashboard-pitfalls
+    evidence: 'Pitfall #1, Exceeding the Boundaries of a Single Screen, p. 4 (fragmenting data behind radio buttons or list boxes prevents comparison). The scroll allowance for long histories is the skill adaptation.'
+  - id: few-comparison-context
+    target: references/glanceable-monitoring.md
+    instruction: 'Give every key status or measure its comparison: what it is compared with, whether it is good or bad, and whether it changed.'
+    source_ids:
+    - few-dashboard-pitfalls
+    evidence: 'Pitfall #2, Supplying Inadequate Context for the Data, p. 5 ("Compared to what? Is this good or bad?").'
+  - id: few-arrangement
+    target: references/glanceable-monitoring.md
+    instruction: 'Place the most important, attention-needing items in the most prominent position, and group related items next to each other.'
+    source_ids:
+    - few-dashboard-pitfalls
+    evidence: 'Pitfall #9, Arranging the Data Poorly, p. 11 (prime top-left position wasted on logo and navigation; related displays separated).'
+  - id: few-highlight-exceptions
+    target: references/glanceable-monitoring.md
+    instruction: 'Make only what needs attention visually prominent; subdue chrome, logos, navigation, and routine items.'
+    source_ids:
+    - few-dashboard-pitfalls
+    evidence: 'Pitfall #10, Ineffectively Highlighting What Is Important, p. 12.'
+  - id: few-no-competing-decoration
+    target: references/glanceable-monitoring.md
+    instruction: 'Do not let decoration take prime position or compete with the data; decorative art must stay visually quieter than any status.'
+    source_ids:
+    - few-dashboard-pitfalls
+    evidence: 'Pitfall #11, Cluttering the Screen with Useless Decoration, p. 12. Allowing quiet decorative art is the skill adaptation for products with an established visual identity.'
+  - id: few-color-restraint
+    target: references/glanceable-monitoring.md
+    instruction: 'Keep color subdued and neutral by default, reserve strong color for meaning or exceptions, and never encode status by color alone.'
+    source_ids:
+    - few-dashboard-pitfalls
+    evidence: 'Pitfall #12, Misusing or Overusing Color, p. 13 ("keep colors subdued and neutral, except when ... highlight"). Not relying on color alone also follows WCAG 2.2 Use of Color.'
+  - id: few-decision-precision
+    target: references/glanceable-monitoring.md
+    instruction: 'Show only the precision needed to decide; round numbers and times to what the decision needs.'
+    source_ids:
+    - few-dashboard-pitfalls
+    evidence: 'Pitfall #3, Displaying Excessive Detail or Precision, pp. 5-6.'
+  - id: pair-calibrate-trust
+    target: references/glanceable-monitoring.md
+    instruction: 'Help people calibrate trust: show what the output is based on and its known limits, so they know when to rely on it and when to check.'
+    source_ids:
+    - pair-explainability-trust
+    evidence: 'Explainability + Trust, key consideration 1, Help users calibrate their trust.'
+  - id: pair-data-sources
+    target: references/glanceable-monitoring.md
+    instruction: 'Name the data sources behind an AI result, especially data people may not expect the system to use.'
+    source_ids:
+    - pair-explainability-trust
+    evidence: 'Explainability + Trust, Help users calibrate their trust > Articulate data sources.'
+  - id: pair-decision-confidence
+    target: references/glanceable-monitoring.md
+    instruction: 'Show confidence or verification evidence only when it changes the decision, in terms people understand.'
+    source_ids:
+    - pair-explainability-trust
+    evidence: 'Explainability + Trust, key considerations 3 (Optimize for understanding) and 4 (Manage influence on user decisions: if, when, and how confidence is shown).'
+  - id: pair-paths-forward
+    target: references/glanceable-monitoring.md
+    instruction: 'Treat a low-confidence or unverified result as a possible error state, and give a path forward from every failure.'
+    source_ids:
+    - pair-errors-graceful-failure
+    evidence: 'Errors + Graceful Failure, key considerations 1 (Define errors and failure, including low-confidence predictions) and 3 (Provide paths forward from failure).'
+  - id: inset-roles
+    target: references/interface-rules.md
+    instruction: 'Name the inset roles in the token owner: page gutter, text inset inside a control, and trailing indicator inset (chevron, divider, count); controls take their padding from these roles, not one-off values.'
+    source_ids:
+    - alignment-inset-field-case
+    evidence: 'Alignment and inset field case, row: No unified padding system; Select arrow stuck to the side. tests/alignment-inset-baseline.md'
+  - id: icon-glyph-edge
+    target: references/interface-rules.md
+    instruction: 'Align an icon-only control at a content edge by its glyph, not its hit area: offset it by half the difference between hit size and glyph size so the visible icon meets the edge.'
+    source_ids:
+    - alignment-inset-field-case
+    evidence: 'Alignment and inset field case, row: Theme and Live controls too far from the right side. tests/alignment-inset-baseline.md'
+  - id: baseline-inline-items
+    target: references/interface-rules.md
+    instruction: 'Align mixed-size inline items in one row (pills, badges, counts, metadata) on the text baseline, not by box center.'
+    source_ids:
+    - alignment-inset-field-case
+    evidence: 'Alignment and inset field case, row: Agent pill not vertically aligned with metadata. tests/alignment-inset-baseline.md'
+  - id: cross-container-rows
+    target: references/interface-rules.md
+    instruction: 'When rows that read as one line live in separate containers (a sidebar brand and a top bar), give them the same top inset token and verify equal center y.'
+    source_ids:
+    - alignment-inset-field-case
+    evidence: 'Alignment and inset field case, row: Sidebar leaf lower than the top bar. tests/alignment-inset-baseline.md'
+  - id: trailing-separators
+    target: references/interface-rules.md
+    instruction: 'Put separators after their item, so a wrapped line never starts with a separator.'
+    source_ids:
+    - alignment-inset-field-case
+    evidence: 'Alignment and inset field case, row: Wrapped metadata line started with a separator. tests/alignment-inset-baseline.md'
+  - id: sticky-edge
+    target: references/interface-rules.md
+    instruction: 'Give a sticky region over scrolling content a visible edge (hairline or padding), so content passes under a boundary instead of looking clipped.'
+    source_ids:
+    - alignment-inset-field-case
+    evidence: 'Alignment and inset field case, row: Status card looked clipped under the pane title. tests/alignment-inset-baseline.md'
+  - id: continuation-action
+    target: references/interface-rules.md
+    instruction: 'Align a list''s continuation action (Load more) with the list it extends; under a full-width list, center it.'
+    source_ids:
+    - alignment-inset-field-case
+    evidence: 'Alignment and inset field case, row: Load more not centered. tests/alignment-inset-baseline.md'
+  - id: glyph-edge-proof
+    target: references/validation.md
+    instruction: 'edge alignment measured on glyph rectangles (the svg), not button rectangles; a hit area that touches the edge is not proof that the icon does;'
+    source_ids:
+    - alignment-inset-field-case
+    evidence: 'Alignment and inset field case, row: measurement methods: glyph rectangles. tests/alignment-inset-baseline.md'
+  - id: baseline-probe-proof
+    target: references/validation.md
+    instruction: 'baselines of mixed-size inline items measured with a zero-size inline-block probe (vertical-align: baseline) in each item, equal within 0.5px;'
+    source_ids:
+    - alignment-inset-field-case
+    evidence: 'Alignment and inset field case, row: measurement methods: zero-size baseline probe. tests/alignment-inset-baseline.md'
+  - id: dimension-default-scale
+    target: references/dimension-defaults.md
+    instruction: 'Use only these values for padding, margin, and gap: `0`, `4`, `8`, `16`, `32`, `64` px.'
+    source_ids:
+    - product-ui-dimension-tokens
+    - dimension-defaults-field-case
+    - refactoring-ui
+    evidence: 'Product UI tokens, Spacing section; dimension defaults field case, row: uneven padding; Refactoring UI, Estabeleca um sistema de espacamento e dimensionamento, pp. 70-75 (constrained non-linear scale; its own scale adds 12/24/48 steps). NotebookLM validation 2026-11-18: concept supported, exact values are product defaults.'
+  - id: parent-gap-owns-rhythm
+    target: references/dimension-defaults.md
+    instruction: 'The parent stack owns spacing between rows'
+    source_ids:
+    - dimension-defaults-field-case
+    - ui-professional-design-manual
+    evidence: 'Dimension defaults field case, row: uneven padding; The UI Professional''s Design Manual, auto layout, pp. 135-138 (container spacing owns item distribution). NotebookLM validation 2026-11-18: partly supported; books do not ban child margins, so the gap-only rule is an implementation default.'
+  - id: radius-per-component
+    target: references/dimension-defaults.md
+    instruction: 'Radius is per component, not one universal ladder.'
+    source_ids:
+    - product-ui-dimension-tokens
+    - ui-professional-design-manual
+    evidence: 'Product UI tokens, Buttons, Alert banners, and Loading and containers sections; The UI Professional''s Design Manual, pp. 290, 401, 513 (8 px inputs and buttons, 16 px cards, circular action triggers). NotebookLM validation 2026-11-18: per-component radius supported; the nested-radius rule is not in the sources.'
+  - id: canonical-select
+    target: references/dimension-defaults.md
+    instruction: 'One pattern. Do not mix it with `appearance: auto` or a `background-image` arrow'
+    source_ids:
+    - dimension-defaults-field-case
+    - alignment-inset-field-case
+    evidence: 'Dimension defaults field case, row: dropdown arrow; alignment and inset field case, row: select arrow stuck to the side.'
+  - id: generated-default-tells
+    target: references/interface-rules.md
+    instruction: 'These appear in generated UI regardless of subject.'
+    source_ids:
+    - anthropic-frontend-design
+    evidence: 'frontend-design, Process section: traits AI-generated design clusters around (SaaS-card kit, template chrome).'
+  - id: spacing-selector-specificity
+    target: references/interface-rules.md
+    instruction: 'Keep spacing in one selector per element.'
+    source_ids:
+    - anthropic-frontend-design
+    - dimension-defaults-field-case
+    evidence: 'frontend-design, Process section: CSS classes that cancel each other out, often with padding/margin; dimension defaults field case, row: uneven padding.'
+  - id: consistent-action-names
+    target: references/interface-rules.md
+    instruction: 'keep that name through the'
+    source_ids:
+    - anthropic-frontend-design
+    evidence: 'frontend-design, More on writing in design: an action keeps the same name through the whole flow; errors do not apologize.'

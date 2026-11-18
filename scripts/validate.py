@@ -31,6 +31,8 @@ def validate_skill(folder: Path) -> dict:
             raise ValueError(f"{folder.name}: incorrect fixture identity")
     source_manifest = yaml.safe_load((folder / "sources.yaml").read_text()) if (folder / "sources.yaml").exists() else {"sources": []}
     for source in source_manifest["sources"]:
+        if re.match(r"https?://", source["locator"]):
+            continue  # remote source; only local snapshots are checksummed
         target = (folder / source["locator"]).resolve()
         if not target.is_relative_to(folder.resolve()):
             raise ValueError("source path escapes skill")
@@ -38,7 +40,8 @@ def validate_skill(folder: Path) -> dict:
             raise ValueError("source checksum mismatch")
     grounding = yaml.safe_load((folder / "grounding.yaml").read_text()) if (folder / "grounding.yaml").exists() else {"claims": []}
     for claim in grounding["claims"]:
-        if claim["instruction"] not in text:
+        target = (folder / claim.get("target", "SKILL.md")).resolve()
+        if not target.is_relative_to(folder.resolve()) or claim["instruction"] not in target.read_text():
             raise ValueError(f"{folder.name}: stale grounded instruction")
     details = metadata.get("metadata")
     if not isinstance(details, dict) or not re.fullmatch(r"\d+\.\d+\.\d+", str(details.get("version", ""))):

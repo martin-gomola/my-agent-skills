@@ -26,6 +26,7 @@ a clear next step. Install only the behavior you need in each agent.
 | Check staged changes for private data | [pii-precommit-check](skills/pii-precommit-check/SKILL.md) |
 | Edit or audit prose while preserving voice | [stop-slop](skills/stop-slop/SKILL.md) |
 | Give a repository a GitHub Pages site people can understand | [github-repo-site](skills/github-repo-site/SKILL.md) |
+| Design and ship an app screen people can use without thinking | [ux-design](skills/ux-design/SKILL.md) |
 
 [Work across agents](docs/across-agents.md) shows how the first four skills fit
 together and which handoffs still need you to paste text.
@@ -56,6 +57,7 @@ Install only the behavior you need. The standalone
 | [pii-precommit-check](skills/pii-precommit-check/SKILL.md) | Scan staged Git changes using a bundled Python scanner. |
 | [stop-slop](skills/stop-slop/SKILL.md) | Tighten a draft or audit prose without inventing authorship claims. |
 | [github-repo-site](skills/github-repo-site/SKILL.md) | Build a GitHub Pages project page from repository facts, or a skill installer like this one. |
+| [ux-design](skills/ux-design/SKILL.md) | Redesign and implement an app screen, form, or dashboard, then verify it rendered. |
 
 ## Help
 

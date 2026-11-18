@@ -81,6 +81,15 @@
       "description": "Build a GitHub Pages site for any repository.",
       "usage": "$github-repo-site Build a GitHub Pages site that explains this repository and how to start.",
       "example": "Use github-repo-site to build a GitHub Pages site that explains this repository and how to start."
+    },
+    {
+      "id": "ux-design",
+      "label": "ux-design",
+      "version": "0.1.0",
+      "sourcePath": "skills/ux-design",
+      "description": "Design and implement usable app screens.",
+      "usage": "$ux-design Redesign this screen around the user's task and verify it rendered.",
+      "example": "Use ux-design to redesign this screen around the user's task and verify it rendered."
     }
   ]
 }
