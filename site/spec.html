@@ -7,8 +7,9 @@
 <title>Handoff protocol · Your Turn Loop</title>
 <script>try{document.documentElement.dataset.theme=localStorage.getItem('theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch{document.documentElement.dataset.theme='light'}</script>
 <link rel="icon" href="icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="style.css?v=one-product-1">
+<link rel="stylesheet" href="style.css?v=one-product-2">
 <script type="module" src="theme.mjs?v=1"></script>
+<script type="module" src="spec.mjs?v=1"></script>
 <body>
 <!-- GitHub mark from Primer Octicons; license in third-party/primer-octicons-MIT.txt. -->
 <header>
@@ -27,7 +28,7 @@
       <p class="spec-lead">A four-line block at the end of an agent's answer that says what came out of the turn and whether anything waits on you. People read it at a glance. Tools such as the <a href="https://github.com/martin-gomola/your-turn">Your Turn inbox</a> parse it without a model call.</p>
       <p class="spec-note">The key words <strong>must</strong>, <strong>should</strong> and <strong>may</strong> describe what a conforming writer (the agent) or reader (a tool) does.</p>
       <nav class="spec-toc" aria-label="On this page">
-    <a href="#fields">Fields</a> · <a href="#next-step">Next step</a> · <a href="#layout">Layout</a> · <a href="#reading">Reading the block</a> · <a href="#examples">Examples</a> · <a href="#implementations">Implementations</a>
+    <a href="#use">Use it</a> · <a href="#fields">Fields</a> · <a href="#next-step">Next step</a> · <a href="#layout">Layout</a> · <a href="#reading">Reading the block</a> · <a href="#examples">Examples</a> · <a href="#implementations">Implementations</a>
   </nav>
     </section>
     <section class="hud-panel spec-example" aria-labelledby="example-title">
@@ -44,6 +45,29 @@
 **Decision:** Skip or abort on a malformed row? -> skip and log (over abort, silent skip). One bad row should not lose a whole import.</pre>
     </section>
   </div>
+  <section class="hud-panel spec-section spec-adopt" id="use" aria-labelledby="use-title">
+    <div class="result-heading">
+      <h2 class="field-label" id="use-title"><span class="field-step" aria-hidden="true">00</span><span>Use it without installing anything</span></h2>
+      <button id="copy-snippet" type="button">Copy for AGENTS.md</button>
+    </div>
+    <p>Paste this into <code>AGENTS.md</code>, <code>CLAUDE.md</code> or your agent's custom instructions. The <a href="./">your-turn-handoff skill</a> does the same with more guidance and examples.</p>
+    <pre id="snippet" tabindex="0" aria-label="Handoff instructions for AGENTS.md">## Handoff
+
+End every final answer with a short handoff block, so the user can see at a glance what happened and whether anything waits on them. Tools such as the Your Turn inbox parse it, so keep the exact format: each field on its own line, a blank line between fields, plain Markdown outside code blocks, at the very end of the reply. Questions and pauses for review get the block too; progress updates do not.
+
+**Outcome:** The importer skips malformed rows instead of aborting the file.
+
+**Next step:** review: confirm the skipped-row log format in importer.py
+
+- Outcome: one sentence under 160 characters with the concrete result, finding or blocker. Include a limit when it changes the meaning.
+- Next step: `none` when nothing waits on the user. Otherwise one of `answer:`, `decide:`, `review:`, `approve:` or `run:`, then the single action they must take, under 120 characters. Finish the work you are allowed to do first. Optional suggestions go in the body, not here.
+- From the second turn on, add `**Recap:**` with one or two sentences about the whole chat: the goal, what is settled, what is open.
+- When you settle a trade-off this turn, add `**Decision:** &lt;question&gt; -&gt; &lt;chosen&gt; (over &lt;alternatives&gt;). &lt;reason&gt;`.
+- Keep labels and prefixes in English and write the rest in the reply's language. Do not use these labels anywhere else in the answer.
+
+Format: Handoff protocol 1.0, https://martin-gomola.github.io/your-turn-loop/spec.html</pre>
+    <p id="copy-status" class="spec-note" role="status" aria-live="polite"></p>
+  </section>
   <section class="hud-panel spec-section" id="fields" aria-labelledby="fields-title">
     <h2 class="field-label" id="fields-title"><span class="field-step" aria-hidden="true">01</span><span>Fields</span></h2>
     <div class="spec-fields">
