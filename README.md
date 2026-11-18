@@ -38,6 +38,9 @@ defines each field for agents and for tools that read the block.
 - **Your own tools stay in.** Your other skills and MCP servers remain available
   to every agent. These skills only move work and results between them.
 
+For how this compares with agent frameworks and terminal wrappers, see
+[Why Your Turn](https://github.com/martin-gomola/your-turn#why-your-turn-instead-of-another-agent-framework).
+
 ## Cross-agent loop
 
 | Step | Who acts | Skill | Use it when |
