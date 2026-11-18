@@ -67,7 +67,10 @@ header .repo:hover { color: var(--ink); }
 .brand-icon__active { fill: var(--accent); }
 :root[data-theme="dark"] .brand-icon__queue { fill: var(--ink); opacity: .55; }
 :root[data-theme="dark"] .brand-icon__route { stroke: var(--ink); }
-.brand-suffix { color: var(--accent); font: 700 13px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+/* The Deck's brand line (.deck-brand in your-turn app.css): name and mode share a baseline, a muted slash between. */
+.brand-name { display: inline-flex; align-items: baseline; gap: 8px; white-space: nowrap; }
+.brand-suffix { color: var(--accent); font: 600 12px/1.4 var(--mono); letter-spacing: .12em; text-transform: uppercase; }
+.brand .brand-suffix > span { display: inline; color: var(--muted); }
 a { color: var(--accent); text-underline-offset: 3px; text-decoration-thickness: 1px; }
 /* Inline links nudge their arrow in the direction it points. */
 a span[aria-hidden] { display: inline-block; transition: transform .18s var(--ease); }
