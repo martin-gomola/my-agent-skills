@@ -33,6 +33,7 @@ PERMISSION_DENIAL_MARKERS = (
     'required the "command" permission',
     "headless mode cannot prompt",
 )
+SESSION_ID = re.compile(r"[0-9a-fA-F-]{8,64}")
 STATUS_EXIT_CODES = {
     "ok": 0,
     "empty": 65,
@@ -75,18 +76,22 @@ def build_command(
     binary: str,
     timeout_seconds: int,
     prompt: str,
+    resume: str | None = None,
 ) -> list[str]:
     if provider == "claude":
+        # The session is saved so a later call can continue it with --resume <session_id>.
         return [
             binary,
             "-p",
             "--permission-mode",
             "plan",
-            "--no-session-persistence",
             "--output-format",
-            "text",
+            "json",
+            *(["--resume", resume] if resume else []),
             prompt,
         ]
+    if resume:
+        raise AdvisorError("--resume is supported only for the claude provider")
     if provider == "gemini":
         return [
             binary,
@@ -106,13 +111,7 @@ def artifact_path(repo_root: Path, provider: str, task: str, now: datetime) -> P
     words = re.findall(r"[a-z0-9]+", task.lower())[:8]
     slug = "-".join(words)[:64].strip("-") or "review"
     timestamp = now.astimezone(UTC).strftime("%Y%m%dT%H%M%SZ")
-    return (
-        repo_root
-        / ".mythosaur"
-        / "artifacts"
-        / "ask"
-        / f"ask-{provider}-{slug}-{timestamp}.md"
-    )
+    return repo_root / ".ask" / f"ask-{provider}-{slug}-{timestamp}.md"
 
 
 def require_repo_root(repo_root: Path) -> Path:
@@ -144,7 +143,8 @@ def require_ignored_artifact(repo_root: Path, candidate: Path) -> None:
     )
     if result.returncode != 0:
         raise AdvisorError(
-            f"artifact path is not ignored by Git: {relative}; refusing to write review output"
+            f"artifact path is not ignored by Git: {relative}; refusing to write review output. "
+            "Add .ask/ to .gitignore or .git/info/exclude with the user's approval"
         )
 
 
@@ -154,6 +154,17 @@ def _text(value: str | bytes | None) -> str:
     if isinstance(value, bytes):
         return value.decode("utf-8", errors="replace")
     return value
+
+
+def parse_claude_json(stdout: str) -> tuple[str, str | None]:
+    """Return (answer text, session id) from `claude -p --output-format json`; raw stdout if not JSON."""
+    try:
+        data = json.loads(stdout)
+    except ValueError:
+        return stdout, None
+    if not isinstance(data, dict):
+        return stdout, None
+    return str(data.get("result") or ""), data.get("session_id")
 
 
 def run_once(
@@ -177,11 +188,15 @@ def run_once(
         stderr = _text(exc.stderr)
         timed_out = True
         returncode = 124
+    session_id = None
+    if "json" in command:
+        stdout, session_id = parse_claude_json(stdout)
     return {
         "status": classify_result(returncode, stdout, stderr, timed_out),
         "returncode": returncode,
         "stdout": stdout,
         "stderr": stderr,
+        "session_id": session_id,
     }
 
 
@@ -247,6 +262,7 @@ def write_artifact(
         f"Status: `{final['status']}`",
         f"Attempts: `{len(attempts)}`",
         f"Final exit status: `{final['returncode']}`",
+        *([f"Session: `{final['session_id']}`"] if final.get("session_id") else []),
         "",
         "## Action Items",
         "",
@@ -286,6 +302,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--prompt-file", type=Path, required=True)
     parser.add_argument("--timeout-seconds", type=int, default=600)
     parser.add_argument("--protocol-retries", type=int, choices=(0, 1), default=1)
+    parser.add_argument("--resume", help="continue an earlier claude session by its session_id")
     return parser.parse_args(argv)
 
 
@@ -299,6 +316,8 @@ def main(argv: list[str] | None = None) -> int:
         requested_prompt = args.prompt_file.read_text(encoding="utf-8").strip()
         if not task or not requested_prompt:
             raise AdvisorError("task and prompt files must not be empty")
+        if args.resume and not SESSION_ID.fullmatch(args.resume):
+            raise AdvisorError("--resume must be a session_id from an earlier ask result")
         binary_name = "claude" if args.provider == "claude" else "agy"
         binary = shutil.which(binary_name)
         if binary is None:
@@ -308,16 +327,18 @@ def main(argv: list[str] | None = None) -> int:
         require_ignored_artifact(repo_root, candidate)
         final_prompt = with_completion_authority(requested_prompt)
         command = build_command(
-            args.provider, binary, args.timeout_seconds, final_prompt
+            args.provider, binary, args.timeout_seconds, final_prompt, args.resume
         )
         attempts = [run_once(command, repo_root, args.timeout_seconds)]
+        # A retry continues the same conversation, so the caller ends up with one session id.
+        session = attempts[-1]["session_id"] or args.resume
         if attempts[-1]["status"] == "protocol" and args.protocol_retries == 1:
             retry_prompt = (
                 "Protocol correction: return the completed read-only review now. "
                 "Do not ask questions or request confirmation.\n\n" + final_prompt
             )
             command = build_command(
-                args.provider, binary, args.timeout_seconds, retry_prompt
+                args.provider, binary, args.timeout_seconds, retry_prompt, session
             )
             attempts.append(run_once(command, repo_root, args.timeout_seconds))
         elif attempts[-1]["status"] == "permission":
@@ -329,7 +350,7 @@ def main(argv: list[str] | None = None) -> int:
                 "a dangerous permission bypass.\n\n" + final_prompt
             )
             command = build_command(
-                args.provider, binary, args.timeout_seconds, retry_prompt
+                args.provider, binary, args.timeout_seconds, retry_prompt, session
             )
             attempts.append(run_once(command, repo_root, args.timeout_seconds))
 
@@ -345,6 +366,7 @@ def main(argv: list[str] | None = None) -> int:
                     "artifact": str(path),
                     "attempts": len(attempts),
                     "exit_status": final["returncode"],
+                    "session_id": final["session_id"] or session,
                 },
                 sort_keys=True,
             )

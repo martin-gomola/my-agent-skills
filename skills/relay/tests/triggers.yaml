@@ -1,0 +1,17 @@
+skill: relay
+should_trigger:
+  - "Hand the CSV export implementation to Codex and review what it changes."
+  - "Use $relay to have Codex add the retry logic, then check its diff."
+  - "Codex has more quota left. Delegate this refactor to codex exec in a worktree."
+  - "From Codex, send this tricky parser fix to Claude Code and review its diff."
+  - "Relay the caching redesign to Claude in full access mode."
+should_not_trigger:
+  - "Ask Claude for a read-only review of my uncommitted changes."
+  - "Generate a 1200x630 social preview with Codex."
+  - "Write a prompt I can paste into Codex for the export feature."
+  - "Fix this failing test yourself."
+  - "Install the Codex CLI and log me in."
+  - "Merge the relay branch Codex finished yesterday."
+threshold:
+  min_tpr: 0.85
+  max_fpr: 0.1

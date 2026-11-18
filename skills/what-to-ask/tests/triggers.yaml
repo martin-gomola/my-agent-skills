@@ -6,6 +6,7 @@ should_trigger:
   - "Make a copy-ready prompt from this rough description of the UI problem."
   - "I want to ask another model to inspect this repository and fix one issue. What should I tell it?"
   - "Create a precise prompt for an assistant to research this question with citations."
+  - "Tu je výsledok z Claude Code; priprav zadanie, s ktorým Codex urobí ďalší krok."
 should_not_trigger:
   - "Please implement this bug fix in the current repository."
   - "Why does my existing prompt keep ignoring the JSON format? Rewrite it."

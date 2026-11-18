@@ -34,6 +34,10 @@ Use your-turn-handoff for the final answers in this chat.
 Your agent controls when skills load. Installation and an example request do not
 prove activation in every future chat.
 
+To continue in another agent, paste the block into a chat with
+[what-to-ask](../skills/what-to-ask/SKILL.md) and ask for the follow-up prompt.
+See [Work across agents](across-agents.md).
+
 ## Update or remove
 
 Follow [Manage your installation](install.md). The editable source is

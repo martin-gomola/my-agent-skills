@@ -47,11 +47,14 @@ def test_builds_read_only_provider_commands() -> None:
         "-p",
         "--permission-mode",
         "plan",
-        "--no-session-persistence",
         "--output-format",
-        "text",
+        "json",
         "Review this",
     ]
+    resumed = run_advisor.build_command("claude", "/bin/claude", 600, "Next", "abc-123")
+    assert resumed[-3:] == ["--resume", "abc-123", "Next"]
+    with pytest.raises(run_advisor.AdvisorError, match="only for the claude"):
+        run_advisor.build_command("gemini", "/bin/agy", 600, "Next", "abc-123")
 
     gemini = run_advisor.build_command("gemini", "/bin/agy", 600, "Review this")
     assert gemini == [
@@ -79,18 +82,18 @@ def test_artifact_path_is_repo_local_and_stable() -> None:
         Path("/repo"), "claude", "Review auth flow", timestamp
     )
     assert path == Path(
-        "/repo/.mythosaur/artifacts/ask/ask-claude-review-auth-flow-20260825T143000Z.md"
+        "/repo/.ask/ask-claude-review-auth-flow-20260825T143000Z.md"
     )
 
 
 def test_requires_artifact_path_to_be_gitignored(tmp_path: Path) -> None:
     subprocess.run(["git", "init", "-q", str(tmp_path)], check=True)
-    candidate = tmp_path / ".mythosaur" / "artifacts" / "ask" / "result.md"
+    candidate = tmp_path / ".ask" / "result.md"
 
     with pytest.raises(run_advisor.AdvisorError, match="not ignored"):
         run_advisor.require_ignored_artifact(tmp_path, candidate)
 
-    (tmp_path / ".gitignore").write_text(".mythosaur/\n", encoding="utf-8")
+    (tmp_path / ".gitignore").write_text(".ask/\n", encoding="utf-8")
     run_advisor.require_ignored_artifact(tmp_path, candidate)
 
 
@@ -106,7 +109,7 @@ def test_main_retries_protocol_once_and_writes_audit(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
 ) -> None:
     subprocess.run(["git", "init", "-q", str(tmp_path)], check=True)
-    (tmp_path / ".gitignore").write_text(".mythosaur/\n", encoding="utf-8")
+    (tmp_path / ".gitignore").write_text(".ask/\n", encoding="utf-8")
     task_file = tmp_path / "task.txt"
     prompt_file = tmp_path / "prompt.txt"
     task_file.write_text("Review auth flow", encoding="utf-8")
@@ -120,9 +123,10 @@ def test_main_retries_protocol_once_and_writes_audit(
         "#!/bin/sh\n"
         'if [ ! -f "$ASK_FAKE_COUNTER" ]; then\n'
         '  touch "$ASK_FAKE_COUNTER"\n'
-        '  echo "I can inspect this. Shall I proceed?"\n'
+        '  echo \'{"result": "I can inspect this. Shall I proceed?", "session_id": "aaaa1111"}\'\n'
         "else\n"
-        '  echo "Finding: auth.py needs a timeout."\n'
+        '  case "$*" in *"--resume aaaa1111"*) ;; *) exit 3 ;; esac\n'
+        '  echo \'{"result": "Finding: auth.py needs a timeout.", "session_id": "aaaa1111"}\'\n'
         "fi\n",
         encoding="utf-8",
     )
@@ -149,8 +153,10 @@ def test_main_retries_protocol_once_and_writes_audit(
     payload = json.loads(capsys.readouterr().out)
     assert payload["status"] == "ok"
     assert payload["attempts"] == 2
+    assert payload["session_id"] == "aaaa1111"
     artifact = Path(payload["artifact"])
     content = artifact.read_text(encoding="utf-8")
+    assert "Session: `aaaa1111`" in content
     assert "Status: `protocol`" in content
     assert "Status: `ok`" in content
     assert "Shall I proceed?" in content
@@ -161,7 +167,7 @@ def test_main_retries_headless_permission_once_without_changing_permissions(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
 ) -> None:
     subprocess.run(["git", "init", "-q", str(tmp_path)], check=True)
-    (tmp_path / ".gitignore").write_text(".mythosaur/\n", encoding="utf-8")
+    (tmp_path / ".gitignore").write_text(".ask/\n", encoding="utf-8")
     task_file = tmp_path / "task.txt"
     prompt_file = tmp_path / "prompt.txt"
     task_file.write_text("Review auth flow", encoding="utf-8")
@@ -222,7 +228,7 @@ def test_main_stops_after_second_permission_denial(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
 ) -> None:
     subprocess.run(["git", "init", "-q", str(tmp_path)], check=True)
-    (tmp_path / ".gitignore").write_text(".mythosaur/\n", encoding="utf-8")
+    (tmp_path / ".gitignore").write_text(".ask/\n", encoding="utf-8")
     task_file = tmp_path / "task.txt"
     prompt_file = tmp_path / "prompt.txt"
     task_file.write_text("Review auth flow", encoding="utf-8")
@@ -265,3 +271,11 @@ def test_main_stops_after_second_permission_denial(
     assert "explicit user authorization" in content
     assert "Do not add a broad allow rule" in content
     assert not (tmp_path / ".gemini").exists()
+
+
+def test_main_rejects_malformed_resume_id(tmp_path: Path) -> None:
+    subprocess.run(["git", "init", "-q", str(tmp_path)], check=True)
+    (tmp_path / "t.txt").write_text("x", encoding="utf-8")
+    args = ["--provider", "claude", "--repo-root", str(tmp_path), "--task-file", str(tmp_path / "t.txt"),
+            "--prompt-file", str(tmp_path / "t.txt"), "--resume", "x; rm -rf"]
+    assert run_advisor.main(args) == 1

@@ -1,0 +1,36 @@
+skill: ux-design
+should_trigger:
+  - "Design and implement the settings flow for this dashboard, then verify it in the browser."
+  - "Improve the UX and responsive layout of this internal React application."
+  - "Create a DESIGN.md for this app and align its components with the existing theme tokens."
+  - "Build an accessible multi-step form with loading, error, empty, and success states."
+  - "Reconcile duplicate light and dark theme values and validate the rendered mobile UI."
+  - "Adapt the useful interaction principles from this reference app without copying its brand."
+  - "The mobile app screen has cramped controls and unclear hierarchy - fix the implementation."
+  - "Design a data-heavy admin screen with clear navigation, forms, feedback, and keyboard support."
+  - "This existing admin card is hard to read. Challenge the current component instead of just restyling it, implement a better alternative, and verify it with long content."
+  - "Add a mobile full-screen crop selector with an icon, a long localized name, spacing metadata, an evidence badge, and a close action. Lay out the narrow header before implementation."
+  - "This planner page keeps growing: crop picker, bed map, quantities, water demand, calendar, and companion guidance are all on one screen. Restructure its information architecture before coding."
+  - "Add useful pictograms to these settings rows so people can scan and navigate them faster, while keeping the existing design system."
+  - "Redesign and implement this beginner CAD panel without preserving its current tabs and components. Focus on making a printable object."
+  - "Make this app take less thinking: useful defaults, visual feedback, fewer competing choices, no marketing filler. Implement it."
+  - "Use this wide application window better; keep the working object visible and advanced controls out of the first-use path."
+  - "Redesign our customer-facing booking app's working screens; public users need to finish a task, not read promotional copy."
+  - "Implement our app onboarding so required account steps are clear and optional printer setup can be deferred."
+  - "Make this agent inbox glanceable: what needs me must stand out, and each result should show whether it can be trusted. Implement and verify it."
+  - "The badge and the text next to it are not vertically aligned, icons look inset from the edge, and paddings are inconsistent. Fix the spacing system."
+should_not_trigger:
+  - "Design a distinctive public landing page and hero for my consultancy."
+  - "Audit this checkout flow and give me findings only - do not change code."
+  - "Fix the iPhone standalone safe-area and Add to Home Screen behavior."
+  - "Turn this Figma screen into SwiftUI code."
+  - "Generate a bitmap illustration for the empty state."
+  - "Refactor this Python data pipeline; there is no user interface."
+  - "Choose and install a shadcn component."
+  - "Create an architecture diagram for the backend services."
+  - "Create a promotional hero, testimonials, and a signup pitch for this product's public website."
+  - "Only critique the attached app screenshots and rank findings; do not implement anything."
+  - "Only align this button icon and adjust its type weight to match its sibling component."
+threshold:
+  min_tpr: 0.9
+  max_fpr: 0.1

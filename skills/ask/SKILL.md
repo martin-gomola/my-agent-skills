@@ -1,7 +1,7 @@
 ---
 name: ask
 metadata:
-  version: "0.1.0"
+  version: "0.2.0"
 description: Asks Claude, Anthropic, Gemini, Google, or Antigravity through installed local CLIs and saves a repository-local audit artifact. Use for an explicitly requested external-model second opinion, critique, brainstorm, review, or research pass.
 ---
 
@@ -61,6 +61,10 @@ Include:
 This read-only review is already authorized. Begin immediately; do not present a plan and do not ask for confirmation. Return the completed review in this response. Do not modify files or external systems.
 ```
 
+When the user supplies a ready prompt, such as one drafted with `what-to-ask`,
+keep its task, scope, and constraints as written and add only the missing items
+above.
+
 Do not assume `main`, the current branch, or the entire repository when the
 review target is not established. Resolve the target from the user's request
 or current task context; ask one short question only when different targets
@@ -85,14 +89,15 @@ python3 <skill-dir>/scripts/run_advisor.py \
   --repo-root <repo-root> \
   --task-file <task-file> \
   --prompt-file <prompt-file> \
-  --timeout-seconds 600
+  --timeout-seconds 600 \
+  [--resume <session_id>]
 ```
 
 The runner invokes these provider command shapes:
 
 ```bash
-claude -p --permission-mode plan --no-session-persistence \
-  --output-format text "<final prompt>"
+claude -p --permission-mode plan --output-format json \
+  [--resume <session_id>] "<final prompt>"
 ```
 
 ```bash
@@ -104,6 +109,19 @@ The runner passes arguments through a native process API. Never replace it with
 `eval`, interpolate the prompt into a shell program, enable dangerous permission
 bypasses, or allow the advisor to write to the workspace. Remove only the
 temporary task and prompt files after the runner exits.
+
+## Continue a Claude Conversation
+
+Every Claude result includes `session_id` in the runner's JSON and in the
+artifact. To ask a follow-up in the same conversation, for example "now check the
+rollback section too", rerun the runner with `--resume <session_id>` and a prompt
+that contains only the follow-up. Claude keeps the earlier prompt, its answer, and
+the files it read, and stays in plan mode. Each call still writes its own
+artifact. Keep the latest `session_id` and reuse it for the next follow-up.
+
+Use `--resume` only for a follow-up the user asked for, and only with a
+`session_id` that an earlier `ask` result returned in this repository. Antigravity
+has no resume, so `gemini` calls always start fresh.
 
 ## Interpret the Status
 
@@ -138,13 +156,14 @@ Do not retry `empty`, `timeout`, or `failed` automatically.
 After the command completes, create:
 
 ```text
-<repo-root>/.mythosaur/artifacts/ask/ask-<provider>-<slug>-<UTC timestamp>.md
+<repo-root>/.ask/ask-<provider>-<slug>-<UTC timestamp>.md
 ```
 
 Use a filesystem-safe lowercase slug and a timestamp such as
 `20260825T143000Z`. Before invoking the provider, the runner requires the final
 artifact path to pass `git check-ignore`; it refuses to run otherwise. Keep
-`.mythosaur/` local and ignored by Git.
+`.ask/` local and ignored by Git. If it is not ignored, ask the user before
+adding `.ask/` to `.gitignore` or to the untracked `.git/info/exclude`.
 
 The artifact must contain:
 
