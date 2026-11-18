@@ -5,6 +5,7 @@ should_trigger:
   - "Codex has more quota left. Delegate this refactor to codex exec in a worktree."
   - "From Codex, send this tricky parser fix to Claude Code and review its diff."
   - "Relay the caching redesign to Claude in full access mode."
+  - "From Cursor, have Antigravity implement the retry logic and review its diff."
 should_not_trigger:
   - "Ask Claude for a read-only review of my uncommitted changes."
   - "Generate a 1200x630 social preview with Codex."

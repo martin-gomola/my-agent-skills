@@ -44,7 +44,7 @@ defines each field for agents and for tools that read the block.
 | --- | --- | --- | --- |
 | Brief | You → orchestrator | [what-to-ask](skills/what-to-ask/SKILL.md) | Turn notes, a screenshot, or another agent's result into a self-contained prompt. |
 | Delegate | Orchestrator → reviewer | [ask](skills/ask/SKILL.md) | Get a read-only second opinion through an installed Claude or Antigravity CLI. |
-| Delegate | Orchestrator → builder | [relay](skills/relay/SKILL.md) | Have Codex or Claude implement a scoped task in its own worktree while your agent reviews the diff. |
+| Delegate | Orchestrator → builder | [relay](skills/relay/SKILL.md) | Have Codex, Claude or Antigravity implement a scoped task in its own worktree while your agent reviews the diff. |
 | Delegate | Orchestrator → builder | [codex-image](skills/codex-image/SKILL.md) | Hand off image creation to a Codex CLI with image generation available. |
 | Result | Every agent | [your-turn-handoff](docs/handoff.md) | End every answer with a clear Outcome and Next step, plus Recap and Decision in longer chats. |
 | Your turn | You | [Your Turn inbox](https://github.com/martin-gomola/your-turn) (optional) | See which chats need you, then carry a result back as the next brief. |

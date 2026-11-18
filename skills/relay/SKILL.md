@@ -1,8 +1,8 @@
 ---
 name: relay
 metadata:
-  version: "0.2.0"
-description: Delegates a scoped implementation task to a local Codex or Claude Code CLI in its own git worktree, then reviews the diff and the returned Outcome and Next step. Use when the user asks to hand coding work to Codex or Claude from another agent. Avoid for read-only opinions, image generation, or work the current agent should do itself.
+  version: "0.3.0"
+description: Delegates a scoped implementation task to a local Codex, Claude Code or Antigravity CLI in its own git worktree, then reviews the diff and the returned Outcome and Next step. Use when the user asks to hand coding work to Codex, Claude or Antigravity from another agent. Avoid for read-only opinions, image generation, or work the current agent should do itself.
 ---
 
 # Relay
@@ -17,10 +17,12 @@ worker CLI. It installs nothing and never reads or prints credentials.
 | --- | --- | --- |
 | `codex` | Routine implementation, tests, refactors; usually the largest quota | `codex exec` |
 | `claude` | Hard design, tricky code, careful review fixes | `claude -p` |
+| `agy` | Antigravity with Gemini models; a second opinion in code, or when the others are out of quota | `agy -p` |
 
 Use the worker the user names. If they name none, ask, or pick `codex` for
 routine work and `claude` for hard design. Never delegate to the agent you are
-running in. Use `ask` for a read-only second opinion and `codex-image` for
+running in. Any of these agents, or Cursor, can be the caller; Cursor is never a
+worker. Use `ask` for a read-only second opinion and `codex-image` for
 images.
 
 ## Workflow
@@ -48,7 +50,8 @@ images.
    Leave out credentials, private data, and chat history the task does not need.
 3. **Preflight.**
    - Run `which -a <worker>`, `<worker> --version` and the command's `--help`
-     (`codex exec --help` or `claude --help`). Use only flags the help lists.
+     (`codex exec --help`, `claude --help` or `agy --help`). Use only flags
+     the help lists.
    - Run `git check-ignore -q .relay/x`. If `.relay/` is not ignored, ask the
      user before adding it to `.gitignore` or the untracked
      `.git/info/exclude`.
@@ -98,11 +101,27 @@ images.
    `session_id`. In restricted mode, add one `--allowedTools` entry for each
    command the worker must run.
 
+   **Antigravity**, restricted, then full access. `agy` takes the prompt as the
+   `-p` argument, not on stdin:
+
+   ```sh
+   agy --mode accept-edits --sandbox --print-timeout 1800s --output-format json \
+     --settings '{"permissions":{"allow":["command(<program>)"]}}' \
+     -p="$(cat "$TASK/brief.md")" > "$TASK/result.json" 2> "$TASK/worker.log"
+   agy --dangerously-skip-permissions --print-timeout 1800s --output-format json \
+     -p="$(cat "$TASK/brief.md")" > "$TASK/result.json" 2> "$TASK/worker.log"
+   ```
+
+   `result.json` holds the final message in `response` and the session id in
+   `conversation_id`. In restricted mode, allow each program the worker must
+   run, such as `command(npm)` for `npm test`; the rule matches the program name.
+   A denied command shows in `denied_actions` and can leave `response` empty.
+
    If the worker fails or hits its usage limit, report that and stop. Do not
    switch to another agent or API.
 
-   - **Caller sandbox.** The worker writes its own state (`~/.codex` or
-     `~/.claude`) and needs network access to its service. Under a sandboxed
+   - **Caller sandbox.** The worker writes its own state (`~/.codex`,
+     `~/.claude` or `~/.gemini`) and needs network access to its service. Under a sandboxed
      caller, such as Claude Code's sandbox or Codex in `workspace-write`
      without network, it fails with `Operation not permitted` or connection
      errors. Run it outside the caller's sandbox with the user's approval.
@@ -115,9 +134,10 @@ images.
    - **Log noise.** Transport errors about unreachable MCP servers come from
      the worker's own config and do not fail the run. Judge the run by the
      exit code and the final message.
-7. **Read the result** from `last.md` (Codex) or `result` in `result.json`
-   (Claude). Take the `Outcome` and `Next step` lines. If they are missing,
-   treat the run as unverified rather than failed.
+7. **Read the result** from `last.md` (Codex), `result` in `result.json`
+   (Claude) or `response` in `result.json` (Antigravity). Take the `Outcome`
+   and `Next step` lines. If they are missing, treat the run as unverified
+   rather than failed.
 8. **Verify it yourself.** Do not rely on the worker's report:
    - check scope with `git -C .relay/<slug> status --short` and
      `git -C .relay/<slug> diff`, and confirm `git status --short` in the main
@@ -132,7 +152,11 @@ images.
    codex exec resume <access flag> -o "$TASK/last.md" <thread_id> - < "$TASK/fix.md"
    claude -p <access flags> --resume <session_id> --output-format json \
      < "$TASK/fix.md" > "$TASK/result.json"
+   agy --conversation <conversation_id> <access flags> --output-format json \
+     -p="$(cat "$TASK/fix.md")" > "$TASK/result.json"
    ```
+
+   Antigravity returns a new `conversation_id` after each resume; use the latest.
 
    For Codex, the restricted access flag is `-c 'sandbox_mode="workspace-write"'`,
    because `resume` has no `--sandbox` flag. Use the same access mode as the
