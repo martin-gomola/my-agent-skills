@@ -1,7 +1,7 @@
 ---
 name: what-to-ask
 metadata:
-  version: "0.2.0"
+  version: "0.3.0"
 description: Builds a concise, ready-to-paste prompt from a rough task, bug report, screenshot, or another agent's result. Use when someone asks what to ask an AI, wants help wording a request, or wants to continue work in another agent. Avoid for direct implementation, general questions, or debugging an existing prompt.
 ---
 
@@ -38,4 +38,11 @@ Return the copy-ready prompt in a fenced `text` block. For a prompt-only request
 
 Keep it as short as the task allows; do not force a role, chain-of-thought, examples, or rigid section count unless the task benefits from it. Add only a brief assumption or one unresolved question when necessary. Before returning, check that the prompt preserves the user's intent, stands on its own, and describes a result the next assistant can verify.
 
-When the prompt asks Claude or Gemini for a read-only opinion and the `ask` skill is available, say that `ask` can send it through the local CLI without pasting. Do not run it in a prompt-only turn. Prompts for implementation in another agent still need the user to paste them there.
+When the prompt asks Claude or Gemini for a read-only opinion and the `ask` skill is available, say that `ask` can send it through the local CLI without pasting. Do not run it in a prompt-only turn.
+
+## Handoff mailbox
+
+The mailbox is two files in the repository root: `.your-turn/brief.md` and `.your-turn/result.md`. Each holds the latest handoff only and is overwritten.
+
+- **Write the brief.** When the prompt is for a coding agent working in the same Git repository, also save it to `.your-turn/brief.md`, but only if `git check-ignore -q .your-turn/brief.md` succeeds. If the path is not ignored, keep the fenced block and ask the user whether to add `.your-turn/` to `.gitignore` or the untracked `.git/info/exclude`. Tell the user the line to type in the other agent: `Do the task in .your-turn/brief.md.` Add one line to the brief asking the recipient to write its final handoff block to `.your-turn/result.md`.
+- **Read the result.** When the user asks for the follow-up without pasting a result, read `.your-turn/result.md` if it exists and is newer than `.your-turn/brief.md`, and treat it like a pasted handoff block. Say which file you used. If it is missing or older than the brief, ask the user to paste the result.

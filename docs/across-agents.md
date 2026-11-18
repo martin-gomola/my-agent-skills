@@ -9,9 +9,13 @@ back as the next step. Install each one only in the agents where you need it.
 | Delegate a read-only opinion | [ask](../skills/ask/SKILL.md) | The prompt goes to the local `claude` or `agy` CLI. | The agent runs the CLI. |
 | Delegate an image | [codex-image](../skills/codex-image/SKILL.md) | An image brief goes to the local `codex exec`. | The agent runs the CLI. |
 | Delegate implementation | [relay](../skills/relay/SKILL.md) | The prompt goes to `codex exec` or `claude -p` in a new git worktree; the caller reviews the diff. | The agent runs the CLI. |
-| Delegate implementation to Cursor | none | The prompt goes into a Cursor chat. | You paste it. |
-| Result | [your-turn-handoff](handoff.md) | The recipient ends with `Outcome` and `Next step`. | The recipient writes it. |
-| Next step | what-to-ask | The pasted result becomes the next prompt. | You paste it back. |
+| Delegate implementation to Cursor | none | what-to-ask saves the prompt to `.your-turn/brief.md`. | You type `Do the task in .your-turn/brief.md.` |
+| Result | [your-turn-handoff](handoff.md) | The recipient ends with `Outcome` and `Next step`, and writes them to `.your-turn/result.md` when the task came from the brief file. | The recipient writes it. |
+| Next step | what-to-ask | The result file, or a pasted result, becomes the next prompt. | The agent reads the file; otherwise you paste it. |
+
+The `.your-turn/` mailbox holds only the latest brief and result. It is used
+only when Git ignores it, like `.ask/`. Add `.your-turn/` to `.gitignore` or
+`.git/info/exclude` once per repository.
 
 ## Example
 
@@ -34,7 +38,8 @@ back as the next step. Install each one only in the agents where you need it.
   the same conversation with `--resume <session_id>` from the earlier result;
   Antigravity calls always start fresh.
 - No skill reads another agent's chat history. Results travel only as text you
-  paste, a file the runner writes, or the CLI output returned to the caller.
+  paste, a file in `.your-turn/` or `.ask/`, or the CLI output returned to the
+  caller. You still start the other agent and tell it to read the brief.
 - The [Your Turn inbox](https://github.com/martin-gomola/your-turn) shows which
   chats wait on you. These skills do not use it to pass messages between agents.
 - Approving consequential steps, choosing what to delegate, and judging the

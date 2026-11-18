@@ -64,7 +64,7 @@
     {
       "id": "what-to-ask",
       "label": "what-to-ask",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "sourcePath": "skills/what-to-ask",
       "description": "Turn rough notes or another agent's result into a prompt.",
       "usage": "$what-to-ask Write a prompt for adding CSV export to the filtered table.",
@@ -100,7 +100,7 @@
     {
       "id": "your-turn-handoff",
       "label": "your-turn-handoff",
-      "version": "0.7.0",
+      "version": "0.8.0",
       "sourcePath": "skills/your-turn-handoff",
       "description": "Add a clear result and next step to agent replies.",
       "usage": "$your-turn-handoff Use the handoff format for replies in this chat.",

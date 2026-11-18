@@ -39,5 +39,12 @@ cases:
       must_mention: ["**Next step:** none"]
       expectations:
         - Does not invent a required push, approval request, or user command after the completed local task.
+  - name: mailbox-result-file
+    prompt: "Do the task in .your-turn/brief.md. It asks you to fix the pager off-by-one. The fix is done and its test passed."
+    rubric:
+      must_mention: [".your-turn/result.md", "**Outcome:**", "**Next step:**"]
+      expectations:
+        - Writes the final handoff block to .your-turn/result.md with a native edit tool, overwriting any earlier result.
+        - Still ends the chat answer with the same handoff block.
 threshold:
   pass_rate: 1.0

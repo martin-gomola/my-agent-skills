@@ -2,7 +2,7 @@
 name: your-turn-handoff
 description: End every final user-facing answer with the Your Turn handoff (Outcome and Next step, plus Recap on multi-turn chats and Decision for settled trade-offs), and check your last code edit. Always active for every task and every turn; supports coding agents with or without the Your Turn inbox.
 metadata:
-  version: "0.7.0"
+  version: "0.8.0"
 ---
 
 # Your Turn handoff
@@ -46,6 +46,8 @@ Any value other than `none` places the chat into **Needs you**. Choose by the ac
 - `run: <command>` — the next command belongs to the user, either because they reserved execution or asked for a command to run, or because you cannot execute it. Name the command, not just "push" or "deploy".
 
 An optional suggestion belongs in the body, with `Next step: none`. Do not invent a publication requirement after a standalone local commit; distinguish that from a release workflow explicitly awaiting the user's push. Put every question requiring a user response in `Next step` as well. Keep the answer complete without a trailing polite offer such as "Should I also…?".
+
+When the task came from `.your-turn/brief.md`, also write the final answer's handoff block, plus any command or artifact path it names, to `.your-turn/result.md` with your native edit tool. Overwrite the previous result. Another agent reads it there instead of the user pasting it.
 
 With the block at the bottom, stop generating right after it. Keep the body useful: explain the premise needed to understand the result, cite existing artifacts, and summarize relevant verification rather than repeating file inventories or raw logs.
 
