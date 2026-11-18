@@ -12,7 +12,7 @@ Remove predictable AI-writing patterns without turning distinctive prose into ge
 
 ## Source Boundary
 
-Use the pinned source skills in `sources.yaml` for the pattern inventory and editing principles mapped in `grounding.yaml`. Treat the patterns as editing heuristics, not proof that AI wrote a text. Keep Mythosaur's workflow, progressive disclosure, and evaluation contract where the sources are silent.
+Use the pinned source skills in `sources.yaml` for the pattern inventory and editing principles mapped in `grounding.yaml`. Treat the patterns as editing heuristics, not proof that AI wrote a text. Keep this skill's workflow, progressive disclosure, and evaluation contract where the sources are silent.
 
 ## Two Jobs
 

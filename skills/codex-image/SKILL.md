@@ -31,6 +31,6 @@ Use this workflow when Cursor or Claude needs a project image and the local Code
 
 ## Source and capability boundary
 
-Ported from the author's mythosaur-tools shared skill. Its historical local handoff is not bundled as runtime evidence. Recheck CLI options and image-generation availability on each machine. A Codex CLI image-input flag is not proof that the child runtime exposes image generation. The workflow requires an existing Codex installation and its already-configured authentication; it installs nothing and does not request or print credentials.
+Its historical local handoff is not bundled as runtime evidence. Recheck CLI options and image-generation availability on each machine. A Codex CLI image-input flag is not proof that the child runtime exposes image generation. The workflow requires an existing Codex installation and its already-configured authentication; it installs nothing and does not request or print credentials.
 
 This skill is for handing off an image task from Cursor or Claude to Codex. Use the host's native image-generation capability when it is directly available and the user has not specifically asked for Codex delegation. Use a focused style skill, such as `travel-poster`, when its stored art direction is the user's intent.

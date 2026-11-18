@@ -8,7 +8,7 @@ claims:
   - id: preserve-meaning-and-voice
     instruction: "preserve the writer's meaning and recognizable voice"
     source_ids: [peter-yang-no-ai-slop]
-    evidence: Two jobs, Preserve the writer's real voice, and Workflow sections; adapted to the Mythosaur output contract.
+    evidence: Two jobs, Preserve the writer's real voice, and Workflow sections; adapted to this skill's output contract.
   - id: detect-without-authorship-claim
     instruction: 'Do not rewrite or rate the draft.'
     source_ids: [peter-yang-no-ai-slop]

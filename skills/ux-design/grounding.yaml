@@ -12,15 +12,15 @@ claims:
   - id: textual-structure-artifact
     instruction: 'produce a short textual structure artifact before implementation'
     source_ids: [ux-ui-process-principles, refactoring-ui, ui-professional-design-manual]
-    evidence: 'UX-UI Design Process and Principles, Chapter 7, pp. 106-110 and Chapter 8, pp. 112-114; Refactoring UI, O detalhe vem depois, pp. 13-16; The UI Professional''s Design Manual, UX process overview, pp. 183-191. NotebookLM queries on 2026-08-30 returned these locators with an empty citation map; the text-only artifact format is the Mythosaur adaptation.'
+    evidence: 'UX-UI Design Process and Principles, Chapter 7, pp. 106-110 and Chapter 8, pp. 112-114; Refactoring UI, O detalhe vem depois, pp. 13-16; The UI Professional''s Design Manual, UX process overview, pp. 183-191. NotebookLM queries on 2026-08-30 returned these locators with an empty citation map; the text-only artifact format is this skill''s adaptation.'
   - id: pre-code-critique-gate
     instruction: 'Resolve structural gaps in the artifact before writing code.'
     source_ids: [ux-ui-process-principles, refactoring-ui]
-    evidence: 'The sources support evaluating IA, flows, and low-fidelity structure before detailed implementation; the blocking critique gate is a Mythosaur safeguard derived from the observed dashboard-grouping and mobile-header failures, not a named book rule.'
+    evidence: 'The sources support evaluating IA, flows, and low-fidelity structure before detailed implementation; the blocking critique gate is this skill''s safeguard derived from the observed dashboard-grouping and mobile-header failures, not a named book rule.'
   - id: local-token-system
     instruction: 'create the smallest token and primitive set needed by the core flow'
     source_ids: [ui-design-systems-mastery]
-    evidence: 'UI Design Systems Mastery, Parts 2 through 4 on tokens, documentation, and reusable components; repository-local ownership is the Mythosaur adaptation.'
+    evidence: 'UI Design Systems Mastery, Parts 2 through 4 on tokens, documentation, and reusable components; repository-local ownership is this skill''s adaptation.'
   - id: complete-component-states
     instruction: 'Build from reusable primitives and real content.'
     source_ids: [ui-design-systems-mastery, ux-ui-process-principles]
@@ -36,7 +36,7 @@ claims:
   - id: visible-copy-discipline
     instruction: 'Treat visible copy as part of the interface, not filler: do not add visual text noise through generic helper text, repeated prompts, decorative labels, or per-item instructions when the control, placement, or state already makes the action clear.'
     source_ids: [refactoring-ui, ux-ui-process-principles]
-    evidence: 'The retained hierarchy, proximity, content-first, and user-need principles support de-emphasizing redundant content; the explicit visual-text-noise rule is the Mythosaur delivery safeguard applied to those principles.'
+    evidence: 'The retained hierarchy, proximity, content-first, and user-need principles support de-emphasizing redundant content; the explicit visual-text-noise rule is this skill''s delivery safeguard applied to those principles.'
   - id: actionable-empty-state
     instruction: 'Empty states must explain the situation'
     source_ids: [refactoring-ui, ux-ui-process-principles]
@@ -63,7 +63,7 @@ claims:
   - id: select-indicator-proof
     instruction: 'End padding alone is not evidence that an arrow exists.'
     source_ids: [mdn-appearance, wcag-2-2]
-    evidence: 'MDN documents that appearance controls native select rendering; WCAG 2.2 SC 1.4.11 covers contrast of essential non-text indicators. The explicit same-rule decision, SVG wrapper pattern, and rendered arrow count are Mythosaur delivery safeguards derived from the observed missing-indicator failure.'
+    evidence: 'MDN documents that appearance controls native select rendering; WCAG 2.2 SC 1.4.11 covers contrast of essential non-text indicators. The explicit same-rule decision, SVG wrapper pattern, and rendered arrow count are this skill''s delivery safeguards derived from the observed missing-indicator failure.'
   - id: reduced-motion
     target: references/interface-rules.md
     instruction: 'Provide a reduced-motion path for decorative, scroll-triggered, and continuous animation.'

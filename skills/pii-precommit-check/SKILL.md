@@ -45,4 +45,4 @@ Use the repository's existing hook mechanism if available. Never overwrite a hoo
 
 ## Dependencies and provenance
 
-Ported from the author's mythosaur-tools shared skill. The scanner needs only Python 3 and Git; it reads the Git index and emits redacted findings without network access or file changes. Exit codes are 0 for no matches, 1 for findings and 2 for usage/runtime errors. Review the indexed content after authorized staging; a working-tree fix alone does not change the index.
+The scanner needs only Python 3 and Git; it reads the Git index and emits redacted findings without network access or file changes. Exit codes are 0 for no matches, 1 for findings and 2 for usage/runtime errors. Review the indexed content after authorized staging; a working-tree fix alone does not change the index.

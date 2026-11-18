@@ -3,7 +3,7 @@
 Recorded on 2026-08-26 before authoring the skill now named `ux-design`.
 
 The existing portfolio split application interface work across `ui-ux-pro-max` and durable design
-authority across `mythosaur-design`. Both repeated the same authority-first, token ownership,
+authority across a separate design-authority skill. Both repeated the same authority-first, token ownership,
 accessibility, responsive, reference-learning, and rendered-verification rules. The UI skill also
 loaded a roughly 936 KB recommendation corpus and a broad design-system generator for tasks that
 usually needed a small repository-specific change.
@@ -108,7 +108,7 @@ Recorded on 2026-08-31 after a report of persistently uneven delivered results. 
 consumer correctly executed step 1 (resolve authority and scope), found no `DESIGN.md`, tokens, or
 application surface, and halted to ask which repo hosted the target app — because
 `eval-skill-behavior.py` launched the `claude` consumer with no working-directory override, so it
-always ran from `mythosaur-tools` itself, a tools/skills repo that owns no application UI by its own
+always ran from the skills authoring repo itself, a tools/skills repo that owns no application UI by its own
 `CLAUDE.md`. The skill behaved correctly for that environment; the harness gave it no real target to
 design against, so every downstream expectation about implementation and rendering failed for a
 reason unrelated to the skill's instructions. A second, smaller source of eval noise: substring

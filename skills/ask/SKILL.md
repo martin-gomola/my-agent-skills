@@ -7,7 +7,7 @@ description: Asks Claude, Anthropic, Gemini, Google, or Antigravity through inst
 
 # Ask
 
-Ported from the author's mythosaur-tools shared skill. Requires Python 3, Git and the explicitly selected authenticated CLI. Requests send the scoped prompt to that provider; audit artifacts stay in the target repository.
+Requires Python 3, Git and the explicitly selected authenticated CLI. Requests send the scoped prompt to that provider; audit artifacts stay in the target repository.
 
 Use Claude CLI or Antigravity CLI as a focused external advisor. Keep the
 execution local, read-only, independent of OMX, and auditable.

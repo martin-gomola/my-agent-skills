@@ -66,7 +66,7 @@ PATTERNS: list[tuple[str, str, str, re.Pattern[str]]] = [
 
 def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Run the mythosaur-tools PII scanner locally."
+        description="Run the PII scanner locally."
     )
     parser.add_argument("--repo", default=".", help="Repository path to scan")
     parser.add_argument("--staged", action="store_true", help="Scan staged files only")

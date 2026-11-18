@@ -15,7 +15,7 @@ should_not_trigger:
   - "Format this TOML file"
   - "Rename this helper function"
   - "Look up the latest package changelog"
-  - "Use the mythosaur MCP server"
+  - "Use our internal MCP server"
   - "Run pytest"
   - "Summarize this PDF yourself"
   - "Implement the approved refactor"
