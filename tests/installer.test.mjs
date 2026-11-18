@@ -8,7 +8,7 @@ test('one command contains exactly the selected skills and target agents', () =>
   const skills = catalog.skills.filter(skill => ['what-to-ask', 'relay'].includes(skill.id));
   const command = installation(skills, ['codex', 'claude', 'cursor', 'antigravity', 'gemini'], catalog.repository);
   assert.equal(command.split('\\\n').map(part => part.trim()).join(' '),
-    'DISABLE_TELEMETRY=1 npx skills add martin-gomola/my-agent-skills --skill what-to-ask relay --agent codex claude-code cursor antigravity gemini-cli');
+    'DISABLE_TELEMETRY=1 npx skills add martin-gomola/your-turn-loop --skill what-to-ask relay --agent codex claude-code cursor antigravity gemini-cli');
   assert.ok(!command.includes('your-turn-handoff'));
   assert.ok(!command.includes('--global'));
   assert.ok(installation(skills, ['cursor'], catalog.repository, 'global').endsWith('--global'));

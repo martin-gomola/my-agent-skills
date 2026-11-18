@@ -1,5 +1,5 @@
 {
-  "repository": "martin-gomola/my-agent-skills",
+  "repository": "martin-gomola/your-turn-loop",
   "bundle": {
     "label": "Cross-agent loop",
     "description": "Write a brief, delegate it to another agent, and get back a result with the next step.",

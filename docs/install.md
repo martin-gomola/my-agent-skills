@@ -1,6 +1,6 @@
 # Manage your installation
 
-Install directly from [the skill installer](https://martin-gomola.github.io/my-agent-skills/).
+Install directly from [the skill installer](https://martin-gomola.github.io/your-turn-loop/).
 Choose skills, agents, and project or global scope, then run its command.
 Installation uses the [Skills CLI](https://github.com/vercel-labs/skills) and
 requires Node.js 22.20+ and Git.
@@ -38,7 +38,7 @@ See the [telemetry implementation](https://github.com/vercel-labs/skills/blob/ma
 
 ### The repository cannot be found
 
-Check the repository name: `martin-gomola/my-agent-skills`. It is public, so a
+Check the repository name: `martin-gomola/your-turn-loop`. It is public, so a
 GitHub login should not be required.
 
 ### The skill does not appear

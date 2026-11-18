@@ -1,6 +1,6 @@
 <div align="center">
 
-# My Agent Skills
+# Your Turn Loop
 
 <p align="center"><strong>A handoff protocol for working across AI coding agents.</strong></p>
 
@@ -11,7 +11,8 @@
 
 </div>
 
-For developers who work with more than one AI coding agent. Write a brief
+The companion skills for [Your Turn](https://github.com/martin-gomola/your-turn),
+for developers who work with more than one AI coding agent. Write a brief
 another agent can act on, delegate it, and get back a result that ends with the
 same two lines in every agent:
 
@@ -39,7 +40,7 @@ handoffs that still need you to paste text.
 
 ## Get started
 
-[Open the skill installer](https://martin-gomola.github.io/my-agent-skills/) to
+[Open the skill installer](https://martin-gomola.github.io/your-turn-loop/) to
 choose skills, coding agents, and whether to install for this project or all your
 projects. Copy one command and run it in your terminal. Installation uses the
 [Skills CLI](https://github.com/vercel-labs/skills) and requires Node.js 22.20+
