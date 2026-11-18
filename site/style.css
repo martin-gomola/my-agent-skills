@@ -130,9 +130,15 @@ h1 { margin: 0 0 16px; font-size: clamp(30px, 4.4vw, 44px); line-height: 1.05; l
 #where::before { content: "# "; }
 .term-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
 .terminal #status { color: var(--term-green); font: 13px/1.5 var(--mono); }
-.terminal #copy { background: var(--term-green); color: #03140a; }
+/* min-width fits "✓ Copied to clipboard", so the label swap never resizes the button. */
+.terminal #copy { min-width: 28ch; background: var(--term-green); color: #03140a; }
 .terminal #copy:hover:enabled { background: #86efac; }
-.terminal #copy[data-copied] { background: var(--term-cyan); }
+.terminal #copy[data-copied] { background: #86efac; animation: copied .6s var(--ease); }
+@keyframes copied { from { background: #ecfdf5; } }
+#commands::after { content: ""; display: inline-block; width: .6em; height: 1.15em; margin-left: 4px; vertical-align: text-bottom; background: var(--term-green); animation: blink 1.1s steps(1) infinite; }
+/* Dark mode: lift the terminal off the near-black page with a faint emerald frame. */
+:root[data-theme="dark"] .terminal:not([data-state="ready"]) { --hud-frame: rgba(74, 222, 128, .28); }
+:root[data-theme="dark"] .terminal { --term-bg: #0b100d; }
 .terminal #copy:disabled { background: var(--term-surface); color: var(--term-muted); }
 button.term-pill { justify-self: start; min-height: 32px; padding: 4px 12px; background: rgba(74, 222, 128, .1); color: var(--term-green); box-shadow: inset 0 0 0 1px rgba(74, 222, 128, .45); font-size: 12px; }
 button.term-pill::before { content: "▸ "; }
@@ -273,12 +279,12 @@ button.flow-chip[aria-pressed="true"]::before { background: var(--accent); box-s
 .button-install:hover { background: var(--action-hover); }
 .pet-section .pet-help { color: var(--muted); font-size: 14px; }
 
-@media (min-width: 721px) {
+@media (min-width: 768px) {
   .skill-options { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .flow-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .spec-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
-@media (max-width: 720px) {
+@media (max-width: 767px) {
   header, main { padding-inline: 16px; }
   main { padding-block: 24px 20px; }
   .hud-panel { padding: 16px; }
@@ -287,10 +293,18 @@ button.flow-chip[aria-pressed="true"]::before { background: var(--accent); box-s
   .flow-pipeline { padding: 12px; }
   .pet-section { flex-direction: column; align-items: flex-start; gap: 16px; }
   header .repo span:not([aria-hidden]) { display: none; }
+  .terminal #copy { flex: 1 1 100%; }
+  /* Stacked stages read top to bottom, so the wire turns into a down arrow in the gap. */
+  .flow-steps { gap: 24px; }
+  .flow-steps li + li::before { content: "↓"; position: absolute; top: -21px; left: 50%; transform: translateX(-50%); color: var(--line-strong); font: 700 14px/18px var(--mono); }
+  .flow-steps li[data-state="armed"] + li[data-state="armed"]::before { color: var(--accent); }
+}
+@media (min-width: 900px) {
+  .workspace { grid-template-columns: minmax(0, 1.3fr) minmax(340px, 1fr); }
+  /* The command and its Copy stay in view while the taller setup column scrolls. */
+  .result { position: sticky; top: 24px; align-self: start; }
 }
 @media (min-width: 1024px) {
-  .workspace { grid-template-columns: minmax(0, 1.3fr) minmax(340px, 1fr); }
-  .result { position: sticky; top: 16px; }
   .agent-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .flow-steps { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   /* Wires between stages; a stage's incoming wire lights up once it is armed. */
@@ -302,6 +316,6 @@ button.flow-chip[aria-pressed="true"]::before { background: var(--accent); box-s
 }
 @media (prefers-reduced-motion: reduce) {
   .pet-frame { display: none; }
-  .cursor { animation: none; }
+  .cursor, #commands::after, .terminal #copy[data-copied] { animation: none; }
   *, *::before, *::after { transition: none !important; }
 }
