@@ -177,7 +177,7 @@ cases:
         - Marks the browser behavior as unverified instead of presenting the whole feature as finished.
         - Asks Codex to end with a short report of the change, checks and their result, and the remaining user action.
         - Does not implement the button or invent repository paths.
-  - name: read-only-opinion-can-use-ask
+  - name: read-only-opinion-can-use-second-opinion
     prompt: |
       I want Claude to critique PLAN.md for missing rollback steps without editing anything. Write the prompt only.
     rubric:
@@ -186,7 +186,7 @@ cases:
         - "rollback"
       expectations:
         - Returns a copy-ready read-only review prompt in a fenced text block.
-        - Mentions that the ask skill can send this prompt through the local Claude CLI without pasting, if it is available.
+        - Mentions that the second-opinion skill can send this prompt through the local Claude CLI without pasting, if it is available.
         - Does not run the Claude CLI or claim that a review was obtained.
   - name: triage-open-points
     prompt: |

@@ -38,4 +38,4 @@ Return the copy-ready prompt in a fenced `text` block. For a prompt-only request
 
 Keep it as short as the task allows; do not force a role, chain-of-thought, examples, or rigid section count unless the task benefits from it. Add only a brief assumption or one unresolved question when necessary. Before returning, check that the prompt preserves the user's intent, stands on its own, and describes a result the next assistant can verify.
 
-When the prompt asks Claude or Gemini for a read-only opinion and the `ask` skill is available, say that `ask` can send it through the local CLI without pasting. Do not run it in a prompt-only turn. Prompts for implementation in another agent still need the user to paste them there.
+When the prompt asks Claude or Gemini for a read-only opinion and the `second-opinion` skill is available, say that `second-opinion` can send it through the local CLI without pasting. Do not run it in a prompt-only turn. Prompts for implementation in another agent still need the user to paste them there.
