@@ -1,7 +1,7 @@
 ---
 name: second-opinion
 metadata:
-  version: "0.4.0"
+  version: "0.5.0"
 description: Asks Claude, Anthropic, Codex, OpenAI, Gemini, Google, or Antigravity through installed local CLIs and saves a repository-local audit artifact. Use for an explicitly requested external-model second opinion, critique, brainstorm, review, or research pass.
 ---
 
@@ -134,7 +134,7 @@ has no resume, and Codex runs with `--ephemeral`, so `gemini` and `codex` calls 
 
 ## Interpret the Status
 
-For a review or critique, request a compact Markdown contract: findings with file/source evidence, impact and suggested action; uncertainties; and the overall assessment. For brainstorming or research, adapt those fields to the requested deliverable. Use a default response budget of about 1,000 words unless the task warrants another explicit bound. This is a prompt budget, not an enforced CLI token limit. Keep the raw response intact in the artifact and return a short synthesis to the parent chat.
+For a review or critique, request a compact Markdown contract: findings with file/source evidence, severity (Critical, Important or Minor), impact and suggested action; uncertainties; and the overall assessment. When the review target comes with a task brief, such as a `delegate-code` diff, also ask whether each done criterion is met, not met, or cannot be verified from the diff, as a separate answer from the findings. For brainstorming or research, adapt those fields to the requested deliverable. Use a default response budget of about 1,000 words unless the task warrants another explicit bound. This is a prompt budget, not an enforced CLI token limit. Keep the raw response intact in the artifact and return a short synthesis to the parent chat.
 
 Define the review's acceptance criteria in the prompt. If the advisor contradicts local evidence, distinguish both positions and verify the disputed claim before recommending action. Escalate unresolved high-impact disagreements or an exhausted recovery attempt with the evidence and smallest next check; do not silently accept the advisor's verdict or start another review loop.
 

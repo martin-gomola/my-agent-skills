@@ -5,9 +5,11 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import shlex
 import shutil
+import signal
 import subprocess
 import sys
 from datetime import UTC, datetime
@@ -174,22 +176,28 @@ def parse_claude_json(stdout: str) -> tuple[str, str | None]:
 def run_once(
     command: list[str], repo_root: Path, timeout_seconds: int
 ) -> dict[str, object]:
+    # Own process group and no stdin: a timeout kills the CLI and every child it
+    # started, and the CLI can never block waiting for terminal input.
+    process = subprocess.Popen(
+        command,
+        cwd=repo_root,
+        stdin=subprocess.DEVNULL,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        start_new_session=True,
+    )
     try:
-        result = subprocess.run(
-            command,
-            cwd=repo_root,
-            check=False,
-            capture_output=True,
-            text=True,
-            timeout=timeout_seconds,
-        )
-        stdout = result.stdout
-        stderr = result.stderr
+        stdout, stderr = process.communicate(timeout=timeout_seconds)
         timed_out = False
-        returncode = result.returncode
-    except subprocess.TimeoutExpired as exc:
-        stdout = _text(exc.stdout)
-        stderr = _text(exc.stderr)
+        returncode = process.returncode
+    except subprocess.TimeoutExpired:
+        try:
+            os.killpg(process.pid, signal.SIGKILL)
+        except ProcessLookupError:
+            pass
+        stdout, stderr = process.communicate()
+        stdout, stderr = _text(stdout), _text(stderr)
         timed_out = True
         returncode = 124
     session_id = None

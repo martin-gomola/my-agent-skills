@@ -129,5 +129,13 @@ cases:
       expectations:
         - "Does not call Codex from Codex, and offers Claude or Gemini instead."
 
+  - name: review_against_brief
+    prompt: |
+      From Claude Code, ask Gemini to review the delegated diff in $TASK/diff.patch against $TASK/brief.md.
+    rubric:
+      expectations:
+        - "Asks for each done criterion as met, not met, or cannot verify from the diff, separately from the findings."
+        - "Asks for each finding to carry a severity of Critical, Important or Minor."
+
 threshold:
   pass_rate: 0.8

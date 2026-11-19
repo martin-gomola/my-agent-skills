@@ -1,7 +1,7 @@
 ---
 name: delegate-code
 metadata:
-  version: "0.6.0"
+  version: "0.7.0"
 description: Delegates a scoped implementation task to a local Codex, Claude Code or Antigravity CLI in its own git worktree, then reviews the diff and the returned Outcome and Next step. Use when the user asks to hand coding work to Codex, Claude or Antigravity from another agent. Avoid for read-only opinions, image generation, or work the current agent should do itself.
 ---
 
@@ -43,8 +43,12 @@ images.
 
      ```text
      End your final message with these lines, each separated by a blank line:
+     **Status:** DONE, DONE_WITH_CONCERNS, BLOCKED or NEEDS_CONTEXT.
      **Outcome:** one sentence: what changed and whether the check passed.
      **Next step:** none, or the one action left for a human.
+     If the brief leaves a choice that would change the result, stop before
+     editing and answer NEEDS_CONTEXT with your questions; do not guess.
+     Never weaken, skip or delete a test to make the check pass.
      ```
 
    Leave out credentials, private data, and chat history the task does not need.
@@ -81,6 +85,9 @@ images.
      expected output that fails now, or say in the brief what the check must
      newly show.
    - Note the result as the baseline for step 8.
+   - List the files the check depends on: the test files it runs, their
+     fixtures, and the config or script that defines the command. Step 8
+     needs this list.
 
 5. **Choose the access mode.**
    - **Restricted** (default): the worker can edit files in the worktree and
@@ -165,22 +172,41 @@ images.
      the worker's own config and do not fail the run. Judge the run by the
      exit code and the final message.
 7. **Read the result** from `last.md` (Codex), `result` in `result.json`
-   (Claude) or `response` in `result.json` (Antigravity). Take the `Outcome`
-   and `Next step` lines. If they are missing, treat the run as unverified
-   rather than failed.
+   (Claude) or `response` in `result.json` (Antigravity). Take the `Status`,
+   `Outcome` and `Next step` lines. If they are missing, treat the run as
+   unverified rather than failed. Act on the status:
+   - `DONE`: go on to step 8.
+   - `DONE_WITH_CONCERNS`: go on to step 8 and check each concern there.
+   - `NEEDS_CONTEXT`: answer the questions from the repository or this chat,
+     or ask the user, then send the answers as the correction below. Do not
+     resend the same brief unchanged.
+   - `BLOCKED`: report the blocker to the user and stop. Do not retry the
+     same worker with the same brief.
 8. **Verify it yourself.** Do not rely on the worker's report:
    - check scope with `git -C .delegate-code/<slug> status --short` and
      `git -C .delegate-code/<slug> diff`, and confirm `git status --short` in the main
      checkout shows no new changes;
    - run the brief's check command in the worktree and compare it with the
      baseline from step 4;
+   - if the diff touches a file the check depends on (the list from step 4),
+     review those edits first: a weakened, skipped or deleted test makes a
+     passing check prove nothing. Say so in the report;
    - review the diff against the brief, since this review is what the caller is for.
 
    **Independent review.** The caller planned the task, so it is not a neutral
    reviewer. When the user asks for an independent review, or the change is
    risky (security, data, a public API), also run `second-opinion` with a provider that
-   is neither the worker nor you, pointed at the worktree's uncommitted
-   changes. Treat its findings as input to your review, not a verdict.
+   is neither the worker nor you. Save the diff with
+   `git -C .delegate-code/<slug> add -A && git -C .delegate-code/<slug> diff --cached > "$TASK/diff.patch"`
+   and give the reviewer three files: `brief.md`, the worker's final message
+   and `diff.patch`. Ask for two separate answers:
+   - **Brief:** met, not met, or cannot verify from the diff, for each done
+     criterion;
+   - **Findings:** each marked Critical, Important or Minor, with file and line.
+
+   Treat its findings as input to your review, not a verdict. Correct only
+   confirmed Critical and Important findings and unmet criteria; list Minor
+   ones in the report.
    Plausible but wrong findings are the most common review failure, so
    confirm each one in the code, or with a failing test or command, before
    you put it in a correction or a report. Drop what you cannot confirm, or
@@ -212,14 +238,17 @@ images.
    ```
 
    Staging in the worktree commits nothing.
-9. **Report** the worker, access mode, branch, worktree path, the worker's
+9. **Report** the worker, access mode, branch, worktree path, the worker's Status and
    Outcome, your own check result, your review findings, and the fingerprint. Do not merge,
    commit, push, or remove the worktree until the user says so. When the user
    approves, run the fingerprint command again first. If the hash differs, the
    worktree changed after review: stop, show what changed, and review again
-   before merging. Otherwise merge the branch or apply the diff, then run
-   `git worktree remove .delegate-code/<slug>` and delete the branch. Keep the task
-   directory until the user is done with it.
+   before merging. Otherwise merge the branch or apply the diff, then run the
+   brief's check command again in the main checkout: `HEAD` may have moved
+   since the worktree was created, so the merged result is new code. If it
+   fails, stop, keep the worktree and branch, and report the failure. If it
+   passes, run `git worktree remove .delegate-code/<slug>` and delete the
+   branch. Keep the task directory until the user is done with it.
 
 ## Boundaries
 
