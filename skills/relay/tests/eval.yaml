@@ -95,6 +95,15 @@ cases:
       expectations:
         - "Reviews the diff itself, then runs `ask` with a provider that is neither Codex nor Claude, such as Gemini, on the worktree changes."
         - "Treats the second review as input and reports both, without merging."
+        - "Confirms each finding in the code or with a test before sending a correction, and drops or labels unconfirmed ones."
+
+  - name: worker_watchdog
+    prompt: |
+      Have Claude implement the pagination fix in src/list.py with `pytest tests/test_list.py` as the check. Run it in the background.
+    rubric:
+      expectations:
+        - "Wraps the worker command in a hard time limit such as `perl -e 'alarm shift; exec @ARGV' 1800` or `timeout 1800`."
+        - "Treats an empty final message, a timeout exit code or a non-zero exit as a failed run and reports it instead of waiting."
 
 threshold:
   pass_rate: 0.75

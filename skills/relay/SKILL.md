@@ -1,7 +1,7 @@
 ---
 name: relay
 metadata:
-  version: "0.5.0"
+  version: "0.6.0"
 description: Delegates a scoped implementation task to a local Codex, Claude Code or Antigravity CLI in its own git worktree, then reviews the diff and the returned Outcome and Next step. Use when the user asks to hand coding work to Codex, Claude or Antigravity from another agent. Avoid for read-only opinions, image generation, or work the current agent should do itself.
 ---
 
@@ -134,6 +134,19 @@ images.
    run, such as `command(npm)` for `npm test`; the rule matches the program name.
    A denied command shows in `denied_actions` and can leave `response` empty.
 
+   **Watchdog.** A worker that writes only to files gives no sign of life:
+   `claude -p` prints nothing until its final answer, so a hung run and a
+   working one both look like an empty file. Give every run a hard limit by
+   prefixing the command with `perl -e 'alarm shift; exec @ARGV' 1800`
+   (seconds; `timeout 1800` works too where installed). Then classify the run:
+   - `ok`: exit 0 and a non-empty final message;
+   - `empty`: exit 0 but no final message;
+   - `timeout`: exit 142 (`perl`) or 124 (`timeout`);
+   - `failed`: any other exit code; read the tail of `worker.log`.
+
+   Treat anything but `ok` as a failed run. Do not wait on an empty file past
+   the limit.
+
    If the worker fails or hits its usage limit, report that and stop. Do not
    switch to another agent or API.
 
@@ -168,6 +181,10 @@ images.
    risky (security, data, a public API), also run `ask` with a provider that
    is neither the worker nor you, pointed at the worktree's uncommitted
    changes. Treat its findings as input to your review, not a verdict.
+   Plausible but wrong findings are the most common review failure, so
+   confirm each one in the code, or with a failing test or command, before
+   you put it in a correction or a report. Drop what you cannot confirm, or
+   label it unverified.
 
    If something misses the brief, send one short correction to the same
    session from inside the worktree, so the worker keeps its context:
