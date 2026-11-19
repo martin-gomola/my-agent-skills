@@ -285,6 +285,34 @@ def test_main_stops_after_second_permission_denial(
     assert not (tmp_path / ".gemini").exists()
 
 
+def test_timeout_kills_child_processes_and_closes_stdin(tmp_path: Path) -> None:
+    pid_file = tmp_path / "child.pid"
+    script = tmp_path / "slow-cli"
+    script.write_text(
+        "#!/bin/sh\n"
+        f'sleep 30 & echo $! > "{pid_file}"\n'
+        "read line && echo got-stdin\n"
+        "echo partial\n"
+        "wait\n",
+        encoding="utf-8",
+    )
+    script.chmod(0o755)
+
+    result = run_advisor.run_once([str(script)], tmp_path, 2)
+
+    assert result["status"] == "timeout"
+    assert "got-stdin" not in result["stdout"]
+    assert "partial" in result["stdout"]
+    child = int(pid_file.read_text(encoding="utf-8"))
+    deadline = datetime.now(UTC).timestamp() + 5
+    while datetime.now(UTC).timestamp() < deadline:
+        try:
+            os.kill(child, 0)
+        except ProcessLookupError:
+            return
+    pytest.fail("child process survived the timeout")
+
+
 def test_main_rejects_malformed_resume_id(tmp_path: Path) -> None:
     subprocess.run(["git", "init", "-q", str(tmp_path)], check=True)
     (tmp_path / "t.txt").write_text("x", encoding="utf-8")

@@ -105,5 +105,29 @@ cases:
         - "Wraps the worker command in a hard time limit such as `perl -e 'alarm shift; exec @ARGV' 1800` or `timeout 1800`."
         - "Treats an empty final message, a timeout exit code or a non-zero exit as a failed run and reports it instead of waiting."
 
+  - name: worker_needs_context
+    prompt: |
+      Codex ended its delegated run with "**Status:** NEEDS_CONTEXT" and asked whether expired sessions should return 401 or 403. What now?
+    rubric:
+      expectations:
+        - "Answers the question from the repository or the chat, or asks the user, before sending anything to the worker."
+        - "Sends the answer as a correction to the same session instead of resending the unchanged brief."
+
+  - name: check_files_touched
+    prompt: |
+      Codex says the pagination fix is done and `pytest tests/test_list.py` passes. Its diff also edits tests/test_list.py. Review it.
+    rubric:
+      expectations:
+        - "Reviews the edits to tests/test_list.py first and checks whether a test was weakened, skipped or deleted."
+        - "Says in the report that the check's own files changed."
+
+  - name: check_after_merge
+    prompt: |
+      You merged the delegate-code branch into main after my approval. main had two new commits since the worktree was created.
+    rubric:
+      expectations:
+        - "Runs the brief's check command again in the main checkout before removing the worktree."
+        - "Keeps the worktree and branch and reports the failure if that check fails."
+
 threshold:
   pass_rate: 0.75
