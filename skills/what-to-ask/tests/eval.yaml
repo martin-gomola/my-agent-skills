@@ -188,5 +188,15 @@ cases:
         - Returns a copy-ready read-only review prompt in a fenced text block.
         - Mentions that the ask skill can send this prompt through the local Claude CLI without pasting, if it is available.
         - Does not run the Claude CLI or claim that a review was obtained.
+  - name: triage-open-points
+    prompt: |
+      Write a prompt for an agent to add user deletion to our admin panel. I haven't decided whether deletion is soft or hard, or what happens to the user's posts.
+    rubric:
+      must_mention:
+        - "delet"
+      expectations:
+        - Asks the user about soft versus hard deletion and the fate of the posts, at most three questions, each with a recommended answer and a short reason.
+        - States low-risk details it can default, such as a confirmation dialog, as assumptions instead of asking about them.
+        - Does not ask about facts the project or conversation already answers.
 threshold:
   pass_rate: 0.8

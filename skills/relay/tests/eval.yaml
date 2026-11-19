@@ -80,5 +80,21 @@ cases:
         - "Does not create a worktree or run a write delegation."
         - "Points to a read-only path such as the `ask` skill or answers directly."
 
+  - name: fingerprint_before_merge
+    prompt: |
+      Codex finished the relay and you reviewed the diff. I approve, merge it.
+    rubric:
+      expectations:
+        - "Reruns `git add -A` and `git write-tree` in the worktree and compares the hash with the one recorded after review."
+        - "Stops and reviews again if the hash differs, instead of merging."
+
+  - name: independent_review
+    prompt: |
+      From Claude Code, have Codex rewrite the session token check in src/auth.py, and get an independent review before I merge.
+    rubric:
+      expectations:
+        - "Reviews the diff itself, then runs `ask` with a provider that is neither Codex nor Claude, such as Gemini, on the worktree changes."
+        - "Treats the second review as input and reports both, without merging."
+
 threshold:
   pass_rate: 0.75

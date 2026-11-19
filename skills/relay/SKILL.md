@@ -1,7 +1,7 @@
 ---
 name: relay
 metadata:
-  version: "0.4.0"
+  version: "0.5.0"
 description: Delegates a scoped implementation task to a local Codex, Claude Code or Antigravity CLI in its own git worktree, then reviews the diff and the returned Outcome and Next step. Use when the user asks to hand coding work to Codex, Claude or Antigravity from another agent. Avoid for read-only opinions, image generation, or work the current agent should do itself.
 ---
 
@@ -163,6 +163,12 @@ images.
      baseline from step 4;
    - review the diff against the brief, since this review is what the caller is for.
 
+   **Independent review.** The caller planned the task, so it is not a neutral
+   reviewer. When the user asks for an independent review, or the change is
+   risky (security, data, a public API), also run `ask` with a provider that
+   is neither the worker nor you, pointed at the worktree's uncommitted
+   changes. Treat its findings as input to your review, not a verdict.
+
    If something misses the brief, send one short correction to the same
    session from inside the worktree, so the worker keeps its context:
 
@@ -179,10 +185,22 @@ images.
    For Codex, the restricted access flag is `-c 'sandbox_mode="workspace-write"'`,
    because `resume` has no `--sandbox` flag. Use the same access mode as the
    first run. If it still misses, stop and report what is left.
+
+   **Fingerprint the reviewed state.** Once the worker has exited and your
+   review is done, record a hash of the whole worktree, untracked files
+   included:
+
+   ```sh
+   git -C .relay/<slug> add -A && git -C .relay/<slug> write-tree
+   ```
+
+   Staging in the worktree commits nothing.
 9. **Report** the worker, access mode, branch, worktree path, the worker's
-   Outcome, your own check result, and your review findings. Do not merge,
+   Outcome, your own check result, your review findings, and the fingerprint. Do not merge,
    commit, push, or remove the worktree until the user says so. When the user
-   approves, merge the branch or apply the diff, then run
+   approves, run the fingerprint command again first. If the hash differs, the
+   worktree changed after review: stop, show what changed, and review again
+   before merging. Otherwise merge the branch or apply the diff, then run
    `git worktree remove .relay/<slug>` and delete the branch. Keep the task
    directory until the user is done with it.
 
