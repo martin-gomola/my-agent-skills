@@ -15,8 +15,8 @@
         "title": "Delegate",
         "text": "The orchestrator picks who does what: a read-only second opinion, a build in its own worktree, or an image.",
         "skills": [
-          "ask",
-          "relay",
+          "second-opinion",
+          "delegate-code",
           "codex-image"
         ]
       },
@@ -34,7 +34,7 @@
       }
     ],
     "example": {
-      "prompt": "Add an empty state to the task list: when there are no tasks, show an illustration and an 'Add your first task' button. Use what-to-ask to brief Codex, codex-image to have Codex draw the illustration, review it, then relay the feature to Codex in a worktree and review its diff. Use ask for a Gemini second opinion if the diff is risky. End with the your-turn-handoff block.",
+      "prompt": "Add an empty state to the task list: when there are no tasks, show an illustration and an 'Add your first task' button. Use what-to-ask to brief Codex, codex-image to have Codex draw the illustration, review it, then use delegate-code to have Codex build the feature in a worktree and review its diff. Use second-opinion for a Gemini second opinion if the diff is risky. End with the your-turn-handoff block.",
       "steps": [
         {
           "skill": "what-to-ask",
@@ -45,11 +45,11 @@
           "text": "Codex draws the illustration; Claude checks its size, style and file."
         },
         {
-          "skill": "relay",
+          "skill": "delegate-code",
           "text": "Codex builds the empty state in a git worktree; Claude reviews the diff and sends fixes or accepts it."
         },
         {
-          "skill": "ask",
+          "skill": "second-opinion",
           "text": "Optional: another model gives a read-only second opinion."
         },
         {
@@ -64,20 +64,20 @@
     {
       "id": "what-to-ask",
       "label": "what-to-ask",
-      "version": "0.3.0",
+      "version": "0.4.0",
       "sourcePath": "skills/what-to-ask",
       "description": "Turn rough notes or another agent's result into a prompt.",
       "usage": "$what-to-ask Write a prompt for adding CSV export to the filtered table.",
       "example": "Use what-to-ask to write a prompt for adding CSV export to the filtered table in Atlas."
     },
     {
-      "id": "ask",
-      "label": "ask",
-      "version": "0.2.0",
-      "sourcePath": "skills/ask",
+      "id": "second-opinion",
+      "label": "second-opinion",
+      "version": "0.4.0",
+      "sourcePath": "skills/second-opinion",
       "description": "Get an external model opinion through local CLIs.",
-      "usage": "$ask claude Review my uncommitted changes without editing files.",
-      "example": "Use ask to get a read-only Claude review of my uncommitted changes."
+      "usage": "$second-opinion claude Review my uncommitted changes without editing files.",
+      "example": "Use second-opinion to get a read-only Claude review of my uncommitted changes."
     },
     {
       "id": "codex-image",
@@ -89,13 +89,13 @@
       "example": "Use codex-image to generate a project illustration using Codex."
     },
     {
-      "id": "relay",
-      "label": "relay",
-      "version": "0.4.0",
-      "sourcePath": "skills/relay",
+      "id": "delegate-code",
+      "label": "delegate-code",
+      "version": "0.6.0",
+      "sourcePath": "skills/delegate-code",
       "description": "Hand a coding task to Codex, Claude or Antigravity in a worktree and review the diff.",
-      "usage": "$relay Have Codex add CSV export to the filtered table, then review its diff.",
-      "example": "Use relay to have Codex add CSV export to the filtered table and review its diff."
+      "usage": "$delegate-code Have Codex add CSV export to the filtered table, then review its diff.",
+      "example": "Use delegate-code to have Codex add CSV export to the filtered table and review its diff."
     },
     {
       "id": "your-turn-handoff",

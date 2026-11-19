@@ -1,12 +1,13 @@
-skill: ask
+skill: second-opinion
 should_trigger:
   - "Ask Claude for a second opinion on this architecture choice and save the result"
   - "Use Claude CLI to review this plan and keep the output as an artifact"
   - "Ask Gemini to brainstorm alternate UX directions"
   - "Use Antigravity CLI for a Gemini critique of this roadmap"
   - "Get another model's take on this bug report and preserve the notes"
-  - "Run $ask claude to challenge these assumptions"
-  - "Run $ask gemini to review this proposal"
+  - "Run $second-opinion claude to challenge these assumptions"
+  - "Run $second-opinion gemini to review this proposal"
+  - "Ask Codex for a read-only review of my uncommitted changes"
   - "Ask Anthropic whether this refactor is worth it"
   - "Ask Claude to review the uncommitted changes as a pre-commit quality gate"
   - "Have Gemini critique PLAN.md without modifying anything"

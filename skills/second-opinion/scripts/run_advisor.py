@@ -33,6 +33,7 @@ PERMISSION_DENIAL_MARKERS = (
     'required the "command" permission',
     "headless mode cannot prompt",
 )
+BINARIES = {"claude": "claude", "gemini": "agy", "codex": "codex"}
 SESSION_ID = re.compile(r"[0-9a-fA-F-]{8,64}")
 STATUS_EXIT_CODES = {
     "ok": 0,
@@ -104,6 +105,9 @@ def build_command(
             "text",
             f"-p={prompt}",
         ]
+    if provider == "codex":
+        # Plain-text mode prints only the final message on stdout; progress goes to stderr.
+        return [binary, "exec", "--sandbox", "read-only", "--ephemeral", prompt]
     raise AdvisorError(f"unsupported provider: {provider}")
 
 
@@ -111,7 +115,7 @@ def artifact_path(repo_root: Path, provider: str, task: str, now: datetime) -> P
     words = re.findall(r"[a-z0-9]+", task.lower())[:8]
     slug = "-".join(words)[:64].strip("-") or "review"
     timestamp = now.astimezone(UTC).strftime("%Y%m%dT%H%M%SZ")
-    return repo_root / ".ask" / f"ask-{provider}-{slug}-{timestamp}.md"
+    return repo_root / ".second-opinion" / f"second-opinion-{provider}-{slug}-{timestamp}.md"
 
 
 def require_repo_root(repo_root: Path) -> Path:
@@ -144,7 +148,7 @@ def require_ignored_artifact(repo_root: Path, candidate: Path) -> None:
     if result.returncode != 0:
         raise AdvisorError(
             f"artifact path is not ignored by Git: {relative}; refusing to write review output. "
-            "Add .ask/ to .gitignore or .git/info/exclude with the user's approval"
+            "Add .second-opinion/ to .gitignore or .git/info/exclude with the user's approval"
         )
 
 
@@ -296,7 +300,7 @@ def write_artifact(
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--provider", choices=("claude", "gemini"), required=True)
+    parser.add_argument("--provider", choices=tuple(BINARIES), required=True)
     parser.add_argument("--repo-root", type=Path, required=True)
     parser.add_argument("--task-file", type=Path, required=True)
     parser.add_argument("--prompt-file", type=Path, required=True)
@@ -317,8 +321,8 @@ def main(argv: list[str] | None = None) -> int:
         if not task or not requested_prompt:
             raise AdvisorError("task and prompt files must not be empty")
         if args.resume and not SESSION_ID.fullmatch(args.resume):
-            raise AdvisorError("--resume must be a session_id from an earlier ask result")
-        binary_name = "claude" if args.provider == "claude" else "agy"
+            raise AdvisorError("--resume must be a session_id from an earlier second-opinion result")
+        binary_name = BINARIES[args.provider]
         binary = shutil.which(binary_name)
         if binary is None:
             raise AdvisorError(f"required provider binary is missing: {binary_name}")

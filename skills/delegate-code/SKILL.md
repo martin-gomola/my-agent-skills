@@ -1,11 +1,11 @@
 ---
-name: relay
+name: delegate-code
 metadata:
-  version: "0.4.0"
+  version: "0.6.0"
 description: Delegates a scoped implementation task to a local Codex, Claude Code or Antigravity CLI in its own git worktree, then reviews the diff and the returned Outcome and Next step. Use when the user asks to hand coding work to Codex, Claude or Antigravity from another agent. Avoid for read-only opinions, image generation, or work the current agent should do itself.
 ---
 
-# Relay
+# Delegate Code
 
 Use this workflow to give a write task to another local agent while the
 calling agent keeps planning and review. The worker edits files in a separate
@@ -22,7 +22,7 @@ worker CLI. It installs nothing and never reads or prints credentials.
 Use the worker the user names. If they name none, ask, or pick `codex` for
 routine work and `claude` for hard design. Never delegate to the agent you are
 running in. Any of these agents, or Cursor, can be the caller; Cursor is never a
-worker. Use `ask` for a read-only second opinion and `codex-image` for
+worker. Use `second-opinion` for a read-only second opinion and `codex-image` for
 images.
 
 ## Workflow
@@ -59,7 +59,7 @@ images.
    - Run `which -a <worker>`, `<worker> --version` and the command's `--help`
      (`codex exec --help`, `claude --help` or `agy --help`). Use only flags
      the help lists.
-   - Run `git check-ignore -q .relay/x`. If `.relay/` is not ignored, ask the
+   - Run `git check-ignore -q .delegate-code/x`. If `.delegate-code/` is not ignored, ask the
      user before adding it to `.gitignore` or the untracked
      `.git/info/exclude`.
    - Check `git status --short`. The worktree starts from `HEAD`, so
@@ -69,7 +69,7 @@ images.
    the repository can still write it:
 
    ```sh
-   git worktree add -b relay/<slug> .relay/<slug> HEAD
+   git worktree add -b delegate-code/<slug> .delegate-code/<slug> HEAD
    ```
 
    Run the brief's check command once in the new worktree before the worker
@@ -90,7 +90,7 @@ images.
      in their agent instructions. The worktree is then the only boundary, so
      the brief's "do not edit outside this directory" rule and step 8's scope
      check matter more.
-6. **Run the worker** from inside the worktree (`cd .relay/<slug>`). Runs can
+6. **Run the worker** from inside the worktree (`cd .delegate-code/<slug>`). Runs can
    be long, so start them in the background when the host supports that.
 
    **Codex**, restricted, then full access:
@@ -134,6 +134,19 @@ images.
    run, such as `command(npm)` for `npm test`; the rule matches the program name.
    A denied command shows in `denied_actions` and can leave `response` empty.
 
+   **Watchdog.** A worker that writes only to files gives no sign of life:
+   `claude -p` prints nothing until its final answer, so a hung run and a
+   working one both look like an empty file. Give every run a hard limit by
+   prefixing the command with `perl -e 'alarm shift; exec @ARGV' 1800`
+   (seconds; `timeout 1800` works too where installed). Then classify the run:
+   - `ok`: exit 0 and a non-empty final message;
+   - `empty`: exit 0 but no final message;
+   - `timeout`: exit 142 (`perl`) or 124 (`timeout`);
+   - `failed`: any other exit code; read the tail of `worker.log`.
+
+   Treat anything but `ok` as a failed run. Do not wait on an empty file past
+   the limit.
+
    If the worker fails or hits its usage limit, report that and stop. Do not
    switch to another agent or API.
 
@@ -156,12 +169,22 @@ images.
    and `Next step` lines. If they are missing, treat the run as unverified
    rather than failed.
 8. **Verify it yourself.** Do not rely on the worker's report:
-   - check scope with `git -C .relay/<slug> status --short` and
-     `git -C .relay/<slug> diff`, and confirm `git status --short` in the main
+   - check scope with `git -C .delegate-code/<slug> status --short` and
+     `git -C .delegate-code/<slug> diff`, and confirm `git status --short` in the main
      checkout shows no new changes;
    - run the brief's check command in the worktree and compare it with the
      baseline from step 4;
    - review the diff against the brief, since this review is what the caller is for.
+
+   **Independent review.** The caller planned the task, so it is not a neutral
+   reviewer. When the user asks for an independent review, or the change is
+   risky (security, data, a public API), also run `second-opinion` with a provider that
+   is neither the worker nor you, pointed at the worktree's uncommitted
+   changes. Treat its findings as input to your review, not a verdict.
+   Plausible but wrong findings are the most common review failure, so
+   confirm each one in the code, or with a failing test or command, before
+   you put it in a correction or a report. Drop what you cannot confirm, or
+   label it unverified.
 
    If something misses the brief, send one short correction to the same
    session from inside the worktree, so the worker keeps its context:
@@ -179,20 +202,32 @@ images.
    For Codex, the restricted access flag is `-c 'sandbox_mode="workspace-write"'`,
    because `resume` has no `--sandbox` flag. Use the same access mode as the
    first run. If it still misses, stop and report what is left.
+
+   **Fingerprint the reviewed state.** Once the worker has exited and your
+   review is done, record a hash of the whole worktree, untracked files
+   included:
+
+   ```sh
+   git -C .delegate-code/<slug> add -A && git -C .delegate-code/<slug> write-tree
+   ```
+
+   Staging in the worktree commits nothing.
 9. **Report** the worker, access mode, branch, worktree path, the worker's
-   Outcome, your own check result, and your review findings. Do not merge,
+   Outcome, your own check result, your review findings, and the fingerprint. Do not merge,
    commit, push, or remove the worktree until the user says so. When the user
-   approves, merge the branch or apply the diff, then run
-   `git worktree remove .relay/<slug>` and delete the branch. Keep the task
+   approves, run the fingerprint command again first. If the hash differs, the
+   worktree changed after review: stop, show what changed, and review again
+   before merging. Otherwise merge the branch or apply the diff, then run
+   `git worktree remove .delegate-code/<slug>` and delete the branch. Keep the task
    directory until the user is done with it.
 
 ## Boundaries
 
-- One task per worktree. Parallel relays get separate branches and must not
+- One task per worktree. Parallel delegations get separate branches and must not
   touch the same files.
 - The worker edits only inside its worktree. The caller does all merging.
 - Tools that scan the whole checkout, such as test discovery or linters, may
-  also pick up `.relay/`. Exclude it there if it gets in the way.
+  also pick up `.delegate-code/`. Exclude it there if it gets in the way.
 - Each worker's usage, quota, and data handling follow the user's account for
   that service. Delegating sends the brief and the repository files the worker
   reads to that service.

@@ -1,35 +1,39 @@
 ---
-name: ask
+name: second-opinion
 metadata:
-  version: "0.2.0"
-description: Asks Claude, Anthropic, Gemini, Google, or Antigravity through installed local CLIs and saves a repository-local audit artifact. Use for an explicitly requested external-model second opinion, critique, brainstorm, review, or research pass.
+  version: "0.4.0"
+description: Asks Claude, Anthropic, Codex, OpenAI, Gemini, Google, or Antigravity through installed local CLIs and saves a repository-local audit artifact. Use for an explicitly requested external-model second opinion, critique, brainstorm, review, or research pass.
 ---
 
-# Ask
+# Second Opinion
 
 Requires Python 3, Git and the explicitly selected authenticated CLI. Requests send the scoped prompt to that provider; audit artifacts stay in the target repository.
 
-Use Claude CLI or Antigravity CLI as a focused external advisor. Keep the
+Use the Claude, Codex or Antigravity CLI as a focused external advisor. Keep the
 execution local, read-only, independent of OMX, and auditable.
 
 ## Usage
 
 ```text
-$ask claude <question or task>
-$ask gemini <question or task>
+$second-opinion claude <question or task>
+$second-opinion gemini <question or task>
+$second-opinion codex <question or task>
 ```
 
-Natural-language requests such as "ask Claude", "ask Gemini", or "get an
+Natural-language requests such as "ask Claude", "ask Codex", "ask Gemini", or "get an
 external second opinion" use the same workflow.
 
 ## Select the Provider
 
 - Use `claude` when the user names Claude or Anthropic.
+- Use `codex` when the user names Codex, OpenAI, or GPT.
 - Use `gemini` through the `agy` binary when the user names Gemini, Google, or
   Antigravity.
 - If the user requests an external second opinion without naming a provider,
   use an installed provider that fits the task and state the choice.
 - Never substitute another provider when the user names one explicitly.
+- Never ask the agent you are running in; a second opinion comes from a
+  different model.
 - Never use the deprecated `gemini` binary, an OMX command, MCP, or web search
   as a silent fallback.
 
@@ -39,6 +43,7 @@ Check only the selected provider:
 
 ```bash
 command -v claude
+command -v codex
 command -v agy
 ```
 
@@ -85,7 +90,7 @@ filesystem API. Do not construct them with shell interpolation. Then run:
 
 ```bash
 python3 <skill-dir>/scripts/run_advisor.py \
-  --provider <claude|gemini> \
+  --provider <claude|codex|gemini> \
   --repo-root <repo-root> \
   --task-file <task-file> \
   --prompt-file <prompt-file> \
@@ -105,6 +110,10 @@ agy --mode plan --sandbox --print-timeout 600s \
   --output-format text -p="<final prompt>"
 ```
 
+```bash
+codex exec --sandbox read-only --ephemeral "<final prompt>"
+```
+
 The runner passes arguments through a native process API. Never replace it with
 `eval`, interpolate the prompt into a shell program, enable dangerous permission
 bypasses, or allow the advisor to write to the workspace. Remove only the
@@ -120,8 +129,8 @@ the files it read, and stays in plan mode. Each call still writes its own
 artifact. Keep the latest `session_id` and reuse it for the next follow-up.
 
 Use `--resume` only for a follow-up the user asked for, and only with a
-`session_id` that an earlier `ask` result returned in this repository. Antigravity
-has no resume, so `gemini` calls always start fresh.
+`session_id` that an earlier `second-opinion` result returned in this repository. Antigravity
+has no resume, and Codex runs with `--ephemeral`, so `gemini` and `codex` calls always start fresh.
 
 ## Interpret the Status
 
@@ -156,14 +165,14 @@ Do not retry `empty`, `timeout`, or `failed` automatically.
 After the command completes, create:
 
 ```text
-<repo-root>/.ask/ask-<provider>-<slug>-<UTC timestamp>.md
+<repo-root>/.second-opinion/second-opinion-<provider>-<slug>-<UTC timestamp>.md
 ```
 
 Use a filesystem-safe lowercase slug and a timestamp such as
 `20260825T143000Z`. Before invoking the provider, the runner requires the final
 artifact path to pass `git check-ignore`; it refuses to run otherwise. Keep
-`.ask/` local and ignored by Git. If it is not ignored, ask the user before
-adding `.ask/` to `.gitignore` or to the untracked `.git/info/exclude`.
+`.second-opinion/` local and ignored by Git. If it is not ignored, ask the user before
+adding `.second-opinion/` to `.gitignore` or to the untracked `.git/info/exclude`.
 
 The artifact must contain:
 

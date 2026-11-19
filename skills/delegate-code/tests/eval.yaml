@@ -1,4 +1,4 @@
-skill: relay
+skill: delegate-code
 description: |
   Verifies that delegated implementation goes to the named worker (Codex, Claude or Antigravity)
   in an ignored in-repo worktree, uses restricted access unless the user asked for
@@ -13,7 +13,7 @@ cases:
     rubric:
       expectations:
         - "Writes a self-contained brief outside the repository with the goal, scope, check command, a no-commit rule and the Outcome and Next step ending."
-        - "Checks that `.relay/` is ignored, then creates a new branch and worktree under `.relay/` with `git worktree add`."
+        - "Checks that `.delegate-code/` is ignored, then creates a new branch and worktree under `.delegate-code/` with `git worktree add`."
         - "Runs `codex exec --sandbox workspace-write` from inside the worktree, with `-o` for the last message and `--json` for the session id, without bypass flags."
         - "Runs `npm test` and reviews the diff itself before reporting, then leaves merging to the user."
 
@@ -49,7 +49,7 @@ cases:
 
   - name: full_access_requested
     prompt: |
-      Relay the migration cleanup to Codex in yolo mode, I want no approvals.
+      Delegate the migration cleanup to Codex in yolo mode, I want no approvals.
     rubric:
       expectations:
         - "Uses `--dangerously-bypass-approvals-and-sandbox` because the user asked for full access."
@@ -57,7 +57,7 @@ cases:
 
   - name: correction_keeps_session
     prompt: |
-      Claude finished the relay, but the check command fails in the worktree.
+      Claude finished the delegated task, but the check command fails in the worktree.
     rubric:
       expectations:
         - "Sends one short correction with `claude -p --resume <session_id>` from inside the worktree, in the same access mode."
@@ -78,7 +78,32 @@ cases:
     rubric:
       expectations:
         - "Does not create a worktree or run a write delegation."
-        - "Points to a read-only path such as the `ask` skill or answers directly."
+        - "Points to a read-only path such as the `second-opinion` skill or answers directly."
+
+  - name: fingerprint_before_merge
+    prompt: |
+      Codex finished the delegated task and you reviewed the diff. I approve, merge it.
+    rubric:
+      expectations:
+        - "Reruns `git add -A` and `git write-tree` in the worktree and compares the hash with the one recorded after review."
+        - "Stops and reviews again if the hash differs, instead of merging."
+
+  - name: independent_review
+    prompt: |
+      From Claude Code, have Codex rewrite the session token check in src/auth.py, and get an independent review before I merge.
+    rubric:
+      expectations:
+        - "Reviews the diff itself, then runs `second-opinion` with a provider that is neither Codex nor Claude, such as Gemini, on the worktree changes."
+        - "Treats the second review as input and reports both, without merging."
+        - "Confirms each finding in the code or with a test before sending a correction, and drops or labels unconfirmed ones."
+
+  - name: worker_watchdog
+    prompt: |
+      Have Claude implement the pagination fix in src/list.py with `pytest tests/test_list.py` as the check. Run it in the background.
+    rubric:
+      expectations:
+        - "Wraps the worker command in a hard time limit such as `perl -e 'alarm shift; exec @ARGV' 1800` or `timeout 1800`."
+        - "Treats an empty final message, a timeout exit code or a non-zero exit as a failed run and reports it instead of waiting."
 
 threshold:
   pass_rate: 0.75

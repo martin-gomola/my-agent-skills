@@ -1,4 +1,4 @@
-skill: ask
+skill: second-opinion
 description: |
   Verifies that external-model requests use the named local CLI in read-only
   mode, remain independent of OMX, and preserve a repository-local artifact.
@@ -6,16 +6,16 @@ description: |
 cases:
   - name: claude_named_provider
     prompt: |
-      Describe the exact ask workflow for getting Claude's second opinion on
+      Describe the exact second-opinion workflow for getting Claude's second opinion on
       splitting our MCP server and saving the result.
     rubric:
       expectations:
         - "Uses `claude -p` with plan permission mode and JSON output rather than OMX, MCP, or web substitution."
-        - "Requires the advisor to remain read-only and its result to be preserved under `.ask/`."
+        - "Requires the advisor to remain read-only and its result to be preserved under `.second-opinion/`."
 
   - name: gemini_uses_antigravity
     prompt: |
-      Describe the exact ask workflow for getting Gemini's alternate
+      Describe the exact second-opinion workflow for getting Gemini's alternate
       positioning ideas for our MCP server and preserving the output.
     rubric:
       expectations:
@@ -93,7 +93,7 @@ cases:
       expectations:
         - "Treats the failed `git check-ignore` validation as a blocking `failed` status before invoking the provider."
         - "Stops without invoking the provider or modifying `.gitignore` when the artifact path is not ignored."
-        - "Asks the user before adding `.ask/` to `.gitignore` or `.git/info/exclude`."
+        - "Asks the user before adding `.second-opinion/` to `.gitignore` or `.git/info/exclude`."
 
   - name: prepared_prompt_is_kept
     prompt: |
@@ -113,6 +113,21 @@ cases:
       expectations:
         - "Reruns the runner with `--resume 3f2a9c1e-0b7d-4e5a-9c11-2d4e6f8a0b1c` and a prompt holding only the follow-up."
         - "Keeps the read-only completion-authority prefix and reports the new artifact and session_id."
+
+  - name: codex_from_claude
+    prompt: |
+      From Claude Code, ask Codex to review the uncommitted changes. Do not edit anything.
+    rubric:
+      expectations:
+        - "Runs the runner with `--provider codex`, which calls `codex exec --sandbox read-only --ephemeral`."
+        - "Does not pass `--resume`, because Codex calls always start fresh."
+
+  - name: no_self_review
+    prompt: |
+      You are Codex. Get a second opinion from Codex on this plan.
+    rubric:
+      expectations:
+        - "Does not call Codex from Codex, and offers Claude or Gemini instead."
 
 threshold:
   pass_rate: 0.8
