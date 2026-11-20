@@ -1,7 +1,7 @@
 ---
 name: delegate-code
 metadata:
-  version: "0.7.0"
+  version: "0.8.0"
 description: Delegates a scoped implementation task to a local Codex, Claude Code or Antigravity CLI in its own git worktree, then reviews the diff and the returned Outcome and Next step. Use when the user asks to hand coding work to Codex, Claude or Antigravity from another agent. Avoid for read-only opinions, image generation, or work the current agent should do itself.
 ---
 
@@ -63,9 +63,17 @@ images.
    - Run `which -a <worker>`, `<worker> --version` and the command's `--help`
      (`codex exec --help`, `claude --help` or `agy --help`). Use only flags
      the help lists.
-   - Run `git check-ignore -q .delegate-code/x`. If `.delegate-code/` is not ignored, ask the
-     user before adding it to `.gitignore` or the untracked
-     `.git/info/exclude`.
+   - Run `git check-ignore -q .delegate-code/x`. If `.delegate-code/` is not
+     ignored, ask the user once whether to ignore both working folders of these
+     skills in this repository, so `second-opinion` will not ask again. On a
+     yes, add the missing ones to the untracked exclude file (or to
+     `.gitignore` if the user prefers):
+
+     ```sh
+     for d in .second-opinion .delegate-code; do
+       git check-ignore -q "$d/x" || echo "$d/" >> "$(git rev-parse --git-path info/exclude)"
+     done
+     ```
    - Check `git status --short`. The worktree starts from `HEAD`, so
      uncommitted changes are not in it. Tell the user before you continue
      without them.
@@ -153,6 +161,12 @@ images.
 
    Treat anything but `ok` as a failed run. Do not wait on an empty file past
    the limit.
+
+   **Run note.** When the run starts, write `.delegate-code/<slug>.run` next to
+   the worktree (not inside it, so the diff stays clean) with four lines:
+   `worker=<name>`, `task=<$TASK>`, `started=<UTC time>` and `pid=<PID>`
+   (from `$!` when you start it with `&`; leave it empty if the host does not
+   show it). The status check below reads it. Delete it with the worktree.
 
    If the worker fails or hits its usage limit, report that and stop. Do not
    switch to another agent or API.
@@ -247,8 +261,32 @@ images.
    brief's check command again in the main checkout: `HEAD` may have moved
    since the worktree was created, so the merged result is new code. If it
    fails, stop, keep the worktree and branch, and report the failure. If it
-   passes, run `git worktree remove .delegate-code/<slug>` and delete the
+   passes, run `git worktree remove .delegate-code/<slug>`, delete the run note and the
    branch. Keep the task directory until the user is done with it.
+
+## Check on delegations
+
+When the user asks how a delegation is going, or what is left in
+`.delegate-code/`, read each `.delegate-code/*.run` note and its worktree. Only
+read; change nothing.
+
+- **Progress.** Report the time since `started` and the files changed so far
+  (`git -C .delegate-code/<slug> status --short`), which works for every
+  worker. For Codex, also give the last step from the tail of
+  `$TASK/events.jsonl` in plain words, such as "ran the tests" or "edited
+  src/list.py". Claude and Antigravity write nothing until they finish.
+- **State.**
+  - `running`: `pid` is set and `kill -0 <pid>` succeeds;
+  - `finished`: the final message exists (`last.md` or `result.json` in
+    `task`) and is not yet reviewed or merged;
+  - `abandoned`: no live process, no final message, and the time limit has
+    passed;
+  - `unknown`: anything else, including a worktree with no note. Never call
+    it abandoned without that evidence.
+- **Cleanup.** List what each finished or abandoned worktree holds (changes,
+  commits, or nothing) and offer to review, keep, or remove it. Remove a
+  worktree, its branch, and its note only after the user says so, and never one
+  that is `running` or `unknown`.
 
 ## Boundaries
 

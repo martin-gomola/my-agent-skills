@@ -34,7 +34,7 @@ back as the next step. Install each one only in the agents where you need it.
   advisor read-only, and `codex-image` only produces images.
 - Each `second-opinion` call starts a new CLI process. For Claude, a follow-up can continue
   the same conversation with `--resume <session_id>` from the earlier result;
-  Antigravity calls always start fresh.
+  Codex and Antigravity calls always start fresh.
 - No skill reads another agent's chat history. Results travel only as text you
   paste, a file the runner writes, or the CLI output returned to the caller.
 - The [Your Turn inbox](https://github.com/martin-gomola/your-turn) shows which

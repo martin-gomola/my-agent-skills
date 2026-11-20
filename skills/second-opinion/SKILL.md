@@ -1,7 +1,7 @@
 ---
 name: second-opinion
 metadata:
-  version: "0.5.0"
+  version: "0.5.1"
 description: Asks Claude, Anthropic, Codex, OpenAI, Gemini, Google, or Antigravity through installed local CLIs and saves a repository-local audit artifact. Use for an explicitly requested external-model second opinion, critique, brainstorm, review, or research pass.
 ---
 
@@ -171,8 +171,16 @@ After the command completes, create:
 Use a filesystem-safe lowercase slug and a timestamp such as
 `20260825T143000Z`. Before invoking the provider, the runner requires the final
 artifact path to pass `git check-ignore`; it refuses to run otherwise. Keep
-`.second-opinion/` local and ignored by Git. If it is not ignored, ask the user before
-adding `.second-opinion/` to `.gitignore` or to the untracked `.git/info/exclude`.
+`.second-opinion/` local and ignored by Git. If it is not ignored, ask the user once
+whether to ignore both working folders of these skills in this repository, so
+`delegate-code` will not ask again. On a yes, add the missing ones to the
+untracked exclude file (or to `.gitignore` if the user prefers):
+
+```sh
+for d in .second-opinion .delegate-code; do
+  git check-ignore -q "$d/x" || echo "$d/" >> "$(git rev-parse --git-path info/exclude)"
+done
+```
 
 The artifact must contain:
 

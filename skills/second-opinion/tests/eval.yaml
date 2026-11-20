@@ -137,5 +137,13 @@ cases:
         - "Asks for each done criterion as met, not met, or cannot verify from the diff, separately from the findings."
         - "Asks for each finding to carry a severity of Critical, Important or Minor."
 
+  - name: ignore_both_folders
+    prompt: |
+      Ask Claude to review PLAN.md. This repository does not ignore .second-opinion/ yet.
+    rubric:
+      expectations:
+        - "Asks once whether to ignore both .second-opinion/ and .delegate-code/, and adds only the missing ones on a yes."
+        - "Does not run the review before the artifact folder is ignored."
+
 threshold:
   pass_rate: 0.8

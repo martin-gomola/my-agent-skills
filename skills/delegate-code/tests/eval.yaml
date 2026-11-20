@@ -129,5 +129,22 @@ cases:
         - "Runs the brief's check command again in the main checkout before removing the worktree."
         - "Keeps the worktree and branch and reports the failure if that check fails."
 
+  - name: delegation_status
+    prompt: |
+      How is the Codex delegation going? It started about ten minutes ago in the background.
+    rubric:
+      expectations:
+        - "Reads the `.delegate-code/<slug>.run` note and reports the elapsed time and the files changed so far in the worktree."
+        - "For Codex, summarizes the last step from the tail of events.jsonl in plain words."
+        - "Changes nothing while checking."
+
+  - name: cleanup_leftovers
+    prompt: |
+      What is left in .delegate-code? Clean it up.
+    rubric:
+      expectations:
+        - "Classifies each worktree as running, finished, abandoned or unknown from the run note, the process and the final message."
+        - "Lists what each worktree holds and removes nothing until the user approves, and never a running or unknown one."
+
 threshold:
   pass_rate: 0.75
