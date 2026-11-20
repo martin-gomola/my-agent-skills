@@ -1,7 +1,7 @@
 ---
 name: delegate-code
 metadata:
-  version: "0.8.0"
+  version: "0.9.0"
 description: Delegates a scoped implementation task to a local Codex, Claude Code or Antigravity CLI in its own git worktree, then reviews the diff and the returned Outcome and Next step. Use when the user asks to hand coding work to Codex, Claude or Antigravity from another agent. Avoid for read-only opinions, image generation, or work the current agent should do itself.
 ---
 
@@ -35,7 +35,8 @@ images.
    `what-to-ask` if it is installed. The brief must stand on its own, because
    the worker sees none of this chat. It states:
    - the goal and the done criteria;
-   - the files or area in scope and what must not change;
+   - the files the worker may change, as a list of paths or globs, and what
+     must not change; step 8 checks the diff against this list;
    - decisions already settled;
    - the exact check command that proves the change;
    - "Do not commit, push, or edit outside this directory.";
@@ -124,14 +125,22 @@ images.
 
    ```sh
    claude -p --permission-mode acceptEdits --allowedTools "Bash(<check command>)" \
+     --max-budget-usd <usd> \
      --output-format json < "$TASK/brief.md" > "$TASK/result.json" 2> "$TASK/worker.log"
-   claude -p --permission-mode bypassPermissions \
+   claude -p --permission-mode bypassPermissions --max-budget-usd <usd> \
      --output-format json < "$TASK/brief.md" > "$TASK/result.json" 2> "$TASK/worker.log"
    ```
 
    `result.json` holds the final message in `result` and the session id in
    `session_id`. In restricted mode, add one `--allowedTools` entry for each
    command the worker must run.
+
+   **Spend cap.** Use the limit the user gives; without one, use `5`. Several
+   delegations share one total: split it so the caps add up to no more than
+   the user's limit. A run stopped by the cap is a failed run; report it as
+   that and do not raise the cap without asking. Codex and Antigravity have no
+   spend flag, so the watchdog's time limit below is their only cap; say so
+   when the user asked for a spend limit.
 
    **Antigravity**, restricted, then full access. `agy` takes the prompt as the
    `-p` argument, not on stdin:
@@ -200,6 +209,8 @@ images.
    - check scope with `git -C .delegate-code/<slug> status --short` and
      `git -C .delegate-code/<slug> diff`, and confirm `git status --short` in the main
      checkout shows no new changes;
+   - list every changed file outside the brief's list of files the worker may
+     change; review each one and report it, even when the edit looks harmless;
    - run the brief's check command in the worktree and compare it with the
      baseline from step 4;
    - if the diff touches a file the check depends on (the list from step 4),
@@ -288,10 +299,24 @@ read; change nothing.
   worktree, its branch, and its note only after the user says so, and never one
   that is `running` or `unknown`.
 
+## Several delegations
+
+When one request becomes more than one delegation, write `$TASK/plan.md`
+before any worktree exists. List each task with its slug, its files (the
+same list its brief carries) and the slugs it depends on.
+
+- If two tasks list the same file, make one depend on the other. Never run
+  them at the same time.
+- A task with no dependencies starts from `HEAD`. A dependent task starts
+  only after each task it depends on is reviewed and merged, from the branch
+  that holds those merges, so it sees their code.
+- Run independent tasks in parallel, each through steps 2 to 9 on its own.
+- If a task fails or is blocked, do not start the tasks that depend on it.
+  Report them as not started.
+
 ## Boundaries
 
-- One task per worktree. Parallel delegations get separate branches and must not
-  touch the same files.
+- One task per worktree, each on its own branch.
 - The worker edits only inside its worktree. The caller does all merging.
 - Tools that scan the whole checkout, such as test discovery or linters, may
   also pick up `.delegate-code/`. Exclude it there if it gets in the way.

@@ -146,5 +146,23 @@ cases:
         - "Classifies each worktree as running, finished, abandoned or unknown from the run note, the process and the final message."
         - "Lists what each worktree holds and removes nothing until the user approves, and never a running or unknown one."
 
+  - name: parallel_plan
+    prompt: |
+      Have Codex add a REST endpoint in src/api/users.py, a CLI command in
+      src/cli.py, and docs for both in docs/users.md. Run what you can in parallel.
+    rubric:
+      expectations:
+        - "Writes plan.md first, listing each task's slug, the files it may change and its dependencies."
+        - "Runs the endpoint and CLI tasks in parallel in separate worktrees, and starts the docs task only after both are reviewed and merged, from the branch that holds them."
+        - "Gives each brief its file list and, in review, reports any changed file outside that list."
+
+  - name: spend_cap
+    prompt: |
+      Give the cache refactor in src/cache.py to Claude, but don't let it spend more than $2.
+    rubric:
+      expectations:
+        - "Runs `claude -p` with `--max-budget-usd 2`."
+        - "Treats a run stopped by the cap as a failed run and does not raise the cap without asking."
+
 threshold:
   pass_rate: 0.75
