@@ -125,9 +125,8 @@ images.
 
    ```sh
    claude -p --permission-mode acceptEdits --allowedTools "Bash(<check command>)" \
-     --max-budget-usd <usd> \
      --output-format json < "$TASK/brief.md" > "$TASK/result.json" 2> "$TASK/worker.log"
-   claude -p --permission-mode bypassPermissions --max-budget-usd <usd> \
+   claude -p --permission-mode bypassPermissions \
      --output-format json < "$TASK/brief.md" > "$TASK/result.json" 2> "$TASK/worker.log"
    ```
 
@@ -135,12 +134,16 @@ images.
    `session_id`. In restricted mode, add one `--allowedTools` entry for each
    command the worker must run.
 
-   **Spend cap.** Use the limit the user gives; without one, use `5`. Several
+   **Spend cap.** By default runs have no spend cap: on a subscription the
+   user pays a flat fee, not per token, and the watchdog's time limit below
+   still stops a runaway run. Add `--max-budget-usd <usd>` to the Claude
+   command only when the user gives a limit, or when the worker bills an API
+   key per token and the user has not said to run without one. Several
    delegations share one total: split it so the caps add up to no more than
    the user's limit. A run stopped by the cap is a failed run; report it as
    that and do not raise the cap without asking. Codex and Antigravity have no
-   spend flag, so the watchdog's time limit below is their only cap; say so
-   when the user asked for a spend limit.
+   spend flag, so the time limit is their only cap; say so when the user asked
+   for a spend limit.
 
    **Antigravity**, restricted, then full access. `agy` takes the prompt as the
    `-p` argument, not on stdin:

@@ -164,6 +164,14 @@ cases:
         - "Runs `claude -p` with `--max-budget-usd 2`."
         - "Treats a run stopped by the cap as a failed run and does not raise the cap without asking."
 
+  - name: no_cap_by_default
+    prompt: |
+      Give the cache refactor in src/cache.py to Claude. I'm on a Max subscription.
+    rubric:
+      expectations:
+        - "Runs `claude -p` without `--max-budget-usd`, because the user named no limit and pays a flat subscription."
+        - "Still wraps the run in the watchdog time limit."
+
   - name: no_split_for_small_task
     prompt: |
       Have Codex rename the `fetch_user` helper to `load_user` in src/users.py and
