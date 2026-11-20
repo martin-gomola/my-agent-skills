@@ -1,7 +1,7 @@
 ---
 name: delegate-code
 metadata:
-  version: "0.9.0"
+  version: "0.10.0"
 description: Delegates a scoped implementation task to a local Codex, Claude Code or Antigravity CLI in its own git worktree, then reviews the diff and the returned Outcome and Next step. Use when the user asks to hand coding work to Codex, Claude or Antigravity from another agent. Avoid for read-only opinions, image generation, or work the current agent should do itself.
 ---
 
@@ -301,6 +301,13 @@ read; change nothing.
 
 ## Several delegations
 
+**Split only when it pays.** Keep a request as one delegation when one
+worker can finish it within the watchdog limit and its parts share most of
+their files. Split it when the parts touch separate files and can run in
+parallel, or when one run would be too large to review as one diff. Each
+extra task costs a brief, a worktree and a review, so do not split for
+neatness.
+
 When one request becomes more than one delegation, write `$TASK/plan.md`
 before any worktree exists. List each task with its slug, its files (the
 same list its brief carries) and the slugs it depends on.
@@ -313,6 +320,12 @@ same list its brief carries) and the slugs it depends on.
 - Run independent tasks in parallel, each through steps 2 to 9 on its own.
 - If a task fails or is blocked, do not start the tasks that depend on it.
   Report them as not started.
+- **Progress notes.** When a task is merged, fails or is blocked, add one
+  line under `## Done` in `plan.md`: the slug, its state, and what a later
+  task must know, such as a new function name, a changed interface or a trap
+  the worker hit. Before you write a dependent task's brief, read those lines
+  and put the ones it needs into the brief. Its worker cannot see the earlier
+  runs.
 
 ## Boundaries
 

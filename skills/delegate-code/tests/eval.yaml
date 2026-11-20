@@ -164,5 +164,23 @@ cases:
         - "Runs `claude -p` with `--max-budget-usd 2`."
         - "Treats a run stopped by the cap as a failed run and does not raise the cap without asking."
 
+  - name: no_split_for_small_task
+    prompt: |
+      Have Codex rename the `fetch_user` helper to `load_user` in src/users.py and
+      its two callers in src/api.py. Split it up if that helps.
+    rubric:
+      expectations:
+        - "Keeps it as one delegation because one worker can finish it and the parts share files."
+        - "Does not write plan.md or create more than one worktree."
+
+  - name: progress_notes_feed_dependents
+    prompt: |
+      In the plan, task `api` was merged and renamed `get_users` to `list_users`.
+      Task `docs` depends on it. Start `docs`.
+    rubric:
+      expectations:
+        - "Records a line for `api` under `## Done` in plan.md with the rename."
+        - "Puts the `list_users` rename into the `docs` brief before starting it, from the branch that holds the `api` merge."
+
 threshold:
   pass_rate: 0.75
