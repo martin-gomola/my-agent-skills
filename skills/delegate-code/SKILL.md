@@ -1,7 +1,7 @@
 ---
 name: delegate-code
 metadata:
-  version: "0.9.0"
+  version: "0.10.0"
 description: Delegates a scoped implementation task to a local Codex, Claude Code or Antigravity CLI in its own git worktree, then reviews the diff and the returned Outcome and Next step. Use when the user asks to hand coding work to Codex, Claude or Antigravity from another agent. Avoid for read-only opinions, image generation, or work the current agent should do itself.
 ---
 
@@ -125,9 +125,8 @@ images.
 
    ```sh
    claude -p --permission-mode acceptEdits --allowedTools "Bash(<check command>)" \
-     --max-budget-usd <usd> \
      --output-format json < "$TASK/brief.md" > "$TASK/result.json" 2> "$TASK/worker.log"
-   claude -p --permission-mode bypassPermissions --max-budget-usd <usd> \
+   claude -p --permission-mode bypassPermissions \
      --output-format json < "$TASK/brief.md" > "$TASK/result.json" 2> "$TASK/worker.log"
    ```
 
@@ -135,12 +134,16 @@ images.
    `session_id`. In restricted mode, add one `--allowedTools` entry for each
    command the worker must run.
 
-   **Spend cap.** Use the limit the user gives; without one, use `5`. Several
+   **Spend cap.** By default runs have no spend cap: on a subscription the
+   user pays a flat fee, not per token, and the watchdog's time limit below
+   still stops a runaway run. Add `--max-budget-usd <usd>` to the Claude
+   command only when the user gives a limit, or when the worker bills an API
+   key per token and the user has not said to run without one. Several
    delegations share one total: split it so the caps add up to no more than
    the user's limit. A run stopped by the cap is a failed run; report it as
    that and do not raise the cap without asking. Codex and Antigravity have no
-   spend flag, so the watchdog's time limit below is their only cap; say so
-   when the user asked for a spend limit.
+   spend flag, so the time limit is their only cap; say so when the user asked
+   for a spend limit.
 
    **Antigravity**, restricted, then full access. `agy` takes the prompt as the
    `-p` argument, not on stdin:
@@ -301,6 +304,13 @@ read; change nothing.
 
 ## Several delegations
 
+**Split only when it pays.** Keep a request as one delegation when one
+worker can finish it within the watchdog limit and its parts share most of
+their files. Split it when the parts touch separate files and can run in
+parallel, or when one run would be too large to review as one diff. Each
+extra task costs a brief, a worktree and a review, so do not split for
+neatness.
+
 When one request becomes more than one delegation, write `$TASK/plan.md`
 before any worktree exists. List each task with its slug, its files (the
 same list its brief carries) and the slugs it depends on.
@@ -313,6 +323,12 @@ same list its brief carries) and the slugs it depends on.
 - Run independent tasks in parallel, each through steps 2 to 9 on its own.
 - If a task fails or is blocked, do not start the tasks that depend on it.
   Report them as not started.
+- **Progress notes.** When a task is merged, fails or is blocked, add one
+  line under `## Done` in `plan.md`: the slug, its state, and what a later
+  task must know, such as a new function name, a changed interface or a trap
+  the worker hit. Before you write a dependent task's brief, read those lines
+  and put the ones it needs into the brief. Its worker cannot see the earlier
+  runs.
 
 ## Boundaries
 
